@@ -4958,6 +4958,37 @@ Analytics" />
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
+<script>
+    function ISOTimeParseAll(passedIsOdate) {
+   
+        // Returns Month,Day,Year,Hour,Minute,Second
+        // Split returned string with comma
+        // Array Positions
+ 
+        // Month = 0
+        // Day = 1
+        // Year = 2
+        // Hour = 3
+        // Minute = 4
+        // Sevcond = 5
+ 
+        // For dateTime = 2018-08-21T00:00:00-05:00
+ 
+        // Returns = 08,21,2018,00,00,00
+ 
+        var parts = passedIsOdate.split('T');
+        var sParts = parts[0].split('-');
+        var timeUp = parts[1].split('-');
+ 
+        var rtParse = timeUp[0].split(':');
+        var rHour = rtParse[0];
+        var rMinute = rtParse[1];
+        var rSecond = rtParse[2];
+ 
+        return (sParts[1].trim() + "," + sParts[2].trim() + "," + sParts[0].trim() + "," + rHour.trim() + "," + rMinute.trim() + "," + rSecond.trim());
+    }
+</script>
+<!--*********************************************************************************************************************************************************************************************-->
     <script>
         function UnixTimeParseAll(UNIX_timestamp, type) {
             var a = new Date(UNIX_timestamp * 1000);
@@ -5194,6 +5225,30 @@ Analytics" />
     <script type="text/javascript">
         function compareDateToCurrentDate(testDate) {
             var todaysDate = new Date();
+            
+            var tempMonth = (todaysDate.getMonth() + 1);
+            if(tempMonth < 10)
+            	tempMonth = "0" + tempMonth;
+            	
+            var tempDay = todaysDate.getDate();
+            	if(tempDay < 10)
+            		tempDay = "0" + tempDay;
+            		
+            var tempYear = todaysDate.getFullYear();            
+            var ptodaysDate = tempMonth + "/" + tempDay + "/" + tempYear;
+	
+            if (ptodaysDate === testDate) {
+                return true;
+            }
+             else {
+                return false;
+            }
+        }
+    </script>
+    <!--*********************************************************************************************************************************************************************************************-->
+    <script type="text/javascript">
+        function compareDateToCurrentDate(testDate) {
+            var todaysDate = new Date();
             var ptodaysDate = (todaysDate.getMonth() + 1) + "/" + todaysDate.getDate() + "/" + todaysDate.getFullYear();
 
             var rtestDate = new Date(testDate);
@@ -5232,11 +5287,25 @@ Analytics" />
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
 
+							var testDateArray = ISOTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
+							var parsed = testDateArray.split(',');
+							
+							var tempMonth = parsed[0];
+								if(tempMonth.length < 2)
+									tempMonth = "0" + tempMonth;
+							var tempDay = parsed[1];
+								if(tempDay.length < 2)
+									tempDay = "0" + tempDay;	
+																	
+							var tempYear = 	parsed[2];
+							
+							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
+							
                             if (numReturned < 3) {
                                 Flag_Estimated = false;
                             }
 
-                            else if (!compareDateToCurrentDate(UnixTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.timestamp, 8))) {
+                            else if (!compareDateToCurrentDate(testDate)) {
                                 Flag_Estimated = false;
                             }
 
@@ -5287,11 +5356,25 @@ Analytics" />
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
+							var testDateArray = ISOTimeParseAll(json.response.periods[(numReturned - 1)].summary.dateTimeISO);
+							var parsed = testDateArray.split(',');
+							
+							var tempMonth = parsed[0];
+								if(tempMonth.length < 2)
+									tempMonth = "0" + tempMonth;
+							var tempDay = parsed[1];
+								if(tempDay.length < 2)
+									tempDay = "0" + tempDay;	
+																	
+							var tempYear = 	parsed[2];
+							
+							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
+							
                             if (numReturned < 3) {
                                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                                 document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                             }
-                            else if (!compareDateToCurrentDate(UnixTimeParseAll(json.response.periods[(numReturned - 1)].summary.timestamp, 8))) {
+                            else if (!compareDateToCurrentDate(testDate)) {
                                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                                 document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                             }
@@ -5341,10 +5424,24 @@ Analytics" />
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
 
+							var testDateArray = ISOTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
+							var parsed = testDateArray.split(',');
+							
+							var tempMonth = parsed[0];
+								if(tempMonth.length < 2)
+									tempMonth = "0" + tempMonth;
+							var tempDay = parsed[1];
+								if(tempDay.length < 2)
+									tempDay = "0" + tempDay;	
+																	
+							var tempYear = 	parsed[2];
+							
+							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
+							
                             if (numReturned < 3) {
                                 Local_Flag_Estimated = false;
                             }
-                            else if (!compareDateToCurrentDate(UnixTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.timestamp, 8))) {
+                            else if (!compareDateToCurrentDate(testDate)) {
                                 Local_Flag_Estimated = false;
                             }
                             else {
@@ -5947,12 +6044,12 @@ Analytics" />
                                     else
                                         rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;&nbsp;no rain amounts predicted";
 
-                                    document.getElementById("fd_" + index).innerHTML = "<span style=\"font-size: 14pt; color:  #7E0023; font-family: Courier New\">" + "<b/>" + dateStr + "</span>";
+                                    document.getElementById("fd_" + index).innerHTML = "<span style=\"font-size: 24pt; color:  #7E0023;       font-family: Times New Roman\">" + "<b/>" + dateStr + "</span>";
                                     document.getElementById("fx_" + index).innerHTML = "<img border=0 src = " + IconBase + icon + " width=80" + " height=80>"
                                     document.getElementById("fhl_" + index).innerHTML = "<span style=\"font-size: 20pt; color:  " + color + " font-family: Times New Roman\">" + "<b>" + tmpStr + "</b>" + "&nbsp;°F" + "</span>";
                                     document.getElementById("fwg_" + index).innerHTML = "<span style=\"font-size: 20pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Winds " + windStr + "</span>";
                                     document.getElementById("frn_" + index).innerHTML = "<span style=\"font-size: 20pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Rain chance  " + pop + "%" + "</span>";
-                                    document.getElementById("ff_" + index).innerHTML = "<span style=\"font-size: 20pt; color:  " + color + " font-family: Times New Roman\">" + wx + rest + "." + "</span>";
+                                    document.getElementById("ff_" + index).innerHTML = "<span style=\"font-size: 20pt; color:  " + color + "  font-family: Times New Roman\">" + wx + rest + "." + "</span>";
                                 }
                             }
                         }
