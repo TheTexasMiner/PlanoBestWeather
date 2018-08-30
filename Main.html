@@ -1296,7 +1296,7 @@
                                             <td align="center" bgcolor="#E8F3FF" style="padding:0; border-left-width:1px; border-right-width:1px; border-top-style:solid; border-top-width:1px; border-bottom-width:1px">
                                                 <div id="fhl_0" style="-webkit-padding-start: 0">
                                                     <font size="3" face="Times New Roman" style="-webkit-padding-start: 0">
-                                                        fh;_0
+                                                        fh_0
                                                     </font>
                                                 </div>
                                             </td>
@@ -4934,6 +4934,9 @@
         Flag_Normals = On;
 
         Flag_Estimated = false;
+        
+        debugMain = Off;
+        
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5102,6 +5105,22 @@
         var rSecond = rtParse[2];
  
         return (sParts[1].trim() + "," + sParts[2].trim() + "," + sParts[0].trim() + "," + rHour.trim() + "," + rMinute.trim() + "," + rSecond.trim());
+    }
+</script>
+    <!--*********************************************************************************************************************************************************************************************-->
+<script>
+    function ISODateOnly(passedIsOdate) {
+   
+        var parts = passedIsOdate.split('T');
+        var sParts = parts[0].split('-');
+        var timeUp = parts[1].split('-');
+ 
+        var rtParse = timeUp[0].split(':');
+        var rHour = rtParse[0];
+        var rMinute = rtParse[1];
+        var rSecond = rtParse[2];
+ 
+        return (sParts[1].trim() + "/" + sParts[2].trim() + "/" + sParts[0].trim());
     }
 </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5386,20 +5405,7 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
-
-							var testDateArray = ISOTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
-							var parsed = testDateArray.split(',');
-							
-							var tempMonth = parsed[0];
-								if(tempMonth.length < 2)
-									tempMonth = "0" + tempMonth;
-							var tempDay = parsed[1];
-								if(tempDay.length < 2)
-									tempDay = "0" + tempDay;	
-																	
-							var tempYear = 	parsed[2];
-							
-							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
+							var testDate = ISODateOnly(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
 														
                             if (numReturned < 3) {
                                 Flag_Estimated = false;
@@ -5449,6 +5455,7 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response.periods.length;
+							var testDate = ISODateOnly(json.response.periods[(numReturned - 1)].summary.dateTimeISO);
 
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                             document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
@@ -5456,19 +5463,6 @@
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
-							var testDateArray = ISOTimeParseAll(json.response.periods[(numReturned - 1)].summary.dateTimeISO);
-							var parsed = testDateArray.split(',');
-							
-							var tempMonth = parsed[0];
-								if(tempMonth.length < 2)
-									tempMonth = "0" + tempMonth;
-							var tempDay = parsed[1];
-								if(tempDay.length < 2)
-									tempDay = "0" + tempDay;	
-																	
-							var tempYear = 	parsed[2];
-							
-							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
 
                             if (numReturned < 3) {
                                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
@@ -5523,20 +5517,7 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
-							
-							var testDateArray = ISOTimeParseAll(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
-							var parsed = testDateArray.split(',');
-							
-							var tempMonth = parsed[0];
-								if(tempMonth.length < 2)
-									tempMonth = "0" + tempMonth;
-							var tempDay = parsed[1];
-								if(tempDay.length < 2)
-									tempDay = "0" + tempDay;	
-																	
-							var tempYear = 	parsed[2];
-							
-							var testDate = tempMonth + "/" + tempDay + "/" + tempYear;
+							var testDate = ISODateOnly(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO);
 								
                             if (numReturned < 3) {
                                 Local_Flag_Estimated = false;
@@ -6676,29 +6657,29 @@
 
             if (Flag_ObservationsRainEstimated)
                 ObservationsRainEstimated();
-            if (Flag_smallMap1)
+            if (Flag_smallMap1 && !debugMain)
                 smallMap1();
-            if (Flag_LargeMap1)
+            if (Flag_LargeMap1 && !debugMain)
                 LargeMap1();
             if (Flag_Phrases_Hours)
                 Phrases_Hours();
             if (Flag_getThreats)
                 getThreats();
-            if (Flag_Weather_48Hours)
+            if (Flag_Weather_48Hours && !debugMain)
                 Weather_48Hours();
-            if (Flag_advisoriesDisplay)
+            if (Flag_advisoriesDisplay && !debugMain)
                 advisoriesDisplay();
-            if (Flag_airQualityDisplay)
+            if (Flag_airQualityDisplay && !debugMain)
                 airQualityDisplay();
-            if (Flag_sunMoonDisplay)
+            if (Flag_sunMoonDisplay && !debugMain)
                 sunMoonDisplay();
             if (Flag_getLightningStrikes)
                 getLightningStrikes();
             if (Flag_get14DayNightForecast)
                 get14DayNightForecast();
-            if (Flag_Weather_Closest)
+            if (Flag_Weather_Closest && !debugMain)
                 Weather_Closest();
-            if (Flag_Weather_Almanac)
+            if (Flag_Weather_Almanac && !debugMain)
                 Weather_Almanac();
             if (Flag_getForecastsHours)
                 getForecastsHours();
@@ -6708,12 +6689,24 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
+    
+    if(debugMain)
+    	{
+    	 Places();
+    	}
+    else
+    	{
         defaultLocation = localStorage.getItem('PBW_defaultLocation');
 
         if (defaultLocation)
+        	{
             setSavedLocation();
+            }
         else
+        	{
             Places();
+        	}
+        }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
 
