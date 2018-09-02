@@ -4944,7 +4944,7 @@
 
         debugMain = Off;
         
-        currentVersion = "Beta Version  3.1";
+        currentVersion = "Beta Version  3.2";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5104,24 +5104,24 @@
             var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-            if (hour.toString().length < 2)
-                hour = "0" + hour;
+            //	if (hour.toString().length < 2)
+            //    	hour = "0" + hour;
 
             var minute = a.getMinutes();
-            if (minute.toString().length < 2)
-                minute = "0" + minute;
+            	if (minute.toString().length < 2)
+               		minute = "0" + minute;
 
             var second = a.getSeconds();
-            if (second.toString().length < 2)
-                second = "0" + second;
+            	if (second.toString().length < 2)
+                	second = "0" + second;
 
             var TextMonthNameLong = monthNameLong[NumberMonthNumber];
 
             var TextMonthNameShort = monthNameShort[NumberMonthNumber];
 
             NumberMonthNumber++;
-            if (NumberMonthNumber.toString().length < 2)
-                NumberMonthNumber = "0" + NumberMonthNumber;
+            	if (NumberMonthNumber.toString().length < 2)
+                	NumberMonthNumber = "0" + NumberMonthNumber;
 
             var TextDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
             var TextDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
