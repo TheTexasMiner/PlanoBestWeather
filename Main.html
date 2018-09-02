@@ -48,7 +48,14 @@
                                                     </td>
                                                 </tr>
                                             </table>
-                                        </div>
+
+
+                                    <div id="currentVersion" style="-webkit-padding-start: 0">
+                                        <font size="3" face="Times New Roman" style="-webkit-padding-start: 0">
+                                            currentVersion
+                                        </font>
+                                    </div>
+                                    </div>
                                     </font>
                                 </td>
                             </tr>
@@ -4936,6 +4943,8 @@
         Flag_Estimated = false;
 
         debugMain = Off;
+        
+        currentVersion = "Beta Version  3.1";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5078,15 +5087,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
         function ISOTimeParseAllFields(passedIsOdate, type) {
-
-            // "obDateTime": "2018-08-30T18:35:07-05:00",
-
-            //	var t0 = "2018-08-30T18:35:07-05:00".split("T");
-            //	var t1 = t0[1].split("-");
-            //	var t3 = t0[0].split("-");
-            //	var t4 = t1[0].split(":");
-            //	var wholeDT = t3[1] + "/" + t3[2] + "/" + t3[0] + " " + t4[0] + ":" + t4[1] + ":" + t4[2] + t0[1][8] + t1[1];
-
             var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -5094,77 +5094,64 @@
             var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             var a = new Date(passedIsOdate);
-
             var fullYear = a.getFullYear();
             var shortYear = a.getYear();
 
-            var month = a.getMonth();
-            if (month < 10)
-                var monthA = "0" + month;
-            else
-                monthA = month;
+            var NumberMonthNumber = a.getMonth();
 
-            var dateN = a.getDate();
-            if (dateN < 10)
-                var dateNA = "0" + dateN;
-            else
-                dateNA = dateN;
+            var dayOfMonthNumber = a.getDate();
 
-            var dow = a.getDay();
-            if (dow < 10)
-                var dowA = "0" + dow;
-            else
-                dowA = dow;
+            var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-            hourA = hour;
+            if (hour.toString().length < 2)
+                hour = "0" + hour;
 
-            var min = a.getMinutes();
-            if (min < 10)
-                var minA = "0" + min;
-            else
-                minA = min;
+            var minute = a.getMinutes();
+            if (minute.toString().length < 2)
+                minute = "0" + minute;
 
-            var sec = a.getSeconds();
-            if (sec < 10)
-                var secA = "0" + sec;
-            else
-                secA = sec;
+            var second = a.getSeconds();
+            if (second.toString().length < 2)
+                second = "0" + second;
 
-            var realFullYear = fullYear;
-            var realShortYear = shortYear;
+            var TextMonthNameLong = monthNameLong[NumberMonthNumber];
 
-            var realMonthNumber = monthNumber[month];
-            var realMonthNameLong = monthNameLong[month];
-            var realMonthNameShort = monthNameShort[month];
+            var TextMonthNameShort = monthNameShort[NumberMonthNumber];
 
-            var realDayOfWeekNumber = dow;
-            var realDayOfWeekLong = dayOfWeekLong[dow];
-            var realDayOfWeekShort = dayOfWeekShort[dow];
+            NumberMonthNumber++;
+            if (NumberMonthNumber.toString().length < 2)
+                NumberMonthNumber = "0" + NumberMonthNumber;
+
+            var TextDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
+            var TextDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
+
+            if (dayOfMonthNumber.toString().length < 2)
+                dayOfMonthNumber = "0" + dayOfMonthNumber;
 
             /************************************/
 
             // Hour + Minutes + am pm
-            if (hour == 0) {
-                newHour = "12:" + minA + " am";
+            if (hour === 0) {
+                newHour = "12:" + minute + " am";
             }
-            else if (hour == 12) {
-                newHour = "12:" + minA + " pm";
+            else if (hour === 12) {
+                newHour = "12:" + minute + " pm";
             }
             else if (hour < 12) {
-                newHour = (hourA + ":" + minA + " am");
+                newHour = (hour + ":" + minute + " am");
             }
-            else {//
-                newHour = (hourA - 12) + ":" + minA + " pm";
+            else {
+                newHour = (hour - 12) + ":" + minute + " pm";
             }
 
             /************************************/
 
             // Hour Only, No minutes + am pm
-            if (hour == 0) {
+            if (hour === 0) {
                 var newHourOlny = "12:00 am";
             }
-            else if (hour == 12) {
+            else if (hour === 12) {
                 newHourOlny = "12:00 pm";
             }
             else if (hour < 12) {
@@ -5179,57 +5166,57 @@
             switch (type) {
                 case 1:
                     // Friday July 13 2018
-                    tString = realDayOfWeekLong + " " + realMonthNameLong + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 2:
                     // Fri September 13 2018
-                    tString = realDayOfWeekShort + " " + realMonthNameLong + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 3:
                     // Fri Sept 13 2018
-                    tString = realDayOfWeekShort + " " + realMonthNameShort + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 4:
                     // Friday Sept 13 2018
-                    tString = realDayOfWeekLong + " " + realMonthNameShort + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 5:
                     // Friday 07/04/2018
-                    tString = realDayOfWeekLong + " " + realMonthNumber + "/" + dateN + "/" + fullYear;
+                    tString = TextDayOfWeekLong + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 6:
                     // Fri 07/04/18
-                    tString = realDayOfWeekShort + " " + realMonthNumber + "/" + dateN + "/" + realShortYear;
+                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 7:
                     // Fri 07/04
-                    tString = realDayOfWeekShort + " " + realMonthNumber + "/" + dateN;
+                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 8:
                     // 07/04/2018
-                    tString = realMonthNumber + "/" + dateN + "/" + fullYear;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 9:
                     // 07/04/18
-                    tString = realMonthNumber + "/" + dateN + "/" + realShortYear;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 10:
                     // 07/04
-                    tString = realMonthNumber + "/" + dateN;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 11:
                     // 07
-                    tString = realMonthNumber;
+                    tString = NumberMonthNumber;
                     break;
 
                 case 12:
@@ -5239,17 +5226,17 @@
 
                 case 13:
                     // January
-                    tString = realMonthNameLong;
+                    tString = TextMonthNameLong;
                     break;
 
                 case 14:
                     // Jan
-                    tString = realMonthNameShort;
+                    tString = TextMonthNameShort;
                     break;
 
                 case 15:
                     // 07/13/2018  9:09 pm
-                    tString = realMonthNumber + "/" + dateN + "/" + fullYear + "  " + newHour;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
 
                 case 16:
@@ -5259,7 +5246,7 @@
 
                 case 17:
                     // Fri Jul 13
-                    tString = realDayOfWeekShort + " " + realMonthNameShort + " " + dateN;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber;
                     break;
 
                 case 20:
@@ -5269,22 +5256,22 @@
 
                 case 21:
                     // Friday July 13
-                    tString = realDayOfWeekLong + " " + realMonthNameLong + " " + dateN;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 22:
                     // Friday July 13
-                    tString = realDayOfWeekLong + " " + realMonthNameShort + " " + dateN;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 23:
                     // Thu 9:00 PM
-                    tString = realDayOfWeekShort + " " + newHourOlny;
+                    tString = TextDayOfWeekShort + " " + newHourOlny;
                     break;
 
                 case 24:
                     // Thu
-                    tString = realDayOfWeekShort;
+                    tString = TextDayOfWeekShort;
                     break;
 
                 default:
@@ -5296,132 +5283,74 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
-        function ISOTimeParseAll(passedIsOdate) {
-
-            // Returns Month,Day,Year,Hour,Minute,Second
-            // Split returned string with comma
-            // Array Positions
-
-            // Month = 0
-            // Day = 1
-            // Year = 2
-            // Hour = 3
-            // Minute = 4
-            // Sevcond = 5
-
-            // For dateTime = 2018-08-21T00:00:00-05:00
-
-            // Returns = 08,21,2018,00,00,00
-
-            var parts = passedIsOdate.split('T');
-            var sParts = parts[0].split('-');
-            var timeUp = parts[1].split('-');
-
-            var rtParse = timeUp[0].split(':');
-            var rHour = rtParse[0];
-            var rMinute = rtParse[1];
-            var rSecond = rtParse[2];
-
-            return (sParts[1].trim() + "," + sParts[2].trim() + "," + sParts[0].trim() + "," + rHour.trim() + "," + rMinute.trim() + "," + rSecond.trim());
-        }
-    </script>
-    <!--*********************************************************************************************************************************************************************************************-->
-    <script>
-        function ISODateOnly(passedIsOdate) {
-
-            var parts = passedIsOdate.split('T');
-            var sParts = parts[0].split('-');
-            var timeUp = parts[1].split('-');
-
-            var rtParse = timeUp[0].split(':');
-            var rHour = rtParse[0];
-            var rMinute = rtParse[1];
-            var rSecond = rtParse[2];
-
-            return (sParts[1].trim() + "/" + sParts[2].trim() + "/" + sParts[0].trim());
-        }
-    </script>
-    <!--*********************************************************************************************************************************************************************************************-->
-    <script>
         function UnixTimeParseAll(UNIX_timestamp, type) {
             var a = new Date(UNIX_timestamp * 1000);
-            var tString = "";
+
             var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+            var a = new Date(passedIsOdate);
             var fullYear = a.getFullYear();
             var shortYear = a.getYear();
 
-            var month = a.getMonth();
-            if (month < 10)
-                var monthA = "0" + month;
-            else
-                monthA = month;
+            var NumberMonthNumber = a.getMonth();
 
-            var dateN = a.getDate();
-            if (dateN < 10)
-                var dateNA = "0" + dateN;
-            else
-                dateNA = dateN;
+            var dayOfMonthNumber = a.getDate();
 
-            var dow = a.getDay();
-            if (dow < 10)
-                var dowA = "0" + dow;
-            else
-                dowA = dow;
+            var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-            hourA = hour;
+            if (hour.toString().length < 2)
+                hour = "0" + hour;
 
-            var min = a.getMinutes();
-            if (min < 10)
-                var minA = "0" + min;
-            else
-                minA = min;
+            var minute = a.getMinutes();
+            if (minute.toString().length < 2)
+                minute = "0" + minute;
 
-            var sec = a.getSeconds();
-            if (sec < 10)
-                var secA = "0" + sec;
-            else
-                secA = sec;
+            var second = a.getSeconds();
+            if (second.toString().length < 2)
+                second = "0" + second;
 
-            var realFullYear = fullYear;
-            var realShortYear = shortYear;
+            var TextMonthNameLong = monthNameLong[NumberMonthNumber];
 
-            var realMonthNumber = monthNumber[month];
-            var realMonthNameLong = monthNameLong[month];
-            var realMonthNameShort = monthNameShort[month];
+            var TextMonthNameShort = monthNameShort[NumberMonthNumber];
 
-            var realDayOfWeekNumber = dow;
-            var realDayOfWeekLong = dayOfWeekLong[dow];
-            var realDayOfWeekShort = dayOfWeekShort[dow];
+            NumberMonthNumber++;
+            if (NumberMonthNumber.toString().length < 2)
+                NumberMonthNumber = "0" + NumberMonthNumber;
+
+            var TextDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
+            var TextDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
+
+            if (dayOfMonthNumber.toString().length < 2)
+                dayOfMonthNumber = "0" + dayOfMonthNumber;
 
             /************************************/
 
             // Hour + Minutes + am pm
-            if (hour == 0) {
-                newHour = "12:" + minA + " am";
+            if (hour === 0) {
+                newHour = "12:" + minute + " am";
             }
-            else if (hour == 12) {
-                newHour = "12:" + minA + " pm";
+            else if (hour === 12) {
+                newHour = "12:" + minute + " pm";
             }
             else if (hour < 12) {
-                newHour = (hourA + ":" + minA + " am");
+                newHour = (hour + ":" + minute + " am");
             }
-            else {//
-                newHour = (hourA - 12) + ":" + minA + " pm";
+            else {
+                newHour = (hour - 12) + ":" + minute + " pm";
             }
 
             /************************************/
 
             // Hour Only, No minutes + am pm
-            if (hour == 0) {
+            if (hour === 0) {
                 var newHourOlny = "12:00 am";
             }
-            else if (hour == 12) {
+            else if (hour === 12) {
                 newHourOlny = "12:00 pm";
             }
             else if (hour < 12) {
@@ -5436,57 +5365,57 @@
             switch (type) {
                 case 1:
                     // Friday July 13 2018
-                    tString = realDayOfWeekLong + " " + realMonthNameLong + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 2:
                     // Fri September 13 2018
-                    tString = realDayOfWeekShort + " " + realMonthNameLong + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 3:
                     // Fri Sept 13 2018
-                    tString = realDayOfWeekShort + " " + realMonthNameShort + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 4:
                     // Friday Sept 13 2018
-                    tString = realDayOfWeekLong + " " + realMonthNameShort + " " + dateN + " " + fullYear;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 5:
                     // Friday 07/04/2018
-                    tString = realDayOfWeekLong + " " + realMonthNumber + "/" + dateN + "/" + fullYear;
+                    tString = TextDayOfWeekLong + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 6:
                     // Fri 07/04/18
-                    tString = realDayOfWeekShort + " " + realMonthNumber + "/" + dateN + "/" + realShortYear;
+                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 7:
                     // Fri 07/04
-                    tString = realDayOfWeekShort + " " + realMonthNumber + "/" + dateN;
+                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 8:
                     // 07/04/2018
-                    tString = realMonthNumber + "/" + dateN + "/" + fullYear;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 9:
                     // 07/04/18
-                    tString = realMonthNumber + "/" + dateN + "/" + realShortYear;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 10:
                     // 07/04
-                    tString = realMonthNumber + "/" + dateN;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 11:
                     // 07
-                    tString = realMonthNumber;
+                    tString = NumberMonthNumber;
                     break;
 
                 case 12:
@@ -5496,17 +5425,17 @@
 
                 case 13:
                     // January
-                    tString = realMonthNameLong;
+                    tString = TextMonthNameLong;
                     break;
 
                 case 14:
                     // Jan
-                    tString = realMonthNameShort;
+                    tString = TextMonthNameShort;
                     break;
 
                 case 15:
                     // 07/13/2018  9:09 pm
-                    tString = realMonthNumber + "/" + dateN + "/" + fullYear + "  " + newHour;
+                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
 
                 case 16:
@@ -5516,7 +5445,7 @@
 
                 case 17:
                     // Fri Jul 13
-                    tString = realDayOfWeekShort + " " + realMonthNameShort + " " + dateN;
+                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber;
                     break;
 
                 case 20:
@@ -5526,22 +5455,22 @@
 
                 case 21:
                     // Friday July 13
-                    tString = realDayOfWeekLong + " " + realMonthNameLong + " " + dateN;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 22:
                     // Friday July 13
-                    tString = realDayOfWeekLong + " " + realMonthNameShort + " " + dateN;
+                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 23:
                     // Thu 9:00 PM
-                    tString = realDayOfWeekShort + " " + newHourOlny;
+                    tString = TextDayOfWeekShort + " " + newHourOlny;
                     break;
 
                 case 24:
                     // Thu
-                    tString = realDayOfWeekShort;
+                    tString = TextDayOfWeekShort;
                     break;
 
                 default:
@@ -5602,7 +5531,6 @@
     <script type="text/javascript">
         function ObservationsRainEstimated() {
             var numReturned;
-
             Flag_Estimated = true;
             global_Est_rainYesterday = 0;
             global_Est_rainToday = 0;
@@ -5610,7 +5538,6 @@
             var monthDate = addToCurrentDate(-7);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
-
             var returnedStr = addToCurrentDate(0);
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
@@ -5623,29 +5550,22 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
-                            var testDate = ISOTimeParseAllFields(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO, 8);
 
                             if (numReturned < 3) {
                                 Flag_Estimated = false;
+                                global_Est_rainToday = 0;
+                                global_Est_rainYesterday = 0;
                             }
-
-                            else if (!compareDateToCurrentDate(testDate)) {
-                                Flag_Estimated = false;
-                            }
-
                             else {
-                                if (((json.response[0].periods[(numReturned - 2)].summary.precip.totalIN < 0) || (json.response[0].periods[(numReturned - 2)].summary.precip.totalIN > 10)))
-                                    Flag_Estimated = false;
-                                else if (((json.response[0].periods[(numReturned - 1)].summary.precip.totalIN < 0) || (json.response[0].periods[(numReturned - 1)].summary.precip.totalIN > 10)))
-                                    Flag_Estimated = false;
-                                else {
-                                    global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                                    global_Est_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                                }
+                                global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                                global_Est_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                                Flag_Estimated = true;
                             }
                         }
                         else {
                             Flag_Estimated = false;
+                            global_Est_rainToday = 0;
+                            global_Est_rainYesterday = 0;
                         }
                     });
             });
@@ -5656,6 +5576,7 @@
     <script type="text/javascript">
         function ObservationsRain_PWS() {
             var numReturned;
+            var local_PWS = true;
 
             var monthDate = addToCurrentDate(-7);
             var splitMonth = monthDate.split(',');
@@ -5673,32 +5594,31 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response.periods.length;
-                            var testDate = ISOTimeParseAllFields(json.response.periods[(numReturned - 1)].summary.dateTimeISO, 8);
 
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                             document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                             document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
-
                             if (numReturned < 3) {
-                                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                            }
-                            else if (!compareDateToCurrentDate(testDate)) {
+                                local_PWS = false;
                                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                                 document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                             }
                             else {
                                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 1)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
                                 document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 2)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
+                                local_PWS = true;
                             }
                         }
                         else {
+                            local_PWS = false;
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                             document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                             document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
@@ -5715,7 +5635,7 @@
         function ObservationsRainSummary() {
             var index, returnedStr, splitDate, startDate, endDate, monthDate, splitMonth, numLimit, numReturned;
 
-            var Local_Flag_Estimated = false;
+            var Local_Flag_Estimated = true;
             global_rainYesterday = 0;
             global_rainToday = 0;
 
@@ -5735,33 +5655,24 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response[0].periods.length;
-                            var testDate = ISOTimeParseAllFields(json.response[0].periods[(numReturned - 1)].summary.dateTimeISO, 8);
-
-                            if (numReturned < 3) {
-                                Local_Flag_Estimated = false;
-                            }
-                            else if (!compareDateToCurrentDate(testDate)) {
-                                Local_Flag_Estimated = false;
-                            }
-                            else {
-                                Local_Flag_Estimated = true;
-                            }
-
-                            if (Local_Flag_Estimated) {
-                                global_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                                global_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                            }
-                            else {
-                                global_rainYesterday = 0;
-                                global_rainToday = 0;
-                            }
-
-                            //alert("Flag_Estimated = " + Flag_Estimated);
-                            //alert("Local_Flag_Estimated = " + Local_Flag_Estimated);
 
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                             document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                             document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+
+                            if (numReturned < 3) {
+                                Local_Flag_Estimated = false;
+                                global_rainToday = 0;
+                                global_rainYesterday = 0;
+                            }
+                            else {
+                                global_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                                global_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                                Local_Flag_Estimated = true;
+                            }
 
                             if (json.response[0].id.indexOf("PWS_") >= 0 && Local_Flag_Estimated) {
                                 document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
@@ -5794,8 +5705,6 @@
 
                                 // Estimated Data id Bad, Use Local Data Only
                                 else if (!Flag_Estimated && Local_Flag_Estimated) {
-                                    //alert("Estimated False, Local true");
-
                                     document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
 
@@ -5805,8 +5714,6 @@
 
                                 // Estimated Data id Good, Local Data Is Bad, Use Estimated Data Only
                                 else if (Flag_Estimated && !Local_Flag_Estimated) {
-                                    //alert("Estimated True, Local False");
-
                                     document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today *" + "</span>";
                                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
 
@@ -5816,8 +5723,6 @@
 
                                 // Estimate and Local data is Bad, Use N/A
                                 else {
-                                    //alert("Estimated False, Local False");
-
                                     document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
 
@@ -5828,6 +5733,10 @@
                         }
                         else {
                             //alert("Function Failed");
+
+                            document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                            document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                            document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
 
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                             document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
@@ -6018,13 +5927,13 @@
                             var ParsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
 
                             if (dewpointF === null)
-                                dewpointF = "--";
+                                dewpointF = "-- ";
 
                             if (pressureIN === null)
-                                pressureIN = "--";
+                                pressureIN = "-- ";
 
                             if (sky === null)
-                                sky = "--";
+                                sky = "-- ";
 
                             windString = "";
                             wind = "";
@@ -6033,7 +5942,7 @@
                             if (windMPH != null && windMPH === 0)
                                 windString = "Calm";
                             else if (windDir === null && windMPH === null)
-                                windString = "--";
+                                windString = "-- ";
                             else if (windDir === null && windMPH != null)
                                 windString = windMPH + " mph";
                             else if (windMPH === null && windDir != null)
@@ -6041,7 +5950,7 @@
                             else if (windMPH != null && windDir != null)
                                 windString = windDir + "  " + windMPH + " mph ";
                             else
-                                windString = "--";
+                                windString = "-- ";
 
                             document.getElementById("spacer_2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                             document.getElementById("spacer_9").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
@@ -6374,13 +6283,14 @@
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
+
     <script type="text/javascript">
         function Normals() {
             var timeStamp, maxF, minF, avgF, ytdIN, mtdIN, nDate, base;
             var numReturned = 0;
             var color = "#000000;";
 
-            var cUrl = "https://api.aerisapi.com/normals/" + defaultLocation + "?to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/normals/" + defaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl
@@ -6388,53 +6298,27 @@
                     .done(function (json) {
                         if (json.success == true) {
                             numReturned = json.response.periods.length;
+
+                            document.getElementById("h0").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
+                            document.getElementById("h1").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
+                            document.getElementById("h2").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
+                            document.getElementById("h3").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
+                            document.getElementById("h4").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
+                            document.getElementById("h5").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
+                            document.getElementById("h6").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
+                            document.getElementById("h7").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
+                            document.getElementById("h8").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
+                            document.getElementById("h9").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
+                            document.getElementById("h10").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
+                            document.getElementById("h11").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
+
                             for (nIndex = 0; nIndex < numReturned; nIndex++) {
-                                document.getElementById("h0").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
-                                document.getElementById("h1").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
-                                document.getElementById("h2").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
-                                document.getElementById("h3").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
-                                document.getElementById("h4").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
-                                document.getElementById("h5").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
-                                document.getElementById("h6").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
-                                document.getElementById("h7").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
-                                document.getElementById("h8").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
-                                document.getElementById("h9").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
-                                document.getElementById("h10").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
-                                document.getElementById("h11").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
-
-                                base = json.response.periods[nIndex];
-                                document.getElementById("nTime_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Courier New \">" + "<b/>" + ISOTimeParseAllFields(base.dateTimeISO, 17) + "</span>";
-
-                                if (base.temp.maxF == null) {
-                                    document.getElementById("h1").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    document.getElementById("h7").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    base.temp.maxF = "";
-                                }
-                                document.getElementById("nmaxF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + base.temp.maxF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                if (base.temp.minF == null) {
-                                    document.getElementById("h2").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    document.getElementById("h8").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    base.temp.minF = "";
-                                }
-                                document.getElementById("nminF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + base.temp.minF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                if (base.temp.avgF == null) {
-                                    document.getElementById("h3").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    document.getElementById("h9").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    base.temp.avgF = "";
-                                }
-                                document.getElementById("navgF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + base.temp.avgF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                if (base.prcp.ytdIN == null) {
-                                    document.getElementById("h4").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    document.getElementById("h10").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    base.prcp.ytdIN = "";
-                                }
-                                document.getElementById("nytdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + base.prcp.ytdIN.toFixed(2) + "\"" + "</span>";
-                                if (base.prcp.mtdIN == null) {
-                                    document.getElementById("h5").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    document.getElementById("h11").innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + "" + "</span>";
-                                    base.prcp.mtdIN = "";
-                                }
-                                document.getElementById("nmtdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + base.prcp.mtdIN.toFixed(2) + "\"" + "</span>";
+                                document.getElementById("nTime_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Courier New \">" + "<b/>" + ISOTimeParseAllFields(json.response.periods[nIndex].dateTimeISO, 17) + "</span>";
+                                document.getElementById("nmaxF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.maxF.toFixed(1) + "°&nbsp;F" + "</span>";
+                                document.getElementById("nminF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.minF.toFixed(1) + "°&nbsp;F" + "</span>";
+                                document.getElementById("navgF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.avgF.toFixed(1) + "°&nbsp;F" + "</span>";
+                                document.getElementById("nytdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.ytdIN.toFixed(2) + "\"" + "</span>";
+                                document.getElementById("nmtdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.mtdIN.toFixed(2) + "\"" + "</span>";
                             }
                         }
                         else {
@@ -6860,6 +6744,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function displayAll() {
+            document.getElementById("currentVersion").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + currentVersion + "</span>";
             document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
             document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
             document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
