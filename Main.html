@@ -458,7 +458,7 @@
                         </font>
                         <p>
                             <font color="#FF0000" face="Times New Roman">&nbsp; </font>
-                            <button onclick="SaveDefaultLocation()" style="font-family: Sylfaen; width:270px; height:30px" type="submit">
+                            <button onclick="SaveGlobalDefaultLocation()" style="font-family: Sylfaen; width:270px; height:30px" type="submit">
                                 <b>
                                     <font style="font-size: 12pt">
                                         <font face="Times New Roman">
@@ -4910,7 +4910,7 @@
     <script type="text/javascript">
         function Example() {
 
-            var cUrl = "https://api.aerisapi.com/precip/summary/" + defaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/precip/summary/" + GlobalDefaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -4943,21 +4943,19 @@
 
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
-        defaultLocation = "";
-        Global_City_State_Country = "";
-        globalLatLon = "";
+        GlobalDefaultLocation = "";
+        GlobalCityStateCountry = "";
+        GlobalLatLon = "";
 
         GlobalDaysBack = 2;
 
-        global_Est_rainToday = 0;
-        global_Est_rainYesterday = 0;
-        global_Est_totalMonthRain = 0;
+        GlobalEstRainToday = 0;
+        GlobalEstRainYesterday = 0;
 
-        global_rainToday = 0;
-        global_rainYesterday = 0;
-        global_totalMonthRain = 0;
+        GlobalRainToday = 0;
+        GlobalRainYesterday = 0;
 
-        global_PWS_ID = "";
+        GlobalPWSid = "";
 
         On = true;
         Off = false;
@@ -4978,19 +4976,19 @@
         Flag_getForecastsHours = On;
         Flag_Normals = On;
 
-        Flag_Estimated = false;
+        GlobalFlagEstimated = false;
 
         debugMain = Off;
 
-        currentVersion = "Beta Version  3.2.7";
+        currentVersion = "Beta Version  3.2.8";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
-        function SaveDefaultLocation() {
+        function SaveGlobalDefaultLocation() {
             jQuery(document).ready(function ($) {
-                localStorage.setItem('PBW_defaultLocation', defaultLocation);
-                alert("Default Location " + defaultLocation + " Saved.\nBrowser will now open to this location.");
+                localStorage.setItem('PBW_GlobalDefaultLocation', GlobalDefaultLocation);
+                alert("Default Location " + GlobalDefaultLocation + " Saved.\nBrowser will now open to this location.");
             });
         }
     </script>
@@ -5309,7 +5307,6 @@
         function UnixTimeParseAll(unixTimestamp, type) {
             var a = new Date(unixTimestamp * 1000);
 
-            var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -5516,11 +5513,11 @@
     <script type="text/javascript">
         function ObservationsRouter() {
             var tempLoc = "";
-            tempLoc = defaultLocation;
+            tempLoc = GlobalDefaultLocation;
             tempLoc = tempLoc.toUpperCase();
 
             if ((tempLoc.indexOf("PLANO,TX") >= 0)) {
-                global_PWS_ID = "PWS_3183437707";
+                GlobalPWSid = "PWS_3183437707";
                 ObservationsRain_PWS();
             }
             else {
@@ -5531,20 +5528,20 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function compareDateToCurrentDate(testDate) {
-            var todaysDate = new Date();
+            var todayDate = new Date();
 
-            var tempMonth = (todaysDate.getMonth() + 1);
-            if (tempMonth < 10)
+            var tempMonth = (todayDate.getMonth() + 1);
+            if (tempMonth.toString().trim().length < 2)
                 tempMonth = "0" + tempMonth;
 
-            var tempDay = todaysDate.getDate();
-            if (tempDay < 10)
+            var tempDay = todayDate.getDate();
+            if (tempDay.toString().trim().length < 2)
                 tempDay = "0" + tempDay;
 
-            var tempYear = todaysDate.getFullYear();
-            var ptodaysDate = tempMonth + "/" + tempDay + "/" + tempYear;
+            var tempYear = todayDate.getFullYear();
+            var paydaysDate = tempMonth + "/" + tempDay + "/" + tempYear;
 
-            if (ptodaysDate === testDate) {
+            if (paydaysDate === testDate) {
                 return true;
             }
             else {
@@ -5564,7 +5561,7 @@
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/precip/summary/" + defaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/precip/summary/" + GlobalDefaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -5580,27 +5577,27 @@
     <script type="text/javascript">
         function callback_ObservationsRainEstimated(json) {
 
-            Flag_Estimated = true;
-            global_Est_rainYesterday = 0;
-            global_Est_rainToday = 0;
+            GlobalFlagEstimated = true;
+            GlobalEstRainYesterday = 0;
+            GlobalEstRainToday = 0;
 
             if (json.success === true) {
                 var numReturned = json.response[0].periods.length;
 
                 if (numReturned < GlobalDaysBack) {
-                    Flag_Estimated = false;
-                    global_Est_rainToday = 0;
-                    global_Est_rainYesterday = 0;
+                    GlobalFlagEstimated = false;
+                    GlobalEstRainToday = 0;
+                    GlobalEstRainYesterday = 0;
                 }
                 else {
-                    global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                    global_Est_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                    Flag_Estimated = true;
+                    GlobalEstRainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                    GlobalEstRainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                    GlobalFlagEstimated = true;
                 }
             } else {
-                Flag_Estimated = false;
-                global_Est_rainToday = 0;
-                global_Est_rainYesterday = 0;
+                GlobalFlagEstimated = false;
+                GlobalEstRainToday = 0;
+                GlobalEstRainYesterday = 0;
             }
             ObservationsRouter();
         }
@@ -5617,7 +5614,7 @@
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/observations/summary/" + global_PWS_ID + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/summary/" + GlobalPWSid + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -5632,8 +5629,10 @@
 
     <script type="text/javascript">
         function callback_ObservationsRain_PWS(json) {
+            var localPws;
+
             if (json.success === true) {
-                numReturned = json.response.periods.length;
+                var numReturned = json.response.periods.length;
 
                 document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                 document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
@@ -5643,18 +5642,18 @@
                 document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
                 if (numReturned < GlobalDaysBack) {
-                    local_PWS = false;
+                    localPws = false;
                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                     document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                 }
                 else {
                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 1)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
                     document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 2)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
-                    local_PWS = true;
+                    localPws = true;
                 }
             }
             else {
-                local_PWS = false;
+                localPws = false;
                 document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                 document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                 document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
@@ -5681,7 +5680,7 @@
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + defaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + GlobalDefaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -5698,9 +5697,9 @@
         function callback_ObservationsRainSummary(json) {
 
             var numReturned;
-            var Local_Flag_Estimated = true;
-            global_rainYesterday = 0;
-            global_rainToday = 0;
+            var localFlagEstimated = true;
+            GlobalRainYesterday = 0;
+            GlobalRainToday = 0;
 
             if (json.success === true) {
                 numReturned = json.response[0].periods.length;
@@ -5713,60 +5712,60 @@
                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
 
                 if (numReturned < GlobalDaysBack) {
-                    Local_Flag_Estimated = false;
-                    global_rainToday = 0;
-                    global_rainYesterday = 0;
+                    localFlagEstimated = false;
+                    GlobalRainToday = 0;
+                    GlobalRainYesterday = 0;
                 }
                 else {
-                    global_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                    global_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                    Local_Flag_Estimated = true;
+                    GlobalRainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                    GlobalRainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                    localFlagEstimated = true;
                 }
 
-                if (json.response[0].id.indexOf("PWS_") >= 0 && Local_Flag_Estimated) {
+                if (json.response[0].id.indexOf("PWS_") >= 0 && localFlagEstimated) {
                     document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainToday.toFixed(2) + "\"" + "</span>";
 
                     document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainYesterday.toFixed(2) + "\"" + "</span>";
                 }
                 else {
-                    if (Flag_Estimated && Local_Flag_Estimated) {
-                        if (global_rainToday >= global_Est_rainToday) {
+                    if (GlobalFlagEstimated && localFlagEstimated) {
+                        if (GlobalRainToday >= GlobalEstRainToday) {
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainToday.toFixed(2) + "\"" + "</span>";
                         }
                         else {
                             document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
-                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
+                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalEstRainToday.toFixed(2) + "\"" + "</span>";
                         }
 
-                        if (global_rainYesterday >= global_Est_rainYesterday) {
+                        if (GlobalRainYesterday >= GlobalEstRainYesterday) {
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainYesterday.toFixed(2) + "\"" + "</span>";
                         }
                         else {
                             document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
-                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
+                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalEstRainYesterday.toFixed(2) + "\"" + "</span>";
                         }
                     }
 
                     // Estimated Data id Bad, Use Local Data Only
-                    else if (!Flag_Estimated && Local_Flag_Estimated) {
+                    else if (!GlobalFlagEstimated && localFlagEstimated) {
                         document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainToday.toFixed(2) + "\"" + "</span>";
 
                         document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalRainYesterday.toFixed(2) + "\"" + "</span>";
                     }
 
                     // Estimated Data id Good, Local Data Is Bad, Use Estimated Data Only
-                    else if (Flag_Estimated && !Local_Flag_Estimated) {
+                    else if (GlobalFlagEstimated && !localFlagEstimated) {
                         document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
-                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
+                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalEstRainToday.toFixed(2) + "\"" + "</span>";
 
                         document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
-                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
+                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + GlobalEstRainYesterday.toFixed(2) + "\"" + "</span>";
                     }
 
                     // Estimate and Local data is Bad, Use N/A
@@ -5799,7 +5798,7 @@
     <script type="text/javascript">
         function Observations_PWS() {
 
-            var cUrl = "https://api.aerisapi.com/observations/" + global_PWS_ID + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/" + GlobalPWSid + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -5816,62 +5815,55 @@
         function callback_Observations_PWS(json) {
             var index = 0;
             if (json.success === true) {
-                var numReturns = json.response.length;
                 index = 0;
 
                 var city = capitalizeEachWord(json.response.place.name);
                 var state = capitalizeEachWord(json.response.place.state);
                 var country = capitalizeEachWord(json.response.place.country);
 
-                Global_City_State_Country = city + ",  " + state + ", " + country;
+                GlobalCityStateCountry = city + ",  " + state + ", " + country;
 
                 var ob = json.response.ob;
                 var ob2 = json.response;
                 var id = ob2.id;
                 var loc = json.response.place;
                 var name = loc.name;
-                var state = loc.state;
-                var country = loc.country;
+                state = loc.state;
+                country = loc.country;
                 var tempF = ob.tempF;
                 var dewpointF = ob.dewpointF;
                 var humidity = ob.humidity;
                 var sky = ob.sky;
-                var pressureIN = ob.pressureIN;
-                var windMPH = ob.windMPH;
+                var pressureIn = ob.pressureIN;
+                var windMph = ob.windMPH;
                 var windDir = ob.windDir;
                 var weather = ob.weather;
                 var feelslikeF = ob.feelslikeF;
                 var wIcon = ob.icon;
-                var sunrise = ob.sunriseISO;
-                var sunset = ob.sunsetISO;
 
-                var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
-                var Nsunset = ISOTimeParseAllFields(sunset, 20);
+                var nsunrise = ISOTimeParseAllFields(ob.sunriseISO, 20);
+                var nsunset = ISOTimeParseAllFields(ob.sunsetISO, 20);
 
                 name = name.toUpperCase();
                 state = state.toUpperCase();
                 country = country.toUpperCase();
 
-                stationStr = city + ",  " + state + "   " + id;
+                var stationStr = city + ",  " + state + "   " + id;
 
-                var maxTimeCtr = 0;
-                var LatestObservationTime = 0;
-                var ParsedUnixTime = ISOTimeParseAllFields(json.response.ob.dateTimeISO, 15);
+                var parsedUnixTime = ISOTimeParseAllFields(json.response.ob.dateTimeISO, 15);
 
-                windString = "";
-                wind = "";
-                windGust = "";
+                var windString = "";
 
-                if (windMPH != null && windMPH === 0)
+                if (windMph != null && windMph === 0)
                     windString = "Calm";
-                else if (windDir === null && windMPH === null)
+                else if (windDir === null && windMph === null)
                     windString = "--";
-                else if (windDir === null && windMPH != null)
-                    windString = windMPH + " mph";
-                else if (windMPH === null && windDir != null)
+                else if (windDir === null && windMph != null)
+                    windString = windMph + " mph";
+                else if (windMph === null && windDir != null)
                     windString = "From the  " + windDir;
-                else if (windMPH != null && windDir != null)
-                    windString = windDir + "  " + windMPH + " mph ";
+                else if (windMph != null && windDir != null)
+                    windString = windDir + "  " + windMph + " mph ";
                 else
                     windString = "--";
 
@@ -5896,7 +5888,7 @@
                 document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                 document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
 
-                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
+                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + parsedUnixTime + "</span>";
                 document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;C" + ")" + "</span>";
                 document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F   " + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
@@ -5912,10 +5904,10 @@
                 document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
                 document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + " °F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
-                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
+                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIn + "&nbsp;in" + "</span>";
                 document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
-                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
-                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
+                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + nsunrise + "</span>";
+                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + nsunset + "</span>";
             }
             else {
                 alert('An error occurred: ' + json.error.description);
@@ -5925,7 +5917,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Observations() {
-            var cUrl = "https://api.aerisapi.com/observations/closest?p=" + defaultLocation + "&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/closest?p=" + GlobalDefaultLocation + "&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -5947,29 +5939,27 @@
                 var state = capitalizeEachWord(json.response[index].place.state);
                 var country = capitalizeEachWord(json.response[index].place.country);
 
-                Global_City_State_Country = city + ",  " + state + ", " + country;
+                GlobalCityStateCountry = city + ",  " + state + ", " + country;
 
                 var ob = json.response[index].ob;
                 var ob2 = json.response[index];
                 var id = ob2.id;
                 var loc = json.response[index].place;
                 var name = loc.name;
-                var state = loc.state;
-                var country = loc.country;
+                state = loc.state;
+                country = loc.country;
                 var tempF = ob.tempF;
                 var dewpointF = ob.dewpointF;
                 var humidity = ob.humidity;
                 var sky = ob.sky;
-                var pressureIN = ob.pressureIN;
-                var windMPH = ob.windMPH;
+                var pressureIn = ob.pressureIN;
+                var windMph = ob.windMPH;
                 var windDir = ob.windDir;
                 var weather = ob.weather;
                 var feelslikeF = ob.feelslikeF;
                 var wIcon = ob.icon;
-                var sunrise = ob.sunriseISO;
-                var sunset = ob.sunsetISO;
-                var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
-                var Nsunset = ISOTimeParseAllFields(sunset, 20);
+                var nsunrise = ISOTimeParseAllFields(ob.sunriseISO, 20);
+                var nsunset = ISOTimeParseAllFields(ob.sunsetISO, 20);
 
                 name = name.toUpperCase();
                 state = state.toUpperCase();
@@ -5977,39 +5967,29 @@
 
                 stationStr = city + ",  " + state + "   " + id;
 
-                var maxTimeCtr = 0;
-                var LatestObservationTime = 0;
-
-                for (maxTimeCtr = 0; maxTimeCtr < numReturns; maxTimeCtr++) {
-                    if (json.response[maxTimeCtr].ob.dateTimeISO > LatestObservationTime)
-                        LatestObservationTime = json.response[maxTimeCtr].ob.dateTimeISO;
-                }
-
-                var ParsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
+                var parsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
 
                 if (dewpointF === null)
                     dewpointF = "-- ";
 
-                if (pressureIN === null)
-                    pressureIN = "-- ";
+                if (pressureIn === null)
+                    pressureIn = "-- ";
 
                 if (sky === null)
                     sky = "-- ";
 
-                windString = "";
-                wind = "";
-                windGust = "";
+                var windString = "";
 
-                if (windMPH != null && windMPH === 0)
+                if (windMph != null && windMph === 0)
                     windString = "Calm";
-                else if (windDir === null && windMPH === null)
+                else if (windDir === null && windMph === null)
                     windString = "-- ";
-                else if (windDir === null && windMPH != null)
-                    windString = windMPH + " mph";
-                else if (windMPH === null && windDir != null)
+                else if (windDir === null && windMph != null)
+                    windString = windMph + " mph";
+                else if (windMph === null && windDir != null)
                     windString = "From the  " + windDir;
-                else if (windMPH != null && windDir != null)
-                    windString = windDir + "  " + windMPH + " mph ";
+                else if (windMph != null && windDir != null)
+                    windString = windDir + "  " + windMph + " mph ";
                 else
                     windString = "-- ";
 
@@ -6034,7 +6014,7 @@
                 document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                 document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
 
-                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
+                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + parsedUnixTime + "</span>";
                 document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
@@ -6050,10 +6030,10 @@
                 document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
                 document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
-                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
+                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIn + "&nbsp;in" + "</span>";
                 document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
-                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
-                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
+                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + nsunrise + "</span>";
+                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + nsunset + "</span>";
             }
             else {
                 alert('An error occurred: ' + json.error.description);
@@ -6064,7 +6044,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getForecastsHours() {
-            var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=1hr&limit=72&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=1hr&limit=72&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6079,7 +6059,7 @@
 
     <script type="text/javascript">
         function callback_getForecastsHours(json) {
-            var hourlyResponse, pDateTime, icon, weather, avgTemp, rainProb, pressure, avgDewPoint;
+            var hourlyResponse, pDateTime, icon, weather, avgTemp, rainProb, pressure, avgDewPoint, rainIN;
             var winddir, windMax, humidity;
             var x = 0;
             var y = 0;
@@ -6124,7 +6104,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getLightningStrikes() {
-            var cUrl = "https://api.aerisapi.com/lightning/" + defaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/lightning/" + GlobalDefaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6145,10 +6125,10 @@
             var peakamp = new Array();
             var numSensors = new Array();
             var icHeightM = new Array();
-            var icHeightFT = new Array();
-            var bearingENG = new Array();
-            var distanceKM = new Array();
-            var distanceMI = new Array();
+            var icHeightFt = new Array();
+            var bearingEng = new Array();
+            var distanceKm = new Array();
+            var distanceMi = new Array();
             var realDateTime = new Array();
             var x = 0;
             var newCount = 0;
@@ -6215,6 +6195,7 @@
                                 cloudToCloudCtr++;
                         }
 
+                        var stats1Txt;
                         if (json.response.length >= 100)
                             stats1Txt = "Over  " + json.response.length + "  Strikes Detected in Last 30 Minutes";
                         else
@@ -6230,10 +6211,10 @@
                             peakamp[x] = json.response[x].ob.pulse.peakamp;
                             numSensors[x] = json.response[x].ob.pulse.numSensors;
                             icHeightM[x] = json.response[x].ob.pulse.icHeightM;
-                            icHeightFT[x] = json.response[x].ob.pulse.icHeightFT;
-                            bearingENG[x] = json.response[x].relativeTo.bearingENG;
-                            distanceKM[x] = json.response[x].relativeTo.distanceKM;
-                            distanceMI[x] = json.response[x].relativeTo.distanceMI;
+                            icHeightFt[x] = json.response[x].ob.pulse.icHeightFT;
+                            bearingEng[x] = json.response[x].relativeTo.bearingENG;
+                            distanceKm[x] = json.response[x].relativeTo.distanceKM;
+                            distanceMi[x] = json.response[x].relativeTo.distanceMI;
                         }
                         for (x = 0; x < newCount; x++) {
                             newcolor = "#000000;";
@@ -6245,9 +6226,9 @@
                             document.getElementById("LIDate_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + realDateTime[x] + "</span>";
                             document.getElementById("LIType_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + type[x] + "</span>";
                             document.getElementById("LIAmps_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + peakamp[x] + "</span>";
-                            document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + icHeightFT[x].toFixed(0) + "&nbsp;&nbsp;ft" + "</span>";
-                            document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + bearingENG[x] + "</span>";
-                            document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + distanceMI[x].toFixed(1) + "&nbsp;&nbsp;mi" + "</span>";
+                            document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + icHeightFt[x].toFixed(0) + "&nbsp;&nbsp;ft" + "</span>";
+                            document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + bearingEng[x] + "</span>";
+                            document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + distanceMi[x].toFixed(1) + "&nbsp;&nbsp;mi" + "</span>";
                         }
                     }
                 }
@@ -6276,14 +6257,14 @@
                 }
             });
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function get14DayNightForecast() {
-            var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=daynight&limit=14&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=daynight&limit=14&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6298,9 +6279,9 @@
 
     <script type="text/javascript">
         function callback_get14DayNightForecast(json) {
-            var forecast, forecastCoded, icon, minTempF, maxTempF, pop, tsrt, test, preIndex, index;
-            var Cindex, dtime, dDate, parsedDate, shortDayName, hum, pressure, dp, amt, wx, wind;
-            var windGust, wdir, tmpStr, windStr, rest, dateColor, dateStr, returnedNum;
+            var forecast, icon, minTempF, maxTempF, pop, index;
+            var dDate, hum, pressure, dp, amt, wx, wind, isDay;
+            var windGust, wdir, tmpStr, windStr, rest, dateStr, returnedNum;
             var color = "#000000;";
 
             if (json.success === true) {
@@ -6318,8 +6299,6 @@
                     minTempF = forecast.minTempF;
                     maxTempF = forecast.maxTempF;
                     pop = forecast.pop;
-                    maxFeelslikeF = forecast.maxFeelslikeF;
-                    minFeelslikeF = forecast.minFeelslikeF;
                     hum = forecast.humidity;
                     pressure = forecast.pressureIN.toFixed(2);
                     dp = forecast.dewpointF;
@@ -6341,7 +6320,6 @@
                         }
 
                         windStr = wdir + "&nbsp;at&nbsp;" + wind + "&nbsp;gusting to&nbsp;" + windGust;
-                        var rn = Math.floor(Math.random() * 5);
 
                         if (amt > 0)
                             rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;possible rain amounts of&nbsp;&nbsp;" + amt + "&nbsp;in";
@@ -6365,7 +6343,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Normals() {
-            var cUrl = "https://api.aerisapi.com/normals/" + defaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/normals/" + GlobalDefaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6399,7 +6377,7 @@
                 document.getElementById("h10").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
                 document.getElementById("h11").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
 
-                for (nIndex = 0; nIndex < numReturned; nIndex++) {
+                for (var nIndex = 0; nIndex < numReturned; nIndex++) {
                     document.getElementById("nTime_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Courier New \">" + "<b/>" + ISOTimeParseAllFields(json.response.periods[nIndex].dateTimeISO, 17) + "</span>";
                     document.getElementById("nmaxF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.maxF.toFixed(1) + "°&nbsp;F" + "</span>";
                     document.getElementById("nminF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.minF.toFixed(1) + "°&nbsp;F" + "</span>";
@@ -6416,7 +6394,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getThreats() {
-            var cUrl = "https://api.aerisapi.com/threats/" + defaultLocation + "?radius=50miles&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/threats/" + GlobalDefaultLocation + "?radius=50miles&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6431,19 +6409,19 @@
 
     <script type="text/javascript">
         function callback_getThreats(json) {
-            var threat_response, threat_Number, threat_result, threat_AnyStorms, threat_TimeStamp, threat_Phrase_Long, threat_DistanceMin, threat_DistanceMax;
-            var threat_DirectionFrom, threat_DirectionTo, threat_Approaching, threat_ApproachingSpeedMin, threat_ApproachingSpeedMax, threat_hail, threat_rotation;
-            var threat_tornadic, distanceMinMaxString, aprochingString, aprochingSpeedString, directionString, threathailString, threatrotationString, threattornadicString, blank;
+            var threatResponse, threatNumber, threatResult, threatAnyStorms, threatTimeStamp, threatPhraseLong, threatDistanceMin, threatDistanceMax;
+            var threatDirectionFrom, threatDirectionTo, threatApproaching, threatApproachingSpeedMin, threatApproachingSpeedMax, threatHail, threatRotation;
+            var threatTornadic, distanceMinMaxString, aprochingString, aprochingSpeedString, directionString, threathailString, threatrotationString, threattornadicString;
             var tctr = 0;
 
             if (json.success === true) {
-                threat_response = json.response;
-                threat_Number = threat_response.length;
-                threat_result = json.response[0].periods[0];
-                threat_AnyStorms = threat_result.storms;
+                threatResponse = json.response;
+                threatNumber = threatResponse.length;
+                threatResult = json.response[0].periods[0];
+                threatAnyStorms = threatResult.storms;
 
-                if (threat_Number > 3)
-                    threat_Number = 3;
+                if (threatNumber > 3)
+                    threatNumber = 3;
 
                 document.getElementById("spacer_19").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                 for (tctr = 0; tctr < 3; tctr++) {
@@ -6471,7 +6449,7 @@
                 }
                 document.getElementById("threat_spacerA3").innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
 
-                if (!threat_AnyStorms) {
+                if (!threatAnyStorms) {
                     document.getElementById('ViewStormThreats').style.display = 'none';
                     document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#006400; font-family: Times New Roman\">" + "<b/>" + "No Storms Detected within 50 miles" + "</span>";
                     return;
@@ -6481,76 +6459,76 @@
                     document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "Storms Detected within 50 miles" + "</span>";
                     document.getElementById("threat_Title").innerHTML = "<span style=\"font-size: 16pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + "Storm Threat Detected within 50 Mile Radius" + "</span>";
 
-                    for (tctr = 0; tctr < threat_Number; tctr++) {
-                        threat_result = json.response[tctr].periods[0];
+                    for (tctr = 0; tctr < threatNumber; tctr++) {
+                        threatResult = json.response[tctr].periods[0];
                         document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
                         document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#FF0000";
                         document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#FF0000";
-                        threat_TimeStamp = ISOTimeParseAllFields(threat_result.dateTimeISO, 15);
-                        threat_Phrase_Long = threat_result.storms.phrase.long;
-                        document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + "Weather Alert at:&nbsp;&nbsp;" + threat_TimeStamp + "</span>";
-                        document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + threat_Phrase_Long + "</span>";
+                        threatTimeStamp = ISOTimeParseAllFields(threatResult.dateTimeISO, 15);
+                        threatPhraseLong = threatResult.storms.phrase.long;
+                        document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + "Weather Alert at:&nbsp;&nbsp;" + threatTimeStamp + "</span>";
+                        document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + threatPhraseLong + "</span>";
 
                         //********************************************
 
-                        threat_Phrase_Long = threat_result.storms.phrase.long;
-                        threat_DistanceMin = threat_result.storms.distance.minMI.toFixed(0);
-                        threat_DistanceMax = threat_result.storms.distance.maxMI.toFixed(0);
-                        threat_DirectionFrom = threat_result.storms.direction.from;
-                        threat_DirectionTo = threat_result.storms.direction.to;
-                        threat_Approaching = threat_result.storms.approaching;
-                        threat_ApproachingSpeedMin = threat_result.storms.speed.minMPH.toFixed(0);
-                        threat_ApproachingSpeedMax = threat_result.storms.speed.maxMPH.toFixed(0);
-                        threat_hail = threat_result.storms.hail;
-                        threat_rotation = threat_result.storms.rotation;
-                        threat_tornadic = threat_result.storms.tornadic;
+                        threatPhraseLong = threatResult.storms.phrase.long;
+                        threatDistanceMin = threatResult.storms.distance.minMI.toFixed(0);
+                        threatDistanceMax = threatResult.storms.distance.maxMI.toFixed(0);
+                        threatDirectionFrom = threatResult.storms.direction.from;
+                        threatDirectionTo = threatResult.storms.direction.to;
+                        threatApproaching = threatResult.storms.approaching;
+                        threatApproachingSpeedMin = threatResult.storms.speed.minMPH.toFixed(0);
+                        threatApproachingSpeedMax = threatResult.storms.speed.maxMPH.toFixed(0);
+                        threatHail = threatResult.storms.hail;
+                        threatRotation = threatResult.storms.rotation;
+                        threatTornadic = threatResult.storms.tornadic;
 
-                        directionString = "Approaching from the&nbsp;" + threat_DirectionFrom + "&nbsp;To the&nbsp;" + threat_DirectionTo;
-                        distanceMinMaxString = "Min Distance&nbsp;" + threat_DistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threat_DistanceMax + "&nbsp;miles";
+                        directionString = "Approaching from the&nbsp;" + threatDirectionFrom + "&nbsp;To the&nbsp;" + threatDirectionTo;
+                        distanceMinMaxString = "Min Distance&nbsp;" + threatDistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threatDistanceMax + "&nbsp;miles";
 
-                        if (threat_Approaching)
+                        if (threatApproaching)
                             aprochingString = "Storm is approaching";
                         else
                             aprochingString = "Storm is not approaching";
 
-                        aprochingSpeedString = "Min speed moving at&nbsp;" + threat_ApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threat_ApproachingSpeedMax + "&nbsp;mph";
+                        aprochingSpeedString = "Min speed moving at&nbsp;" + threatApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threatApproachingSpeedMax + "&nbsp;mph";
 
-                        if (threat_hail)
+                        if (threatHail)
                             threathailString = "Hail has been detected";
                         else
                             threathailString = "Hail has not been detected";
 
-                        if (threat_rotation)
+                        if (threatRotation)
                             threatrotationString = "Rotation has been detected";
                         else
                             threatrotationString = "Rotation has not been detected";
 
-                        if (threat_tornadic)
+                        if (threatTornadic)
                             threattornadicString = "Storm is Tornatic";
                         else
                             threattornadicString = "Storm is not Tornatic";
 
-                        document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threat_TimeStamp + "</span>";
-                        document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + threat_Phrase_Long + "</span>";
+                        document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threatTimeStamp + "</span>";
+                        document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + threatPhraseLong + "</span>";
                         document.getElementById("threat_DistanceMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + distanceMinMaxString + "</span>";
                         document.getElementById("threat_DirectionFromToA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + directionString + "</span>";
                         document.getElementById("threat_ApproachingSpeedMinMaxA" + tctr).innerHTML = "<span style=\"font-13pt: 12pt; color: #000000; font-family: Times New Roman\">" + aprochingSpeedString + "</span>";
 
-                        if (threat_hail) {
+                        if (threatHail) {
                             document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threathailString + "</span>";
                         }
                         else {
                             document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threathailString + "</span>";
                         }
 
-                        if (threat_rotation) {
+                        if (threatRotation) {
                             document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threatrotationString + "</span>";
                         }
                         else {
                             document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threatrotationString + "</span>";
                         }
 
-                        if (threat_tornadic) {
+                        if (threatTornadic) {
                             document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threattornadicString + "</span>";
                         }
                         else {
@@ -6569,7 +6547,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Phrases_Hours() {
-            var cUrl = "https://api.aerisapi.com/phrases/summary?p=" + defaultLocation + "&limit=8&fields=phrases.long&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/phrases/summary?p=" + GlobalDefaultLocation + "&limit=8&fields=phrases.long&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6586,10 +6564,9 @@
         function callback_Phrases_Hours(json) {
 
             if (json.success === true) {
-                wForecsst = json.response[0].phrases.long;
+                var wForecsst = json.response[0].phrases.long;
                 document.getElementById("Wx_shortTerm").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + wForecsst + "</span>";
-            }
-            else {
+            } else {
                 alert('An error occurred: ' + json.error.description);
             }
         }
@@ -6629,17 +6606,17 @@
         function callback_Places(json) {
 
             if (json.success === true) {
-                defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
-                Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
-                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
+                GlobalDefaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
+                GlobalCityStateCountry = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
+                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + GlobalCityStateCountry + "</span>";
                 displayAll();
             }
             else {
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                defaultLocation = "Plano,TX";
+                GlobalDefaultLocation = "Plano,TX";
                 displayAll();
             }
         }
@@ -6647,19 +6624,19 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function setSavedLocation() {
-            var locParts = localStorage.getItem('PBW_defaultLocation').split(',');
-            var part_1 = locParts[0].trim();
-            var part_2 = locParts[1].trim();
-            var fullLocal = part_1 + "," + part_2;
-            localStorage.setItem('PBW_defaultLocation', fullLocal);
-            defaultLocation = fullLocal;
+            var locParts = localStorage.getItem('PBW_GlobalDefaultLocation').split(',');
+            var part1 = locParts[0].trim();
+            var part2 = locParts[1].trim();
+            var fullLocal = part1 + "," + part2;
+            localStorage.setItem('PBW_GlobalDefaultLocation', fullLocal);
+            GlobalDefaultLocation = fullLocal;
             savedPlace();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function savedPlace() {
-            var cUrl = "https://api.aerisapi.com/places/closest?p=" + defaultLocation + "&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/places/closest?p=" + GlobalDefaultLocation + "&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -6676,18 +6653,18 @@
         function callback_savedPlace(json) {
 
             if (json.success === true) {
-                defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
-                Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
-                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
+                GlobalDefaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
+                GlobalCityStateCountry = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
+                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + GlobalCityStateCountry + "</span>";
                 displayAll();
             }
             else {
-                localStorage.removeItem('PBW_defaultLocation');
+                localStorage.removeItem('PBW_GlobalDefaultLocation');
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                defaultLocation = "Plano,TX";
+                GlobalDefaultLocation = "Plano,TX";
                 displayAll();
             }
         }
@@ -6700,7 +6677,7 @@
                 dataType: "obs"
             });
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
@@ -6713,7 +6690,7 @@
                 showModal: false
             });
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
@@ -6729,7 +6706,7 @@
                 }
             });
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
@@ -6740,7 +6717,7 @@
             Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
             var view = new Aeris.wxblox.views.Almanac('#wxblox10');
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
@@ -6755,7 +6732,7 @@
                 }
             });
             view.load({
-                p: defaultLocation
+                p: GlobalDefaultLocation
             });
         }
     </script>
@@ -6765,7 +6742,7 @@
             Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
             var view = new Aeris.wxblox.views.MapViewer('#wxblox15', {
                 map: {
-                    loc: defaultLocation,
+                    loc: GlobalDefaultLocation,
                     layers: {
                         base: "terrain",
                         data: "radar",
@@ -6809,7 +6786,7 @@
 
             var view = new Aeris.wxblox.views.MapViewer('#wxblox1', {
                 map: {
-                    loc: defaultLocation,
+                    loc: GlobalDefaultLocation,
                     layers: {
                         base: "flat",
                         data: "radar",
@@ -6851,8 +6828,8 @@
             search.on('select', function (e) {
                 var p = e.data.place;
                 var stateOrCountry = (p.place.state) ? p.place.state : p.place.country;
-                Global_City_State_Country = p.place.name.trim() + "," + stateOrCountry.trim();
-                defaultLocation = Global_City_State_Country;
+                GlobalCityStateCountry = p.place.name.trim() + "," + stateOrCountry.trim();
+                GlobalDefaultLocation = GlobalCityStateCountry;
                 displayAll();
             });
         }
@@ -6861,10 +6838,10 @@
     <script type="text/javascript">
         function displayAll() {
             document.getElementById("currentVersion").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + currentVersion + "</span>";
-            document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-            document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-            document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-            document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on  " + Global_City_State_Country + "</span>";
+            document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+            document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+            document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
+            document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on  " + GlobalCityStateCountry + "</span>";
             document.getElementById('ViewStormThreats').style.display = 'none';
             document.getElementById('ViewLightning').style.display = 'none';
 
@@ -6910,9 +6887,9 @@
             Places();
         }
         else {
-            defaultLocation = localStorage.getItem('PBW_defaultLocation');
+            GlobalDefaultLocation = localStorage.getItem('PBW_GlobalDefaultLocation');
 
-            if (defaultLocation) {
+            if (GlobalDefaultLocation) {
                 setSavedLocation();
             }
             else {
