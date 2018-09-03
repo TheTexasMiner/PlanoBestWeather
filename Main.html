@@ -4906,26 +4906,42 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
+    <!--************
+        <script type="text/javascript">
+            function Example() {
+                var cUrl = "";
+                jQuery(document).ready(function ($) {
+                    $.ajax({
+                        url: cUrl,
+                        cache: false,
+                        async: false
+                    })
+                        .done(function (json) {
+                            if (json.success === true) {
 
-    <script type="text/javascript">
-        function Example() {
-            var cUrl = "";
-            jQuery(document).ready(function ($) {
-                $.ajax({
-                    url: cUrl,
-                    cache: false
-                })
-                    .done(function (json) {
-                        if (json.success === true) {
+                            }
+                            else {
+                                alert('An error occurred: ' + json.error.description);
+                            }
+                        });
+                });
+            }
+        </script>
 
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
-                    });
-            });
-        }
-    </script>
+        function getData() {
+        $.ajax({
+            url : 'example.com',
+            type: 'GET',
+            success : handleData
+        })
+    }
+
+    function handleData(data) {
+        alert(data);
+        //do some stuff
+    }
+
+    **********-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
@@ -4968,7 +4984,7 @@
 
         debugMain = Off;
 
-        currentVersion = "Release Version  3.2.5";
+        currentVersion = "Beta Version  3.2.6";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5541,10 +5557,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRainEstimated() {
-            var numReturned;
-            Flag_Estimated = true;
-            global_Est_rainYesterday = 0;
-            global_Est_rainToday = 0;
 
             var monthDate = addToCurrentDate(-7);
             var splitMonth = monthDate.split(',');
@@ -5561,37 +5573,44 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            numReturned = json.response[0].periods.length;
-
-                            if (numReturned < 3) {
-                                Flag_Estimated = false;
-                                global_Est_rainToday = 0;
-                                global_Est_rainYesterday = 0;
-                                // alert("ObservationsRainEstimated() -> Flag_Estimated -> " + Flag_Estimated);
-
-                            }
-                            else {
-                                global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                                global_Est_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                                Flag_Estimated = true;
-                            }
-                        }
-                        else {
-                            Flag_Estimated = false;
-                            global_Est_rainToday = 0;
-                            global_Est_rainYesterday = 0;
-                        }
+                        callback: callback_ObservationsRainEstimated(json);
                     });
             });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function callback_ObservationsRainEstimated(json) {
+
+            Flag_Estimated = true;
+            global_Est_rainYesterday = 0;
+            global_Est_rainToday = 0;
+
+            if (json.success === true) {
+                var numReturned = json.response[0].periods.length;
+
+                if (numReturned < 3) {
+                    Flag_Estimated = false;
+                    global_Est_rainToday = 0;
+                    global_Est_rainYesterday = 0;
+                }
+                else {
+                    global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                    global_Est_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                    Flag_Estimated = true;
+                }
+            } else {
+                Flag_Estimated = false;
+                global_Est_rainToday = 0;
+                global_Est_rainYesterday = 0;
+            }
             ObservationsRouter();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRain_PWS() {
-            var numReturned;
-            var local_PWS = true;
 
             var monthDate = addToCurrentDate(-7);
             var splitMonth = monthDate.split(',');
@@ -5601,10 +5620,6 @@
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-
-            //     $.ajax({url: "...", cache: false}).done(function( data ) {
-            //         // data contains result
-
             var cUrl = "https://api.aerisapi.com/observations/summary/" + global_PWS_ID + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -5612,60 +5627,63 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            numReturned = json.response.periods.length;
-
-                            document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                            document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-
-                            if (numReturned < 3) {
-                                local_PWS = false;
-                                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                            }
-                            else {
-                                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 1)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
-                                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 2)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
-                                local_PWS = true;
-                            }
-                        }
-                        else {
-                            local_PWS = false;
-                            document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                            document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-
-                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                        }
+                        callback: callback_ObservationsRain_PWS(json);
                     });
             });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function callback_ObservationsRain_PWS(json) {
+            if (json.success === true) {
+                numReturned = json.response.periods.length;
+
+                document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+
+                if (numReturned < 3) {
+                    local_PWS = false;
+                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+                }
+                else {
+                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 1)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
+                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + json.response.periods[(numReturned - 2)].summary.precip.totalIN.toFixed(2) + "\"" + "</span>";
+                    local_PWS = true;
+                }
+            }
+            else {
+                local_PWS = false;
+                document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+
+                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+            }
             Observations_PWS();
         }
     </script>
+
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRainSummary() {
-            var index, returnedStr, splitDate, startDate, endDate, monthDate, splitMonth, numLimit, numReturned;
 
-            var Local_Flag_Estimated = true;
-            global_rainYesterday = 0;
-            global_rainToday = 0;
+            var monthDate = addToCurrentDate(-7);
+            var splitMonth = monthDate.split(',');
+            var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
 
-            monthDate = addToCurrentDate(-7);
-            splitMonth = monthDate.split(',');
-            startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
-
-            returnedStr = addToCurrentDate(0);
-            splitDate = returnedStr.split(',');
-            endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
+            var returnedStr = addToCurrentDate(0);
+            var splitDate = returnedStr.split(',');
+            var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
             var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + defaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
@@ -5674,109 +5692,116 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            numReturned = json.response[0].periods.length;
-
-                            document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-
-                            if (numReturned < 3) {
-                                Local_Flag_Estimated = false;
-                                global_rainToday = 0;
-                                global_rainYesterday = 0;
-                            }
-                            else {
-                                global_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
-                                global_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
-                                Local_Flag_Estimated = true;
-                            }
-
-                            if (json.response[0].id.indexOf("PWS_") >= 0 && Local_Flag_Estimated) {
-                                document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
-
-                                document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
-                            }
-                            else {
-                                // Both Estimated and Local data is OK
-                                //if (!Flag_Estimated)
-                                //    alert("ObservationsRainSummary() -> Flag_Estimated -> " + Flag_Estimated);
-
-                                if (Flag_Estimated && Local_Flag_Estimated) {
-                                    if (global_rainToday >= global_Est_rainToday) {
-                                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
-                                    }
-                                    else {
-                                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
-                                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
-                                    }
-
-                                    if (global_rainYesterday >= global_Est_rainYesterday) {
-                                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
-                                    }
-                                    else {
-                                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
-                                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
-                                    }
-                                }
-
-                                // Estimated Data id Bad, Use Local Data Only
-                                else if (!Flag_Estimated && Local_Flag_Estimated) {
-                                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
-
-                                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
-                                }
-
-                                // Estimated Data id Good, Local Data Is Bad, Use Estimated Data Only
-                                else if (Flag_Estimated && !Local_Flag_Estimated) {
-                                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
-                                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
-
-                                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
-                                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
-                                }
-
-                                // Estimate and Local data is Bad, Use N/A
-                                else {
-                                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-
-                                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                                }
-                            }
-                        }
-                        else {
-                            //alert("Function Failed");
-
-                            document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
-                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-
-                            document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
-                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
-                        }
+                        callback: callback_ObservationsRainSummary(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_ObservationsRainSummary(json) {
+
+            var numReturned;
+            var Local_Flag_Estimated = true;
+            global_rainYesterday = 0;
+            global_rainToday = 0;
+
+            if (json.success === true) {
+                numReturned = json.response[0].periods.length;
+
+                document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+
+                if (numReturned < 3) {
+                    Local_Flag_Estimated = false;
+                    global_rainToday = 0;
+                    global_rainYesterday = 0;
+                }
+                else {
+                    global_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
+                    global_rainToday = json.response[0].periods[(numReturned - 1)].summary.precip.totalIN;
+                    Local_Flag_Estimated = true;
+                }
+
+                if (json.response[0].id.indexOf("PWS_") >= 0 && Local_Flag_Estimated) {
+                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                    document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+
+                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+                    document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                }
+                else {
+                    if (Flag_Estimated && Local_Flag_Estimated) {
+                        if (global_rainToday >= global_Est_rainToday) {
+                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+                        }
+                        else {
+                            document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
+                            document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
+                        }
+
+                        if (global_rainYesterday >= global_Est_rainYesterday) {
+                            document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                        }
+                        else {
+                            document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
+                            document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
+                        }
+                    }
+
+                    // Estimated Data id Bad, Use Local Data Only
+                    else if (!Flag_Estimated && Local_Flag_Estimated) {
+                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
+
+                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
+                    }
+
+                    // Estimated Data id Good, Local Data Is Bad, Use Estimated Data Only
+                    else if (Flag_Estimated && !Local_Flag_Estimated) {
+                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
+                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
+
+                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
+                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
+                    }
+
+                    // Estimate and Local data is Bad, Use N/A
+                    else {
+                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                        document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+
+                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+                        document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+                    }
+                }
+            }
+            else {
+                //alert("Function Failed");
+
+                document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
+                document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+
+                document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
+                document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
+            }
             Observations();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Observations_PWS() {
-            var index = 0;
 
             var cUrl = "https://api.aerisapi.com/observations/" + global_PWS_ID + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
@@ -5785,120 +5810,125 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            var numReturns = json.response.length;
-                            index = 0;
-
-                            var city = capitalizeEachWord(json.response.place.name);
-                            var state = capitalizeEachWord(json.response.place.state);
-                            var country = capitalizeEachWord(json.response.place.country);
-
-                            Global_City_State_Country = city + ",  " + state + ", " + country;
-
-                            var ob = json.response.ob;
-                            var ob2 = json.response;
-                            var id = ob2.id;
-                            var loc = json.response.place;
-                            var name = loc.name;
-                            var state = loc.state;
-                            var country = loc.country;
-                            var tempF = ob.tempF;
-                            var dewpointF = ob.dewpointF;
-                            var humidity = ob.humidity;
-                            var sky = ob.sky;
-                            var pressureIN = ob.pressureIN;
-                            var windMPH = ob.windMPH;
-                            var windDir = ob.windDir;
-                            var weather = ob.weather;
-                            var feelslikeF = ob.feelslikeF;
-                            var wIcon = ob.icon;
-                            var sunrise = ob.sunriseISO;
-                            var sunset = ob.sunsetISO;
-
-                            var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
-                            var Nsunset = ISOTimeParseAllFields(sunset, 20);
-
-                            name = name.toUpperCase();
-                            state = state.toUpperCase();
-                            country = country.toUpperCase();
-
-                            stationStr = city + ",  " + state + "   " + id;
-
-                            var maxTimeCtr = 0;
-                            var LatestObservationTime = 0;
-                            var ParsedUnixTime = ISOTimeParseAllFields(json.response.ob.dateTimeISO, 15);
-
-                            windString = "";
-                            wind = "";
-                            windGust = "";
-
-                            if (windMPH != null && windMPH === 0)
-                                windString = "Calm";
-                            else if (windDir === null && windMPH === null)
-                                windString = "--";
-                            else if (windDir === null && windMPH != null)
-                                windString = windMPH + " mph";
-                            else if (windMPH === null && windDir != null)
-                                windString = "From the  " + windDir;
-                            else if (windMPH != null && windDir != null)
-                                windString = windDir + "  " + windMPH + " mph ";
-                            else
-                                windString = "--";
-
-                            document.getElementById("spacer_2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_9").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_16").innerHTML = "<span style=\"font-size: 20pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_17").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("spacer_3").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_4").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_5").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_6").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_7").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_8").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_10").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_11").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_12").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_13").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_14").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_15").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_20").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
-                            document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;C" + ")" + "</span>";
-                            document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F   " + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
-                            document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
-                            document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=`100" + " height=100>";
-                            document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
-                            document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
-                            document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
-                            document.getElementById("Wx_Humidity").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Humidity" + "</span>";
-                            document.getElementById("Wx_Pressure").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Pressure" + "</span>";
-                            document.getElementById("Wx_SkyCover").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "SkyCover" + "</span>";
-                            document.getElementById("vRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunrise" + "</span>";
-                            document.getElementById("vSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunset" + "</span>";
-                            document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
-                            document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + " °F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
-                            document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
-                            document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
-                            document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
-                            document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
-                            document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_Observations_PWS(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_Observations_PWS(json) {
+            var index = 0;
+            if (json.success === true) {
+                var numReturns = json.response.length;
+                index = 0;
+
+                var city = capitalizeEachWord(json.response.place.name);
+                var state = capitalizeEachWord(json.response.place.state);
+                var country = capitalizeEachWord(json.response.place.country);
+
+                Global_City_State_Country = city + ",  " + state + ", " + country;
+
+                var ob = json.response.ob;
+                var ob2 = json.response;
+                var id = ob2.id;
+                var loc = json.response.place;
+                var name = loc.name;
+                var state = loc.state;
+                var country = loc.country;
+                var tempF = ob.tempF;
+                var dewpointF = ob.dewpointF;
+                var humidity = ob.humidity;
+                var sky = ob.sky;
+                var pressureIN = ob.pressureIN;
+                var windMPH = ob.windMPH;
+                var windDir = ob.windDir;
+                var weather = ob.weather;
+                var feelslikeF = ob.feelslikeF;
+                var wIcon = ob.icon;
+                var sunrise = ob.sunriseISO;
+                var sunset = ob.sunsetISO;
+
+                var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
+                var Nsunset = ISOTimeParseAllFields(sunset, 20);
+
+                name = name.toUpperCase();
+                state = state.toUpperCase();
+                country = country.toUpperCase();
+
+                stationStr = city + ",  " + state + "   " + id;
+
+                var maxTimeCtr = 0;
+                var LatestObservationTime = 0;
+                var ParsedUnixTime = ISOTimeParseAllFields(json.response.ob.dateTimeISO, 15);
+
+                windString = "";
+                wind = "";
+                windGust = "";
+
+                if (windMPH != null && windMPH === 0)
+                    windString = "Calm";
+                else if (windDir === null && windMPH === null)
+                    windString = "--";
+                else if (windDir === null && windMPH != null)
+                    windString = windMPH + " mph";
+                else if (windMPH === null && windDir != null)
+                    windString = "From the  " + windDir;
+                else if (windMPH != null && windDir != null)
+                    windString = windDir + "  " + windMPH + " mph ";
+                else
+                    windString = "--";
+
+                document.getElementById("spacer_2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_9").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_16").innerHTML = "<span style=\"font-size: 20pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_17").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("spacer_3").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_4").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_5").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_6").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_7").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_8").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_10").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_11").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_12").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_13").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_14").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_15").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_20").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
+                document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;C" + ")" + "</span>";
+                document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F   " + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
+                document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
+                document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=`100" + " height=100>";
+                document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
+                document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
+                document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
+                document.getElementById("Wx_Humidity").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Humidity" + "</span>";
+                document.getElementById("Wx_Pressure").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Pressure" + "</span>";
+                document.getElementById("Wx_SkyCover").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "SkyCover" + "</span>";
+                document.getElementById("vRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunrise" + "</span>";
+                document.getElementById("vSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunset" + "</span>";
+                document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
+                document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + " °F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
+                document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
+                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
+                document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
+                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
+                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Observations() {
-            var index = 0;
-
             var cUrl = "https://api.aerisapi.com/observations/closest?p=" + defaultLocation + "&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -5906,135 +5936,138 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            var numReturns = json.response.length;
-                            var city = capitalizeEachWord(json.response[index].place.name);
-                            var state = capitalizeEachWord(json.response[index].place.state);
-                            var country = capitalizeEachWord(json.response[index].place.country);
-
-                            Global_City_State_Country = city + ",  " + state + ", " + country;
-
-                            var ob = json.response[index].ob;
-                            var ob2 = json.response[index];
-                            var id = ob2.id;
-                            var loc = json.response[index].place;
-                            var name = loc.name;
-                            var state = loc.state;
-                            var country = loc.country;
-                            var tempF = ob.tempF;
-                            var dewpointF = ob.dewpointF;
-                            var humidity = ob.humidity;
-                            var sky = ob.sky;
-                            var pressureIN = ob.pressureIN;
-                            var windMPH = ob.windMPH;
-                            var windDir = ob.windDir;
-                            var weather = ob.weather;
-                            var feelslikeF = ob.feelslikeF;
-                            var wIcon = ob.icon;
-                            var sunrise = ob.sunriseISO;
-                            var sunset = ob.sunsetISO;
-                            var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
-                            var Nsunset = ISOTimeParseAllFields(sunset, 20);
-
-                            name = name.toUpperCase();
-                            state = state.toUpperCase();
-                            country = country.toUpperCase();
-
-                            stationStr = city + ",  " + state + "   " + id;
-
-                            var maxTimeCtr = 0;
-                            var LatestObservationTime = 0;
-
-                            for (maxTimeCtr = 0; maxTimeCtr < numReturns; maxTimeCtr++) {
-                                if (json.response[maxTimeCtr].ob.dateTimeISO > LatestObservationTime)
-                                    LatestObservationTime = json.response[maxTimeCtr].ob.dateTimeISO;
-                            }
-
-                            var ParsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
-
-                            if (dewpointF === null)
-                                dewpointF = "-- ";
-
-                            if (pressureIN === null)
-                                pressureIN = "-- ";
-
-                            if (sky === null)
-                                sky = "-- ";
-
-                            windString = "";
-                            wind = "";
-                            windGust = "";
-
-                            if (windMPH != null && windMPH === 0)
-                                windString = "Calm";
-                            else if (windDir === null && windMPH === null)
-                                windString = "-- ";
-                            else if (windDir === null && windMPH != null)
-                                windString = windMPH + " mph";
-                            else if (windMPH === null && windDir != null)
-                                windString = "From the  " + windDir;
-                            else if (windMPH != null && windDir != null)
-                                windString = windDir + "  " + windMPH + " mph ";
-                            else
-                                windString = "-- ";
-
-                            document.getElementById("spacer_2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_9").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_16").innerHTML = "<span style=\"font-size: 20pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("spacer_17").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("spacer_3").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_4").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_5").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_6").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_7").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_8").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_10").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_11").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_12").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_13").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_14").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_15").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_20").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                            document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
-                            document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
-                            document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
-                            document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
-                            document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=`100" + " height=100>";
-                            document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
-                            document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
-                            document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
-                            document.getElementById("Wx_Humidity").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Humidity" + "</span>";
-                            document.getElementById("Wx_Pressure").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Pressure" + "</span>";
-                            document.getElementById("Wx_SkyCover").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "SkyCover" + "</span>";
-                            document.getElementById("vRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunrise" + "</span>";
-                            document.getElementById("vSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunset" + "</span>";
-                            document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
-                            document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
-                            document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
-                            document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
-                            document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
-                            document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
-                            document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_Observations(json);
                     });
             });
         }
     </script>
+
+    <script type="text/javascript">
+        function callback_Observations(json) {
+            var index = 0;
+            if (json.success === true) {
+                var numReturns = json.response.length;
+                var city = capitalizeEachWord(json.response[index].place.name);
+                var state = capitalizeEachWord(json.response[index].place.state);
+                var country = capitalizeEachWord(json.response[index].place.country);
+
+                Global_City_State_Country = city + ",  " + state + ", " + country;
+
+                var ob = json.response[index].ob;
+                var ob2 = json.response[index];
+                var id = ob2.id;
+                var loc = json.response[index].place;
+                var name = loc.name;
+                var state = loc.state;
+                var country = loc.country;
+                var tempF = ob.tempF;
+                var dewpointF = ob.dewpointF;
+                var humidity = ob.humidity;
+                var sky = ob.sky;
+                var pressureIN = ob.pressureIN;
+                var windMPH = ob.windMPH;
+                var windDir = ob.windDir;
+                var weather = ob.weather;
+                var feelslikeF = ob.feelslikeF;
+                var wIcon = ob.icon;
+                var sunrise = ob.sunriseISO;
+                var sunset = ob.sunsetISO;
+                var Nsunrise = ISOTimeParseAllFields(sunrise, 20);
+                var Nsunset = ISOTimeParseAllFields(sunset, 20);
+
+                name = name.toUpperCase();
+                state = state.toUpperCase();
+                country = country.toUpperCase();
+
+                stationStr = city + ",  " + state + "   " + id;
+
+                var maxTimeCtr = 0;
+                var LatestObservationTime = 0;
+
+                for (maxTimeCtr = 0; maxTimeCtr < numReturns; maxTimeCtr++) {
+                    if (json.response[maxTimeCtr].ob.dateTimeISO > LatestObservationTime)
+                        LatestObservationTime = json.response[maxTimeCtr].ob.dateTimeISO;
+                }
+
+                var ParsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
+
+                if (dewpointF === null)
+                    dewpointF = "-- ";
+
+                if (pressureIN === null)
+                    pressureIN = "-- ";
+
+                if (sky === null)
+                    sky = "-- ";
+
+                windString = "";
+                wind = "";
+                windGust = "";
+
+                if (windMPH != null && windMPH === 0)
+                    windString = "Calm";
+                else if (windDir === null && windMPH === null)
+                    windString = "-- ";
+                else if (windDir === null && windMPH != null)
+                    windString = windMPH + " mph";
+                else if (windMPH === null && windDir != null)
+                    windString = "From the  " + windDir;
+                else if (windMPH != null && windDir != null)
+                    windString = windDir + "  " + windMPH + " mph ";
+                else
+                    windString = "-- ";
+
+                document.getElementById("spacer_2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_9").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_16").innerHTML = "<span style=\"font-size: 20pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("spacer_17").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("spacer_3").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_4").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_5").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_6").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_7").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_8").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_10").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_11").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_12").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_13").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_14").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_15").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_20").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_21").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                document.getElementById("spacer_22").innerHTML = "<span style=\"font-size: 4pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                document.getElementById("updated_at").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "Conditions Updated " + ParsedUnixTime + "</span>";
+                document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 32pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
+                document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
+                document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
+                document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=`100" + " height=100>";
+                document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
+                document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
+                document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
+                document.getElementById("Wx_Humidity").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Humidity" + "</span>";
+                document.getElementById("Wx_Pressure").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Pressure" + "</span>";
+                document.getElementById("Wx_SkyCover").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "SkyCover" + "</span>";
+                document.getElementById("vRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunrise" + "</span>";
+                document.getElementById("vSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Sunset" + "</span>";
+                document.getElementById("Wx_Winds_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + windString + "</span>";
+                document.getElementById("Wx_DewPoint_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + dewpointF + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (dewpointF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
+                document.getElementById("Wx_Humidity_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
+                document.getElementById("Wx_Pressure_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + pressureIN + "&nbsp;in" + "</span>";
+                document.getElementById("Wx_SkyCover_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + sky + "%" + "</span>";
+                document.getElementById("dRise").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunrise + "</span>";
+                document.getElementById("dSet").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + Nsunset + "</span>";
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
+        }
+    </script>
+
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getForecastsHours() {
-            var hourlyResponse, pDateTime, icon, weather, avgTemp, rainProb, pressure, avgDewPoint;
-            var winddir, windMax, humidity;
-            var x = 0;
-            var y = 0;
-
             var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=1hr&limit=72&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -6042,49 +6075,74 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            var hourResults = json.response[0].periods.length;
-                            if (hourResults >= 25)
-                                hourResults = 25;
-                            y = 0;
-
-                            for (x = 0; x < hourResults; x++) {
-                                hourlyResponse = json.response[0].periods[x];
-                                pDateTime = ISOTimeParseAllFields(hourlyResponse.dateTimeISO, 23);
-
-                                weather = hourlyResponse.weather;
-                                icon = hourlyResponse.icon;
-                                avgTemp = hourlyResponse.avgTempF.toFixed(0);
-                                avgDewPoint = hourlyResponse.avgDewpointF.toFixed(0);
-                                humidity = hourlyResponse.humidity.toFixed(0);
-                                pressure = hourlyResponse.pressureIN.toFixed(2);
-                                winddir = hourlyResponse.windDir;
-                                windMax = hourlyResponse.windSpeedMaxMPH.toFixed(0);
-                                rainProb = hourlyResponse.pop.toFixed(0);
-                                rainIN = hourlyResponse.precipIN.toFixed(2);
-
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Courier New\">" + "<b/>" + pDateTime + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<img border=0 src = " + IconBase + icon + " width=25" + " height=25>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + weather + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b>" + avgTemp + "</b>" + "°&nbsp;F" + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b>" + avgDewPoint + "</b>" + "°&nbsp;F" + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + pressure + "&nbsp;in" + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + winddir + "&nbsp;" + windMax + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainProb + "%" + "</span>";
-                                document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainIN + "\"" + "</span>";
-                            }
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_getForecastsHours(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_getForecastsHours(json) {
+            var hourlyResponse, pDateTime, icon, weather, avgTemp, rainProb, pressure, avgDewPoint;
+            var winddir, windMax, humidity;
+            var x = 0;
+            var y = 0;
+            if (json.success === true) {
+                var hourResults = json.response[0].periods.length;
+                if (hourResults >= 25)
+                    hourResults = 25;
+                y = 0;
+
+                for (x = 0; x < hourResults; x++) {
+                    hourlyResponse = json.response[0].periods[x];
+                    pDateTime = ISOTimeParseAllFields(hourlyResponse.dateTimeISO, 23);
+
+                    weather = hourlyResponse.weather;
+                    icon = hourlyResponse.icon;
+                    avgTemp = hourlyResponse.avgTempF.toFixed(0);
+                    avgDewPoint = hourlyResponse.avgDewpointF.toFixed(0);
+                    humidity = hourlyResponse.humidity.toFixed(0);
+                    pressure = hourlyResponse.pressureIN.toFixed(2);
+                    winddir = hourlyResponse.windDir;
+                    windMax = hourlyResponse.windSpeedMaxMPH.toFixed(0);
+                    rainProb = hourlyResponse.pop.toFixed(0);
+                    rainIN = hourlyResponse.precipIN.toFixed(2);
+
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Courier New\">" + "<b/>" + pDateTime + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<img border=0 src = " + IconBase + icon + " width=25" + " height=25>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + weather + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b>" + avgTemp + "</b>" + "°&nbsp;F" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b>" + avgDewPoint + "</b>" + "°&nbsp;F" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + humidity + "%" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + pressure + "&nbsp;in" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + winddir + "&nbsp;" + windMax + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainProb + "%" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainIN + "\"" + "</span>";
+                }
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getLightningStrikes() {
+            var cUrl = "https://api.aerisapi.com/lightning/" + defaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            jQuery(document).ready(function ($) {
+                $.ajax({
+                    url: cUrl,
+                    cache: false
+                })
+                    .done(function (json) {
+                        callback: callback_getLightningStrikes(json);
+                    });
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_getLightningStrikes(json) {
             var dateTimeUnix = new Array();
             var age = new Array();
             var type = new Array();
@@ -6102,114 +6160,105 @@
             var cloudToCloudCtr = 0;
             var newcolor = "#FF0000;";
 
-            var cUrl = "https://api.aerisapi.com/lightning/" + defaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
-            jQuery(document).ready(function ($) {
-                $.ajax({
-                    url: cUrl,
-                    cache: false
-                })
-                    .done(function (json) {
-                        if (json.success === true) {
-                            var lRetuens = json.response.length - 1;
-                            if (json.response.length > 10)
-                                newCount = 10;
+            if (json.success === true) {
+                var lRetuens = json.response.length - 1;
+                if (json.response.length > 10)
+                    newCount = 10;
+                else
+                    newCount = json.response.length;
+
+                document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 0pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LightningNotes").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitlRecent").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl0").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl1").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl2").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl3").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl4").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LITitl5").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LightningSpacer_0").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("LightningSpacer_1").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+
+                for (x = 0; x < 10; x++) {
+                    document.getElementById("LIDate_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("LIType_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("LIAmps_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                }
+
+                document.getElementById("stats1").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                document.getElementById("stats2").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+
+                if (json.success === true) {
+                    if (json.response.length === 0) {
+                        document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#006400; font-family: Times New Roman\">" + "<b/>" + "No Lightning Detected within 50 miles" + "</span>";
+                        document.getElementById('ViewLightning').style.display = 'none';
+                        return;
+                    }
+                    else {
+                        document.getElementById('ViewLightning').style.display = 'block';
+                        document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "Lightning Detected within 50 miles" + "</span>";
+                        document.getElementById("LightningTitle").innerHTML = "<span style=\"font-size: 16pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "<b/>" + "Lightning Detected Within 50 Mile Radius" + "</span>";
+                        document.getElementById("LightningNotes").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "ic = cloud-to-cloud&nbsp;&nbsp;|&nbsp;&nbsp;cg = cloud-to-ground" + "</span>";
+                        document.getElementById("LITitlRecent").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Romann\">" + "<b/>" + "10 Most Recent & Closest" + "</span>";
+                        document.getElementById("LITitl0").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Time" + "</span>";
+                        document.getElementById("LITitl1").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Type" + "</span>";
+                        document.getElementById("LITitl2").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Peak Amps" + "</span>";
+                        document.getElementById("LITitl3").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Heigth" + "</span>";
+                        document.getElementById("LITitl4").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Bearing" + "</span>";
+                        document.getElementById("LITitl5").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Distance" + "</span>";
+                        document.getElementById("LightningSpacer_0").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                        document.getElementById("LightningSpacer_1").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+
+                        for (x = 0; x < json.response.length; x++) {
+                            if (json.response[x].ob.pulse.type === "cg")
+                                cloudToGroundCtr++;
                             else
-                                newCount = json.response.length;
-
-                            document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 0pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LightningNotes").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitlRecent").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl0").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl1").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl2").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl3").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl4").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LITitl5").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LightningSpacer_0").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("LightningSpacer_1").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-
-                            for (x = 0; x < 10; x++) {
-                                document.getElementById("LIDate_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("LIType_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("LIAmps_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            }
-
-                            document.getElementById("stats1").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                            document.getElementById("stats2").innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-
-                            if (json.success === true) {
-                                if (json.response.length === 0) {
-                                    document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#006400; font-family: Times New Roman\">" + "<b/>" + "No Lightning Detected within 50 miles" + "</span>";
-                                    document.getElementById('ViewLightning').style.display = 'none';
-                                    return;
-                                }
-                                else {
-                                    document.getElementById('ViewLightning').style.display = 'block';
-                                    document.getElementById("LightningDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "Lightning Detected within 50 miles" + "</span>";
-                                    document.getElementById("LightningTitle").innerHTML = "<span style=\"font-size: 16pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "<b/>" + "Lightning Detected Within 50 Mile Radius" + "</span>";
-                                    document.getElementById("LightningNotes").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "ic = cloud-to-cloud&nbsp;&nbsp;|&nbsp;&nbsp;cg = cloud-to-ground" + "</span>";
-                                    document.getElementById("LITitlRecent").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Romann\">" + "<b/>" + "10 Most Recent & Closest" + "</span>";
-                                    document.getElementById("LITitl0").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Time" + "</span>";
-                                    document.getElementById("LITitl1").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Type" + "</span>";
-                                    document.getElementById("LITitl2").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Peak Amps" + "</span>";
-                                    document.getElementById("LITitl3").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Heigth" + "</span>";
-                                    document.getElementById("LITitl4").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Bearing" + "</span>";
-                                    document.getElementById("LITitl5").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + "Distance" + "</span>";
-                                    document.getElementById("LightningSpacer_0").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                                    document.getElementById("LightningSpacer_1").innerHTML = "<span style=\"font-size: 13pt; 	color: 	#000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-
-                                    for (x = 0; x < json.response.length; x++) {
-                                        if (json.response[x].ob.pulse.type === "cg")
-                                            cloudToGroundCtr++;
-                                        else
-                                            cloudToCloudCtr++;
-                                    }
-
-                                    if (json.response.length >= 100)
-                                        stats1Txt = "Over  " + json.response.length + "  Strikes Detected in Last 30 Minutes";
-                                    else
-                                        stats1Txt = json.response.length + "  Strikes Detected in Last 30 Minutes";
-
-                                    var stats2Txt = cloudToGroundCtr + "  Cloud-to-Ground  " + cloudToCloudCtr + "  Cloud-to-Cloud";
-
-                                    for (x = 0; x < newCount; x++) {
-                                        dateTimeUnix[x] = json.response[x].ob.dateTimeISO;
-                                        realDateTime[x] = ISOTimeParseAllFields(dateTimeUnix[x], 20);
-                                        age[x] = json.response[x].ob.age;
-                                        type[x] = json.response[x].ob.pulse.type;
-                                        peakamp[x] = json.response[x].ob.pulse.peakamp;
-                                        numSensors[x] = json.response[x].ob.pulse.numSensors;
-                                        icHeightM[x] = json.response[x].ob.pulse.icHeightM;
-                                        icHeightFT[x] = json.response[x].ob.pulse.icHeightFT;
-                                        bearingENG[x] = json.response[x].relativeTo.bearingENG;
-                                        distanceKM[x] = json.response[x].relativeTo.distanceKM;
-                                        distanceMI[x] = json.response[x].relativeTo.distanceMI;
-                                    }
-                                    for (x = 0; x < newCount; x++) {
-                                        newcolor = "#000000;";
-                                        if (type[x] === "cg") {
-                                            newcolor = "#FF0000;";
-                                        }
-                                        document.getElementById("stats1").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + stats1Txt + "</span>";
-                                        document.getElementById("stats2").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + stats2Txt + "</span>";
-                                        document.getElementById("LIDate_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + realDateTime[x] + "</span>";
-                                        document.getElementById("LIType_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + type[x] + "</span>";
-                                        document.getElementById("LIAmps_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + peakamp[x] + "</span>";
-                                        document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + icHeightFT[x].toFixed(0) + "&nbsp;&nbsp;ft" + "</span>";
-                                        document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + bearingENG[x] + "</span>";
-                                        document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + distanceMI[x].toFixed(1) + "&nbsp;&nbsp;mi" + "</span>";
-                                    }
-                                }
-                            }
+                                cloudToCloudCtr++;
                         }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
+
+                        if (json.response.length >= 100)
+                            stats1Txt = "Over  " + json.response.length + "  Strikes Detected in Last 30 Minutes";
+                        else
+                            stats1Txt = json.response.length + "  Strikes Detected in Last 30 Minutes";
+
+                        var stats2Txt = cloudToGroundCtr + "  Cloud-to-Ground  " + cloudToCloudCtr + "  Cloud-to-Cloud";
+
+                        for (x = 0; x < newCount; x++) {
+                            dateTimeUnix[x] = json.response[x].ob.dateTimeISO;
+                            realDateTime[x] = ISOTimeParseAllFields(dateTimeUnix[x], 20);
+                            age[x] = json.response[x].ob.age;
+                            type[x] = json.response[x].ob.pulse.type;
+                            peakamp[x] = json.response[x].ob.pulse.peakamp;
+                            numSensors[x] = json.response[x].ob.pulse.numSensors;
+                            icHeightM[x] = json.response[x].ob.pulse.icHeightM;
+                            icHeightFT[x] = json.response[x].ob.pulse.icHeightFT;
+                            bearingENG[x] = json.response[x].relativeTo.bearingENG;
+                            distanceKM[x] = json.response[x].relativeTo.distanceKM;
+                            distanceMI[x] = json.response[x].relativeTo.distanceMI;
                         }
-                    });
-            });
+                        for (x = 0; x < newCount; x++) {
+                            newcolor = "#000000;";
+                            if (type[x] === "cg") {
+                                newcolor = "#FF0000;";
+                            }
+                            document.getElementById("stats1").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + stats1Txt + "</span>";
+                            document.getElementById("stats2").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#000000; font-family: Times New Roman\">" + stats2Txt + "</span>";
+                            document.getElementById("LIDate_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + realDateTime[x] + "</span>";
+                            document.getElementById("LIType_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + type[x] + "</span>";
+                            document.getElementById("LIAmps_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + peakamp[x] + "</span>";
+                            document.getElementById("LIHeigth_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + icHeightFT[x].toFixed(0) + "&nbsp;&nbsp;ft" + "</span>";
+                            document.getElementById("LIBearing_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + bearingENG[x] + "</span>";
+                            document.getElementById("LIDistance_" + x).innerHTML = "<span style=\"font-size: 13pt; 	color: 	" + newcolor + " font-family: Times New Roman\">" + distanceMI[x].toFixed(1) + "&nbsp;&nbsp;mi" + "</span>";
+                        }
+                    }
+                }
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6238,11 +6287,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function get14DayNightForecast() {
-            var forecast, forecastCoded, icon, minTempF, maxTempF, pop, tsrt, test, preIndex, index;
-            var Cindex, dtime, dDate, parsedDate, shortDayName, hum, pressure, dp, amt, wx, wind;
-            var windGust, wdir, tmpStr, windStr, rest, dateColor, dateStr, returnedNum;
-            var color = "#000000;";
-
             var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=daynight&limit=14&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -6250,75 +6294,81 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            index = 0;
-                            returnedNum = json.response[0].periods.length;
-
-                            if (returnedNum > 14)
-                                returnedNum = 14;
-
-                            for (index = 0; index < returnedNum; index++) {
-                                forecast = json.response[0].periods[index];
-                                dDate = forecast.dateTimeISO;
-                                icon = forecast.icon;
-                                isDay = forecast.isDay;
-                                minTempF = forecast.minTempF;
-                                maxTempF = forecast.maxTempF;
-                                pop = forecast.pop;
-                                maxFeelslikeF = forecast.maxFeelslikeF;
-                                minFeelslikeF = forecast.minFeelslikeF;
-                                hum = forecast.humidity;
-                                pressure = forecast.pressureIN.toFixed(2);
-                                dp = forecast.dewpointF;
-                                amt = forecast.precipIN.toFixed(2);
-                                wx = forecast.weather;
-                                wind = forecast.windSpeedMPH;
-                                wdir = forecast.windDir;
-                                windGust = forecast.windGustMPH;
-                                dDate = ISOTimeParseAllFields(dDate, 17);
-
-                                if (index < returnedNum) {
-                                    if (isDay) {
-                                        tmpStr = "High&nbsp;&nbsp;" + maxTempF;
-                                        dateStr = dDate + "&nbsp;(Day)";
-                                    }
-                                    else {
-                                        tmpStr = "Low&nbsp;&nbsp;" + minTempF;
-                                        dateStr = dDate + "&nbsp;(Night)";
-                                    }
-
-                                    windStr = wdir + "&nbsp;at&nbsp;" + wind + "&nbsp;gusting to&nbsp;" + windGust;
-                                    var rn = Math.floor(Math.random() * 5);
-
-                                    if (amt > 0)
-                                        rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;possible rain amounts of&nbsp;&nbsp;" + amt + "&nbsp;in";
-                                    else
-                                        rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;&nbsp;no rain amounts predicted";
-
-                                    document.getElementById("fd_" + index).innerHTML = "<span style=\"font-size: 14pt; color:  #7E0023; font-family: Courier New\">" + "<b/>" + dateStr + "</span>";
-                                    document.getElementById("fx_" + index).innerHTML = "<img border=0 src = " + IconBase + icon + " width=40" + " height=40>"
-                                    document.getElementById("fhl_" + index).innerHTML = "<span style=\"font-size: 13pt; color:  " + color + " font-family: Times New Roman\">" + "<b>" + tmpStr + "</b>" + "&nbsp;°F" + "</span>";
-                                    document.getElementById("fwg_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Winds " + windStr + "</span>";
-                                    document.getElementById("frn_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Rain chance  " + pop + "%" + "</span>";
-                                    document.getElementById("ff_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + wx + rest + "." + "</span>";
-                                }
-                            }
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_get14DayNightForecast(json);
                     });
             });
         }
     </script>
-    <!--*********************************************************************************************************************************************************************************************-->
 
     <script type="text/javascript">
-        function Normals() {
-            var timeStamp, maxF, minF, avgF, ytdIN, mtdIN, nDate, base;
-            var numReturned = 0;
+        function callback_get14DayNightForecast(json) {
+            var forecast, forecastCoded, icon, minTempF, maxTempF, pop, tsrt, test, preIndex, index;
+            var Cindex, dtime, dDate, parsedDate, shortDayName, hum, pressure, dp, amt, wx, wind;
+            var windGust, wdir, tmpStr, windStr, rest, dateColor, dateStr, returnedNum;
             var color = "#000000;";
 
+            if (json.success === true) {
+                index = 0;
+                returnedNum = json.response[0].periods.length;
+
+                if (returnedNum > 14)
+                    returnedNum = 14;
+
+                for (index = 0; index < returnedNum; index++) {
+                    forecast = json.response[0].periods[index];
+                    dDate = forecast.dateTimeISO;
+                    icon = forecast.icon;
+                    isDay = forecast.isDay;
+                    minTempF = forecast.minTempF;
+                    maxTempF = forecast.maxTempF;
+                    pop = forecast.pop;
+                    maxFeelslikeF = forecast.maxFeelslikeF;
+                    minFeelslikeF = forecast.minFeelslikeF;
+                    hum = forecast.humidity;
+                    pressure = forecast.pressureIN.toFixed(2);
+                    dp = forecast.dewpointF;
+                    amt = forecast.precipIN.toFixed(2);
+                    wx = forecast.weather;
+                    wind = forecast.windSpeedMPH;
+                    wdir = forecast.windDir;
+                    windGust = forecast.windGustMPH;
+                    dDate = ISOTimeParseAllFields(dDate, 17);
+
+                    if (index < returnedNum) {
+                        if (isDay) {
+                            tmpStr = "High&nbsp;&nbsp;" + maxTempF;
+                            dateStr = dDate + "&nbsp;(Day)";
+                        }
+                        else {
+                            tmpStr = "Low&nbsp;&nbsp;" + minTempF;
+                            dateStr = dDate + "&nbsp;(Night)";
+                        }
+
+                        windStr = wdir + "&nbsp;at&nbsp;" + wind + "&nbsp;gusting to&nbsp;" + windGust;
+                        var rn = Math.floor(Math.random() * 5);
+
+                        if (amt > 0)
+                            rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;possible rain amounts of&nbsp;&nbsp;" + amt + "&nbsp;in";
+                        else
+                            rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;&nbsp;no rain amounts predicted";
+
+                        document.getElementById("fd_" + index).innerHTML = "<span style=\"font-size: 14pt; color:  #7E0023; font-family: Courier New\">" + "<b/>" + dateStr + "</span>";
+                        document.getElementById("fx_" + index).innerHTML = "<img border=0 src = " + IconBase + icon + " width=40" + " height=40>"
+                        document.getElementById("fhl_" + index).innerHTML = "<span style=\"font-size: 13pt; color:  " + color + " font-family: Times New Roman\">" + "<b>" + tmpStr + "</b>" + "&nbsp;°F" + "</span>";
+                        document.getElementById("fwg_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Winds " + windStr + "</span>";
+                        document.getElementById("frn_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Rain chance  " + pop + "%" + "</span>";
+                        document.getElementById("ff_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + wx + rest + "." + "</span>";
+                    }
+                }
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
+        }
+    </script>
+    <!--*********************************************************************************************************************************************************************************************-->
+    <script type="text/javascript">
+        function Normals() {
             var cUrl = "https://api.aerisapi.com/normals/" + defaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -6326,46 +6376,50 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            numReturned = json.response.periods.length;
-
-                            document.getElementById("h0").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
-                            document.getElementById("h1").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
-                            document.getElementById("h2").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
-                            document.getElementById("h3").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
-                            document.getElementById("h4").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
-                            document.getElementById("h5").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
-                            document.getElementById("h6").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
-                            document.getElementById("h7").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
-                            document.getElementById("h8").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
-                            document.getElementById("h9").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
-                            document.getElementById("h10").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
-                            document.getElementById("h11").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
-
-                            for (nIndex = 0; nIndex < numReturned; nIndex++) {
-                                document.getElementById("nTime_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Courier New \">" + "<b/>" + ISOTimeParseAllFields(json.response.periods[nIndex].dateTimeISO, 17) + "</span>";
-                                document.getElementById("nmaxF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.maxF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                document.getElementById("nminF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.minF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                document.getElementById("navgF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.avgF.toFixed(1) + "°&nbsp;F" + "</span>";
-                                document.getElementById("nytdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.ytdIN.toFixed(2) + "\"" + "</span>";
-                                document.getElementById("nmtdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.mtdIN.toFixed(2) + "\"" + "</span>";
-                            }
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_Normals(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_Normals(json) {
+            var numReturned = 0;
+            var color = "#000000;";
+
+            if (json.success === true) {
+                numReturned = json.response.periods.length;
+
+                document.getElementById("h0").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
+                document.getElementById("h1").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
+                document.getElementById("h2").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
+                document.getElementById("h3").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
+                document.getElementById("h4").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
+                document.getElementById("h5").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
+                document.getElementById("h6").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
+                document.getElementById("h7").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Max" + "</span>";
+                document.getElementById("h8").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Min" + "</span>";
+                document.getElementById("h9").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "Avg" + "</span>";
+                document.getElementById("h10").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainYTD" + "</span>";
+                document.getElementById("h11").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "RainMTD" + "</span>";
+
+                for (nIndex = 0; nIndex < numReturned; nIndex++) {
+                    document.getElementById("nTime_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Courier New \">" + "<b/>" + ISOTimeParseAllFields(json.response.periods[nIndex].dateTimeISO, 17) + "</span>";
+                    document.getElementById("nmaxF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.maxF.toFixed(1) + "°&nbsp;F" + "</span>";
+                    document.getElementById("nminF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.minF.toFixed(1) + "°&nbsp;F" + "</span>";
+                    document.getElementById("navgF_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].temp.avgF.toFixed(1) + "°&nbsp;F" + "</span>";
+                    document.getElementById("nytdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.ytdIN.toFixed(2) + "\"" + "</span>";
+                    document.getElementById("nmtdIN_" + nIndex).innerHTML = "<span style=\"font-size: 11pt; color: " + color + " font-family: Times New Roman\">" + json.response.periods[nIndex].prcp.mtdIN.toFixed(2) + "\"" + "</span>";
+                }
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getThreats() {
-            var threat_response, threat_Number, threat_result, threat_AnyStorms, threat_TimeStamp, threat_Phrase_Long, threat_DistanceMin, threat_DistanceMax;
-            var threat_DirectionFrom, threat_DirectionTo, threat_Approaching, threat_ApproachingSpeedMin, threat_ApproachingSpeedMax, threat_hail, threat_rotation;
-            var threat_tornadic, distanceMinMaxString, aprochingString, aprochingSpeedString, directionString, threathailString, threatrotationString, threattornadicString, blank;
-            var tctr = 0;
-
             var cUrl = "https://api.aerisapi.com/threats/" + defaultLocation + "?radius=50miles&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -6373,136 +6427,147 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            threat_response = json.response;
-                            threat_Number = threat_response.length;
-                            threat_result = json.response[0].periods[0];
-                            threat_AnyStorms = threat_result.storms;
-
-                            if (threat_Number > 3)
-                                threat_Number = 3;
-
-                            document.getElementById("spacer_19").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
-                            for (tctr = 0; tctr < 3; tctr++) {
-                                document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
-                                document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#ffffff";
-                                document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#ffffff";
-
-                                document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 0pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_Title").innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_Spacer" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-
-                                //***********************************
-
-                                document.getElementById("threat_spacerA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_DistanceMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_DirectionFromToA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_ApproachingSpeedMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                                document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-                            }
-                            document.getElementById("threat_spacerA3").innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
-
-                            if (!threat_AnyStorms) {
-                                document.getElementById('ViewStormThreats').style.display = 'none';
-                                document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#006400; font-family: Times New Roman\">" + "<b/>" + "No Storms Detected within 50 miles" + "</span>";
-                                return;
-                            }
-                            else {
-                                document.getElementById('ViewStormThreats').style.display = 'block';
-                                document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "Storms Detected within 50 miles" + "</span>";
-                                document.getElementById("threat_Title").innerHTML = "<span style=\"font-size: 16pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + "Storm Threat Detected within 50 Mile Radius" + "</span>";
-
-                                for (tctr = 0; tctr < threat_Number; tctr++) {
-                                    threat_result = json.response[tctr].periods[0];
-                                    document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
-                                    document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#FF0000";
-                                    document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#FF0000";
-                                    threat_TimeStamp = ISOTimeParseAllFields(threat_result.dateTimeISO, 15);
-                                    threat_Phrase_Long = threat_result.storms.phrase.long;
-                                    document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + "Weather Alert at:&nbsp;&nbsp;" + threat_TimeStamp + "</span>";
-                                    document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + threat_Phrase_Long + "</span>";
-
-                                    //********************************************
-
-                                    threat_Phrase_Long = threat_result.storms.phrase.long;
-                                    threat_DistanceMin = threat_result.storms.distance.minMI.toFixed(0);
-                                    threat_DistanceMax = threat_result.storms.distance.maxMI.toFixed(0);
-                                    threat_DirectionFrom = threat_result.storms.direction.from;
-                                    threat_DirectionTo = threat_result.storms.direction.to;
-                                    threat_Approaching = threat_result.storms.approaching;
-                                    threat_ApproachingSpeedMin = threat_result.storms.speed.minMPH.toFixed(0);
-                                    threat_ApproachingSpeedMax = threat_result.storms.speed.maxMPH.toFixed(0);
-                                    threat_hail = threat_result.storms.hail;
-                                    threat_rotation = threat_result.storms.rotation;
-                                    threat_tornadic = threat_result.storms.tornadic;
-
-                                    directionString = "Approaching from the&nbsp;" + threat_DirectionFrom + "&nbsp;To the&nbsp;" + threat_DirectionTo;
-                                    distanceMinMaxString = "Min Distance&nbsp;" + threat_DistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threat_DistanceMax + "&nbsp;miles";
-
-                                    if (threat_Approaching)
-                                        aprochingString = "Storm is approaching";
-                                    else
-                                        aprochingString = "Storm is not approaching";
-
-                                    aprochingSpeedString = "Min speed moving at&nbsp;" + threat_ApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threat_ApproachingSpeedMax + "&nbsp;mph";
-
-                                    if (threat_hail)
-                                        threathailString = "Hail has been detected";
-                                    else
-                                        threathailString = "Hail has not been detected";
-
-                                    if (threat_rotation)
-                                        threatrotationString = "Rotation has been detected";
-                                    else
-                                        threatrotationString = "Rotation has not been detected";
-
-                                    if (threat_tornadic)
-                                        threattornadicString = "Storm is Tornatic";
-                                    else
-                                        threattornadicString = "Storm is not Tornatic";
-
-                                    document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threat_TimeStamp + "</span>";
-                                    document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + threat_Phrase_Long + "</span>";
-                                    document.getElementById("threat_DistanceMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + distanceMinMaxString + "</span>";
-                                    document.getElementById("threat_DirectionFromToA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + directionString + "</span>";
-                                    document.getElementById("threat_ApproachingSpeedMinMaxA" + tctr).innerHTML = "<span style=\"font-13pt: 12pt; color: #000000; font-family: Times New Roman\">" + aprochingSpeedString + "</span>";
-
-                                    if (threat_hail) {
-                                        document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threathailString + "</span>";
-                                    }
-                                    else {
-                                        document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threathailString + "</span>";
-                                    }
-
-                                    if (threat_rotation) {
-                                        document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threatrotationString + "</span>";
-                                    }
-                                    else {
-                                        document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threatrotationString + "</span>";
-                                    }
-
-                                    if (threat_tornadic) {
-                                        document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threattornadicString + "</span>";
-                                    }
-                                    else {
-                                        document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threattornadicString + "</span>";
-                                    }
-                                }
-                                document.getElementById("threat_spacerA3").innerHTML = "<span style=\"font-size: 13pt; color: #ffffff; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                                document.getElementById("spacer_19").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
-                            }
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_getThreats(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_getThreats(json) {
+            var threat_response, threat_Number, threat_result, threat_AnyStorms, threat_TimeStamp, threat_Phrase_Long, threat_DistanceMin, threat_DistanceMax;
+            var threat_DirectionFrom, threat_DirectionTo, threat_Approaching, threat_ApproachingSpeedMin, threat_ApproachingSpeedMax, threat_hail, threat_rotation;
+            var threat_tornadic, distanceMinMaxString, aprochingString, aprochingSpeedString, directionString, threathailString, threatrotationString, threattornadicString, blank;
+            var tctr = 0;
+
+            if (json.success === true) {
+                threat_response = json.response;
+                threat_Number = threat_response.length;
+                threat_result = json.response[0].periods[0];
+                threat_AnyStorms = threat_result.storms;
+
+                if (threat_Number > 3)
+                    threat_Number = 3;
+
+                document.getElementById("spacer_19").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
+                for (tctr = 0; tctr < 3; tctr++) {
+                    document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
+                    document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#ffffff";
+                    document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#ffffff";
+
+                    document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 0pt; 	color: 	#000000; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_Title").innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_Spacer" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+
+                    //***********************************
+
+                    document.getElementById("threat_spacerA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_DistanceMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_DirectionFromToA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_ApproachingSpeedMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                    document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+                }
+                document.getElementById("threat_spacerA3").innerHTML = "<span style=\"font-size: 0pt; color: #ffffff; font-family: Times New Roman\">" + "" + "</span>";
+
+                if (!threat_AnyStorms) {
+                    document.getElementById('ViewStormThreats').style.display = 'none';
+                    document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#006400; font-family: Times New Roman\">" + "<b/>" + "No Storms Detected within 50 miles" + "</span>";
+                    return;
+                }
+                else {
+                    document.getElementById('ViewStormThreats').style.display = 'block';
+                    document.getElementById("StormsDetected").innerHTML = "<span style=\"font-size: 12pt; 	color: 	#FF0000; font-family: Times New Roman\">" + "Storms Detected within 50 miles" + "</span>";
+                    document.getElementById("threat_Title").innerHTML = "<span style=\"font-size: 16pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + "Storm Threat Detected within 50 Mile Radius" + "</span>";
+
+                    for (tctr = 0; tctr < threat_Number; tctr++) {
+                        threat_result = json.response[tctr].periods[0];
+                        document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
+                        document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#FF0000";
+                        document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#FF0000";
+                        threat_TimeStamp = ISOTimeParseAllFields(threat_result.dateTimeISO, 15);
+                        threat_Phrase_Long = threat_result.storms.phrase.long;
+                        document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + "Weather Alert at:&nbsp;&nbsp;" + threat_TimeStamp + "</span>";
+                        document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + threat_Phrase_Long + "</span>";
+
+                        //********************************************
+
+                        threat_Phrase_Long = threat_result.storms.phrase.long;
+                        threat_DistanceMin = threat_result.storms.distance.minMI.toFixed(0);
+                        threat_DistanceMax = threat_result.storms.distance.maxMI.toFixed(0);
+                        threat_DirectionFrom = threat_result.storms.direction.from;
+                        threat_DirectionTo = threat_result.storms.direction.to;
+                        threat_Approaching = threat_result.storms.approaching;
+                        threat_ApproachingSpeedMin = threat_result.storms.speed.minMPH.toFixed(0);
+                        threat_ApproachingSpeedMax = threat_result.storms.speed.maxMPH.toFixed(0);
+                        threat_hail = threat_result.storms.hail;
+                        threat_rotation = threat_result.storms.rotation;
+                        threat_tornadic = threat_result.storms.tornadic;
+
+                        directionString = "Approaching from the&nbsp;" + threat_DirectionFrom + "&nbsp;To the&nbsp;" + threat_DirectionTo;
+                        distanceMinMaxString = "Min Distance&nbsp;" + threat_DistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threat_DistanceMax + "&nbsp;miles";
+
+                        if (threat_Approaching)
+                            aprochingString = "Storm is approaching";
+                        else
+                            aprochingString = "Storm is not approaching";
+
+                        aprochingSpeedString = "Min speed moving at&nbsp;" + threat_ApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threat_ApproachingSpeedMax + "&nbsp;mph";
+
+                        if (threat_hail)
+                            threathailString = "Hail has been detected";
+                        else
+                            threathailString = "Hail has not been detected";
+
+                        if (threat_rotation)
+                            threatrotationString = "Rotation has been detected";
+                        else
+                            threatrotationString = "Rotation has not been detected";
+
+                        if (threat_tornadic)
+                            threattornadicString = "Storm is Tornatic";
+                        else
+                            threattornadicString = "Storm is not Tornatic";
+
+                        document.getElementById("threat_TimeStampA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threat_TimeStamp + "</span>";
+                        document.getElementById("threat_Phrase_LongA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + threat_Phrase_Long + "</span>";
+                        document.getElementById("threat_DistanceMinMaxA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + distanceMinMaxString + "</span>";
+                        document.getElementById("threat_DirectionFromToA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + directionString + "</span>";
+                        document.getElementById("threat_ApproachingSpeedMinMaxA" + tctr).innerHTML = "<span style=\"font-13pt: 12pt; color: #000000; font-family: Times New Roman\">" + aprochingSpeedString + "</span>";
+
+                        if (threat_hail) {
+                            document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threathailString + "</span>";
+                        }
+                        else {
+                            document.getElementById("threat_hailA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threathailString + "</span>";
+                        }
+
+                        if (threat_rotation) {
+                            document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threatrotationString + "</span>";
+                        }
+                        else {
+                            document.getElementById("threat_rotationA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threatrotationString + "</span>";
+                        }
+
+                        if (threat_tornadic) {
+                            document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #FF0000; font-family: Times New Roman\">" + "<b/>" + threattornadicString + "</span>";
+                        }
+                        else {
+                            document.getElementById("threat_tornadicA" + tctr).innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + threattornadicString + "</span>";
+                        }
+                    }
+                    document.getElementById("threat_spacerA3").innerHTML = "<span style=\"font-size: 13pt; color: #ffffff; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                    document.getElementById("spacer_19").innerHTML = "<span style=\"font-size: 13pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
+                }
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6515,15 +6580,22 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            wForecsst = json.response[0].phrases.long;
-                            document.getElementById("Wx_shortTerm").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + wForecsst + "</span>";
-                        }
-                        else {
-                            alert('An error occurred: ' + json.error.description);
-                        }
+                        callback: callback_Phrases_Hours(json);
                     });
             });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function callback_Phrases_Hours(json) {
+
+            if (json.success === true) {
+                wForecsst = json.response[0].phrases.long;
+                document.getElementById("Wx_shortTerm").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + wForecsst + "</span>";
+            }
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6551,22 +6623,30 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
-                            Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
-                            document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
-                            displayAll();
-                        }
-                        else {
-                            alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                            defaultLocation = "Plano,TX";
-                            displayAll();
-                        }
+                        callback: callback_Places(json);
                     });
             });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function callback_Places(json) {
+
+            if (json.success === true) {
+                defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
+                Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
+                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
+                displayAll();
+            }
+            else {
+                alert("Your location was not determined, switching to host city Plano, Tx. 75075");
+                defaultLocation = "Plano,TX";
+                displayAll();
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6591,23 +6671,31 @@
                     cache: false
                 })
                     .done(function (json) {
-                        if (json.success === true) {
-                            defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
-                            Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
-                            document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
-                            document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
-                            displayAll();
-                        }
-                        else {
-                            localStorage.removeItem('PBW_defaultLocation');
-                            alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                            defaultLocation = "Plano,TX";
-                            displayAll();
-                        }
+                        callback: callback_savedPlace(json);
                     });
             });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function callback_savedPlace(json) {
+
+            if (json.success === true) {
+                defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
+                Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
+                document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
+                document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + Global_City_State_Country + "</span>";
+                displayAll();
+            }
+            else {
+                localStorage.removeItem('PBW_defaultLocation');
+                alert("Your location was not determined, switching to host city Plano, Tx. 75075");
+                defaultLocation = "Plano,TX";
+                displayAll();
+            }
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
