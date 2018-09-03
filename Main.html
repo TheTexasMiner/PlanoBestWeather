@@ -50,12 +50,12 @@
                                             </table>
 
 
-                                    <div id="currentVersion" style="-webkit-padding-start: 0">
-                                        <font size="3" face="Times New Roman" style="-webkit-padding-start: 0">
-                                            currentVersion
-                                        </font>
-                                    </div>
-                                    </div>
+                                            <div id="currentVersion" style="-webkit-padding-start: 0">
+                                                <font size="3" face="Times New Roman" style="-webkit-padding-start: 0">
+                                                    currentVersion
+                                                </font>
+                                            </div>
+                                        </div>
                                     </font>
                                 </td>
                             </tr>
@@ -4880,28 +4880,52 @@
             </tr>
         </table>
     </div>
-    <!-- Default Statcounter code for Main.html http://www.PlanoBestWeather.com/Main.html -->
+    <!-- Default Statcounter code for Main.html
+    http://www.PlanoBestWeather.com/Main.html -->
     <script type="text/javascript">
         var sc_project = 11305201;
         var sc_invisible = 0;
         var sc_security = "0fdb534d";
         var sc_https = 1;
-        var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
-        document.write("<sc" + "ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></" + "script>");
+        var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+        document.write("<sc" + "ript type='text/javascript' src='" +
+            scJsHost +
+            "statcounter.com/counter/counter.js'></" + "script>");
     </script>
     <noscript>
         <div class="statcounter">
-
-            <a title="Web Analytics Made Easy - StatCounter" href="http://statcounter.com/" target="_blank">
-
-                <img class="statcounter" src="//c.statcounter.com/11305201/0/0fdb534d/0/" alt="Web Analytics Made Easy - StatCounter" />
-
+            <a title="web statistics"
+               href="http://statcounter.com/" target="_blank">
+                <img class="statcounter"
+                     src="//c.statcounter.com/11305201/0/0fdb534d/0/" alt="webstatistics">
             </a>
         </div>
-
     </noscript>
     <!-- End of Statcounter Code -->
     <!--*********************************************************************************************************************************************************************************************-->
+    <!--*********************************************************************************************************************************************************************************************-->
+    <!--*********************************************************************************************************************************************************************************************-->
+
+    <script type="text/javascript">
+        function Example() {
+            var cUrl = "";
+            jQuery(document).ready(function ($) {
+                $.ajax({
+                    url: cUrl,
+                    cache: false
+                })
+                    .done(function (json) {
+                        if (json.success === true) {
+
+                        }
+                        else {
+                            alert('An error occurred: ' + json.error.description);
+                        }
+                    });
+            });
+        }
+    </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
@@ -4943,8 +4967,8 @@
         Flag_Estimated = false;
 
         debugMain = Off;
-        
-        currentVersion = "Beta Version  3.1";
+
+        currentVersion = "Release Version  3.2.5";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -4959,121 +4983,103 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function addToCurrentDate(days) {
-            var CurrentHour = "";
-            var CurrentMinute = "";
-            var CurrentSecond = "";
-            var FuturedayOfWeekLong = "";
-            var CurrentdayOfWeekLong = "";
-            var date = new Date();
-            var newdate = new Date(date);
-            CurrentndayOfWeek = date.getDay();
-            newdate.setDate(newdate.getDate() + days); 			// minus or plus days
-            var nd = new Date(newdate);
+            var date, nd, newTestDate, currentHour, currentMonth, currentDay, currentMinute, currentYear;
+            var currentSecond, futureDoLong, recurrentOfWeekLong, recurrentOfWeek;
 
-            var CurrentMonth = date.getMonth() + 1; 			// Months are zero based, add 1
-            var CurrentDay = date.getDate();
-            var CurrentYear = date.getFullYear();
-            var nCurrentHour = date.getHours();
-            var nCurrentMinute = date.getMinutes();
-            var nCurrentSecond = date.getSeconds();
-            if (nCurrentHour < 10)
-                CurrentHour = "0" + nCurrentHour;
-            else
-                CurrentHour = nCurrentHour;
-            if (nCurrentMinute < 10)
-                CurrentMinute = "0" + nCurrentMinute;
-            else
-                CurrentMinute = nCurrentMinute;
-            if (nCurrentSecond < 10)
-                CurrentSecond = "0" + nCurrentSecond;
-            else
-                CurrentSecond = nCurrentSecond;
-            if (CurrentMonth < 10)
-                CurrentMonth = "0" + CurrentMonth;
-            else
-                CurrentMonth = CurrentMonth;
-            if (CurrentDay < 10)
-                CurrentDay = "0" + CurrentDay;
-            else
-                CurrentDay = CurrentDay;
-            var FutureMonth = nd.getMonth() + 1;				// Months are zero based, add 1
-            var FutureDay = nd.getDate();
-            var FutureYear = nd.getFullYear();
-            var FuturendayOfWeek = nd.getDay();
+            date = new Date();
+            newTestDate = new Date(date);
+            recurrentOfWeek = date.getDay();
+            newTestDate.setDate(newTestDate.getDate() + days);
+            nd = new Date(newTestDate);
 
-            switch (CurrentndayOfWeek) {
+            currentYear = date.getFullYear();
+            currentMonth = date.getMonth() + 1;
+            currentDay = date.getDate();
+            currentHour = date.getHours();
+            currentMinute = date.getMinutes();
+            currentSecond = date.getSeconds();
+
+            if (currentHour.toString().length < 2)
+                currentHour = "0" + currentHour;
+
+            if (currentMinute.toString().length < 3)
+                currentMinute = "0" + currentMinute;
+
+            if (currentSecond.toString().length < 2)
+                currentSecond = "0" + currentSecond;
+
+            if (currentMonth.toString().length < 2)
+                currentMonth = "0" + currentMonth;
+
+            if (currentDay.toString().length < 2)
+                currentDay = "0" + currentDay;
+
+            var futureMonth = nd.getMonth() + 1;
+            var futureDay = nd.getDate();
+            var futureYear = nd.getFullYear();
+            var futureOfWeek = nd.getDay();
+
+            switch (recurrentOfWeek) {
                 case 0:
-                    CurrentdayOfWeekLong = "Sunday";
+                    recurrentOfWeekLong = "Sunday";
                     break;
                 case 1:
-                    CurrentdayOfWeekLong = "Monday";
+                    recurrentOfWeekLong = "Monday";
                     break;
                 case 2:
-                    CurrentdayOfWeekLong = "Tuesday";
+                    recurrentOfWeekLong = "Tuesday";
                     break;
                 case 3:
-                    CurrentdayOfWeekLong = "Wednesday";
+                    recurrentOfWeekLong = "Wednesday";
                     break;
                 case 4:
-                    CurrentdayOfWeekLong = "Thursday";
+                    recurrentOfWeekLong = "Thursday";
                     break;
                 case 5:
-                    CurrentdayOfWeekLong = "Friday";
+                    recurrentOfWeekLong = "Friday";
                     break;
                 case 6:
-                    CurrentdayOfWeekLong = "Saturday";
+                    recurrentOfWeekLong = "Saturday";
                     break;
             }
 
-            switch (FuturendayOfWeek) {
+            switch (futureOfWeek) {
                 case 0:
-                    FuturedayOfWeekLong = "Sunday";
+                    futureDoLong = "Sunday";
                     break;
                 case 1:
-                    FuturedayOfWeekLong = "Monday";
+                    futureDoLong = "Monday";
                     break;
                 case 2:
-                    FuturedayOfWeekLong = "Tuesday";
+                    futureDoLong = "Tuesday";
                     break;
                 case 3:
-                    FuturedayOfWeekLong = "Wednesday";
+                    futureDoLong = "Wednesday";
                     break;
                 case 4:
-                    FuturedayOfWeekLong = "Thursday";
+                    futureDoLong = "Thursday";
                     break;
                 case 5:
-                    FuturedayOfWeekLong = "Friday";
+                    futureDoLong = "Friday";
                     break;
                 case 6:
-                    FuturedayOfWeekLong = "Saturday";
+                    futureDoLong = "Saturday";
                     break;
             }
-            if (CurrentMonth < 10)								// Zero pad for 2 places
-                var nCurrentMonth = "0" + CurrentMonth;
-            else
-                nCurrentMonth = CurrentMonth;
-            if (CurrentDay < 10)								// Zero pad for 2 places
-                var nCurrentDay = "0" + CurrentDay;
-            else
-                nCurrentDay = CurrentDay;
-            if (FutureMonth < 10)								// Zero pad for 2 places
-                var nFutureMonth = "0" + FutureMonth;
-            else
-                nFutureMonth = FutureMonth;
-            if (FutureDay < 10)									// Zero pad for 2 places
-                var nFutureDay = "0" + FutureDay;
-            else
-                nFutureDay = FutureDay;
-            if (FutureMonth < 10)
-                FutureMonth = "0" + FutureMonth;
-            else
-                FutureMonth = FutureMonth;
-            if (FutureDay < 10)
-                FutureDay = "0" + FutureDay;
-            else
-                FutureDay = FutureDay;
-            return CurrentMonth + "," + CurrentDay + "," + CurrentYear + "," + FutureMonth + "," + FutureDay + "," + FutureYear +
-                "," + CurrentHour + "," + CurrentMinute + "," + CurrentSecond + "," + CurrentdayOfWeekLong + "," + FuturedayOfWeekLong;
+            if (currentMonth.toString().length < 2)
+                currentMonth = "0" + currentMonth;
+
+            if (currentDay.toString().length < 2)
+                currentDay = "0" + currentDay;
+
+            if (futureMonth.toString().length < 2)
+                futureMonth = "0" + futureMonth;
+
+            if (futureDay.toString().length < 2)
+                futureDay = "0" + futureDay;
+
+            return currentMonth + "," + currentDay + "," + currentYear + "," + futureMonth + "," + futureDay + "," + futureYear +
+                "," + currentHour + "," + currentMinute + "," + currentSecond + "," + recurrentOfWeekLong + "," + futureDoLong;
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5086,26 +5092,24 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
-        function ISOTimeParseAllFields(passedIsOdate, type) {
+        function ISOTimeParseAllFields(passedIsDate, type) {
             var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-            var a = new Date(passedIsOdate);
+            var a = new Date(passedIsDate);
             var fullYear = a.getFullYear();
             var shortYear = a.getYear();
 
-            var NumberMonthNumber = a.getMonth();
+            var numberMonthNumber = a.getMonth();
 
             var dayOfMonthNumber = a.getDate();
 
             var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-            if (hour.toString().length < 2)
-                hour = "0" + hour;
 
             var minute = a.getMinutes();
             if (minute.toString().length < 2)
@@ -5115,16 +5119,16 @@
             if (second.toString().length < 2)
                 second = "0" + second;
 
-            var TextMonthNameLong = monthNameLong[NumberMonthNumber];
+            var textMonthNameLong = monthNameLong[numberMonthNumber];
 
-            var TextMonthNameShort = monthNameShort[NumberMonthNumber];
+            var textMonthNameShort = monthNameShort[numberMonthNumber];
 
-            NumberMonthNumber++;
-            if (NumberMonthNumber.toString().length < 2)
-                NumberMonthNumber = "0" + NumberMonthNumber;
+            numberMonthNumber++;
+            if (numberMonthNumber.toString().length < 2)
+                numberMonthNumber = "0" + numberMonthNumber;
 
-            var TextDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
-            var TextDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
+            var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
+            var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
 
             if (dayOfMonthNumber.toString().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
@@ -5132,6 +5136,8 @@
             /************************************/
 
             // Hour + Minutes + am pm
+            var newHour;
+
             if (hour === 0) {
                 newHour = "12:" + minute + " am";
             }
@@ -5148,75 +5154,78 @@
             /************************************/
 
             // Hour Only, No minutes + am pm
+            var newHourOnly;
+
             if (hour === 0) {
-                var newHourOlny = "12:00 am";
+                newHourOnly = "12:00 am";
             }
             else if (hour === 12) {
-                newHourOlny = "12:00 pm";
+                newHourOnly = "12:00 pm";
             }
             else if (hour < 12) {
-                newHourOlny = hour + ":00 am";
+                newHourOnly = hour + ":00 am";
             }
             else {
-                newHourOlny = (hour - 12) + ":00 pm";
+                newHourOnly = (hour - 12) + ":00 pm";
             }
 
             /************************************/
 
+            var tString;
             switch (type) {
                 case 1:
                     // Friday July 13 2018
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 2:
                     // Fri September 13 2018
-                    tString = TextDayOfWeekShort + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 3:
                     // Fri Sept 13 2018
-                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 4:
                     // Friday Sept 13 2018
-                    tString = TextDayOfWeekLong + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 5:
                     // Friday 07/04/2018
-                    tString = TextDayOfWeekLong + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
+                    tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 6:
                     // Fri 07/04/18
-                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
+                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 7:
                     // Fri 07/04
-                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber;
+                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 8:
                     // 07/04/2018
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 9:
                     // 07/04/18
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 10:
                     // 07/04
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 11:
                     // 07
-                    tString = NumberMonthNumber;
+                    tString = numberMonthNumber;
                     break;
 
                 case 12:
@@ -5226,27 +5235,27 @@
 
                 case 13:
                     // January
-                    tString = TextMonthNameLong;
+                    tString = textMonthNameLong;
                     break;
 
                 case 14:
                     // Jan
-                    tString = TextMonthNameShort;
+                    tString = textMonthNameShort;
                     break;
 
                 case 15:
                     // 07/13/2018  9:09 pm
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
 
                 case 16:
                     // 9:00 pm (Hour Only, no minutes)
-                    tString = newHourOlny;
+                    tString = newHourOnly;
                     break;
 
                 case 17:
                     // Fri Jul 13
-                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
                     break;
 
                 case 20:
@@ -5256,22 +5265,22 @@
 
                 case 21:
                     // Friday July 13
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 22:
                     // Friday July 13
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 23:
                     // Thu 9:00 PM
-                    tString = TextDayOfWeekShort + " " + newHourOlny;
+                    tString = textDayOfWeekShort + " " + newHourOnly;
                     break;
 
                 case 24:
                     // Thu
-                    tString = TextDayOfWeekShort;
+                    tString = textDayOfWeekShort;
                     break;
 
                 default:
@@ -5283,8 +5292,8 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
-        function UnixTimeParseAll(UNIX_timestamp, type) {
-            var a = new Date(UNIX_timestamp * 1000);
+        function UnixTimeParseAll(unixTimestamp, type) {
+            var a = new Date(unixTimestamp * 1000);
 
             var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -5292,19 +5301,16 @@
             var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-            var a = new Date(passedIsOdate);
             var fullYear = a.getFullYear();
             var shortYear = a.getYear();
 
-            var NumberMonthNumber = a.getMonth();
+            var numberMonthNumber = a.getMonth();
 
             var dayOfMonthNumber = a.getDate();
 
             var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-            if (hour.toString().length < 2)
-                hour = "0" + hour;
 
             var minute = a.getMinutes();
             if (minute.toString().length < 2)
@@ -5314,16 +5320,16 @@
             if (second.toString().length < 2)
                 second = "0" + second;
 
-            var TextMonthNameLong = monthNameLong[NumberMonthNumber];
+            var textMonthNameLong = monthNameLong[numberMonthNumber];
 
-            var TextMonthNameShort = monthNameShort[NumberMonthNumber];
+            var textMonthNameShort = monthNameShort[numberMonthNumber];
 
-            NumberMonthNumber++;
-            if (NumberMonthNumber.toString().length < 2)
-                NumberMonthNumber = "0" + NumberMonthNumber;
+            numberMonthNumber++;
+            if (numberMonthNumber.toString().length < 2)
+                numberMonthNumber = "0" + numberMonthNumber;
 
-            var TextDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
-            var TextDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
+            var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
+            var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
 
             if (dayOfMonthNumber.toString().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
@@ -5331,6 +5337,8 @@
             /************************************/
 
             // Hour + Minutes + am pm
+            var newHour;
+
             if (hour === 0) {
                 newHour = "12:" + minute + " am";
             }
@@ -5347,75 +5355,78 @@
             /************************************/
 
             // Hour Only, No minutes + am pm
+            var newHourOnly;
+
             if (hour === 0) {
-                var newHourOlny = "12:00 am";
+                newHourOnly = "12:00 am";
             }
             else if (hour === 12) {
-                newHourOlny = "12:00 pm";
+                newHourOnly = "12:00 pm";
             }
             else if (hour < 12) {
-                newHourOlny = hour + ":00 am";
+                newHourOnly = hour + ":00 am";
             }
             else {
-                newHourOlny = (hour - 12) + ":00 pm";
+                newHourOnly = (hour - 12) + ":00 pm";
             }
 
             /************************************/
 
+            var tString;
             switch (type) {
                 case 1:
                     // Friday July 13 2018
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 2:
                     // Fri September 13 2018
-                    tString = TextDayOfWeekShort + " " + TextMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 3:
                     // Fri Sept 13 2018
-                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 4:
                     // Friday Sept 13 2018
-                    tString = TextDayOfWeekLong + " " + TextMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
+                    tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
 
                 case 5:
                     // Friday 07/04/2018
-                    tString = TextDayOfWeekLong + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
+                    tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 6:
                     // Fri 07/04/18
-                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
+                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 7:
                     // Fri 07/04
-                    tString = TextDayOfWeekShort + " " + NumberMonthNumber + "/" + dayOfMonthNumber;
+                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 8:
                     // 07/04/2018
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
 
                 case 9:
                     // 07/04/18
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
 
                 case 10:
                     // 07/04
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
 
                 case 11:
                     // 07
-                    tString = NumberMonthNumber;
+                    tString = numberMonthNumber;
                     break;
 
                 case 12:
@@ -5425,27 +5436,27 @@
 
                 case 13:
                     // January
-                    tString = TextMonthNameLong;
+                    tString = textMonthNameLong;
                     break;
 
                 case 14:
                     // Jan
-                    tString = TextMonthNameShort;
+                    tString = textMonthNameShort;
                     break;
 
                 case 15:
                     // 07/13/2018  9:09 pm
-                    tString = NumberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
+                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
 
                 case 16:
                     // 9:00 pm (Hour Only, no minutes)
-                    tString = newHourOlny;
+                    tString = newHourOnly;
                     break;
 
                 case 17:
                     // Fri Jul 13
-                    tString = TextDayOfWeekShort + " " + TextMonthNameShort + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
                     break;
 
                 case 20:
@@ -5455,22 +5466,22 @@
 
                 case 21:
                     // Friday July 13
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 22:
                     // Friday July 13
-                    tString = TextDayOfWeekLong + " " + TextMonthNameLong + " " + dayOfMonthNumber;
+                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
 
                 case 23:
                     // Thu 9:00 PM
-                    tString = TextDayOfWeekShort + " " + newHourOlny;
+                    tString = textDayOfWeekShort + " " + newHourOnly;
                     break;
 
                 case 24:
                     // Thu
-                    tString = TextDayOfWeekShort;
+                    tString = textDayOfWeekShort;
                     break;
 
                 default:
@@ -5494,7 +5505,7 @@
             tempLoc = defaultLocation;
             tempLoc = tempLoc.toUpperCase();
 
-            if ((tempLoc.indexOf("PLANO, TX") >= 0)) {
+            if ((tempLoc.indexOf("PLANO,TX") >= 0)) {
                 global_PWS_ID = "PWS_3183437707";
                 ObservationsRain_PWS();
             }
@@ -5538,6 +5549,7 @@
             var monthDate = addToCurrentDate(-7);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
+
             var returnedStr = addToCurrentDate(0);
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
@@ -5545,16 +5557,19 @@
             var cUrl = "https://api.aerisapi.com/precip/summary/" + defaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             numReturned = json.response[0].periods.length;
 
                             if (numReturned < 3) {
                                 Flag_Estimated = false;
                                 global_Est_rainToday = 0;
                                 global_Est_rainYesterday = 0;
+                                // alert("ObservationsRainEstimated() -> Flag_Estimated -> " + Flag_Estimated);
+
                             }
                             else {
                                 global_Est_rainYesterday = json.response[0].periods[(numReturned - 2)].summary.precip.totalIN;
@@ -5586,13 +5601,18 @@
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
+
+            //     $.ajax({url: "...", cache: false}).done(function( data ) {
+            //         // data contains result
+
             var cUrl = "https://api.aerisapi.com/observations/summary/" + global_PWS_ID + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             numReturned = json.response.periods.length;
 
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
@@ -5650,10 +5670,11 @@
             var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + defaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             numReturned = json.response[0].periods.length;
 
                             document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
@@ -5683,13 +5704,16 @@
                             }
                             else {
                                 // Both Estimated and Local data is OK
+                                //if (!Flag_Estimated)
+                                //    alert("ObservationsRainSummary() -> Flag_Estimated -> " + Flag_Estimated);
+
                                 if (Flag_Estimated && Local_Flag_Estimated) {
                                     if (global_rainToday >= global_Est_rainToday) {
                                         document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                                         document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainToday.toFixed(2) + "\"" + "</span>";
                                     }
                                     else {
-                                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today *" + "</span>";
+                                        document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
                                         document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
                                     }
 
@@ -5698,7 +5722,7 @@
                                         document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_rainYesterday.toFixed(2) + "\"" + "</span>";
                                     }
                                     else {
-                                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday *" + "</span>";
+                                        document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
                                         document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
                                     }
                                 }
@@ -5714,10 +5738,10 @@
 
                                 // Estimated Data id Good, Local Data Is Bad, Use Estimated Data Only
                                 else if (Flag_Estimated && !Local_Flag_Estimated) {
-                                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today *" + "</span>";
+                                    document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today " + "&middot;" + "</span>";
                                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainToday.toFixed(2) + "\"" + "</span>";
 
-                                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday *" + "</span>";
+                                    document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday " + "&middot;" + "</span>";
                                     document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + global_Est_rainYesterday.toFixed(2) + "\"" + "</span>";
                                 }
 
@@ -5757,10 +5781,11 @@
             var cUrl = "https://api.aerisapi.com/observations/" + global_PWS_ID + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             var numReturns = json.response.length;
                             index = 0;
 
@@ -5877,10 +5902,11 @@
             var cUrl = "https://api.aerisapi.com/observations/closest?p=" + defaultLocation + "&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             var numReturns = json.response.length;
                             var city = capitalizeEachWord(json.response[index].place.name);
                             var state = capitalizeEachWord(json.response[index].place.state);
@@ -6012,10 +6038,11 @@
             var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=1hr&limit=72&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             var hourResults = json.response[0].periods.length;
                             if (hourResults >= 25)
                                 hourResults = 25;
@@ -6078,10 +6105,11 @@
             var cUrl = "https://api.aerisapi.com/lightning/" + defaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             var lRetuens = json.response.length - 1;
                             if (json.response.length > 10)
                                 newCount = 10;
@@ -6218,10 +6246,11 @@
             var cUrl = "https://api.aerisapi.com/forecasts/" + defaultLocation + "?filter=daynight&limit=14&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             index = 0;
                             returnedNum = json.response[0].periods.length;
 
@@ -6293,10 +6322,11 @@
             var cUrl = "https://api.aerisapi.com/normals/" + defaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             numReturned = json.response.periods.length;
 
                             document.getElementById("h0").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + "" + "</span>";
@@ -6339,10 +6369,11 @@
             var cUrl = "https://api.aerisapi.com/threats/" + defaultLocation + "?radius=50miles&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             threat_response = json.response;
                             threat_Number = threat_response.length;
                             threat_result = json.response[0].periods[0];
@@ -6480,10 +6511,11 @@
             var cUrl = "https://api.aerisapi.com/phrases/summary?p=" + defaultLocation + "&limit=8&fields=phrases.long&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
+                        if (json.success === true) {
                             wForecsst = json.response[0].phrases.long;
                             document.getElementById("Wx_shortTerm").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + wForecsst + "</span>";
                         }
@@ -6515,11 +6547,12 @@
             var cUrl = "https://api.aerisapi.com/places/closest?p=:auto&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
-                            defaultLocation = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim();
+                        if (json.success === true) {
+                            defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
                             Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
                             document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
                             document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
@@ -6529,7 +6562,7 @@
                         }
                         else {
                             alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                            defaultLocation = "Plano, TX";
+                            defaultLocation = "Plano,TX";
                             displayAll();
                         }
                     });
@@ -6542,7 +6575,7 @@
             var locParts = localStorage.getItem('PBW_defaultLocation').split(',');
             var part_1 = locParts[0].trim();
             var part_2 = locParts[1].trim();
-            var fullLocal = part_1 + ", " + part_2;
+            var fullLocal = part_1 + "," + part_2;
             localStorage.setItem('PBW_defaultLocation', fullLocal);
             defaultLocation = fullLocal;
             savedPlace();
@@ -6554,11 +6587,12 @@
             var cUrl = "https://api.aerisapi.com/places/closest?p=" + defaultLocation + "&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
-                    url: cUrl
+                    url: cUrl,
+                    cache: false
                 })
                     .done(function (json) {
-                        if (json.success == true) {
-                            defaultLocation = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim();
+                        if (json.success === true) {
+                            defaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
                             Global_City_State_Country = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
                             document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
                             document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + Global_City_State_Country + "</span>";
@@ -6569,7 +6603,7 @@
                         else {
                             localStorage.removeItem('PBW_defaultLocation');
                             alert("Your location was not determined, switching to host city Plano, Tx. 75075");
-                            defaultLocation = "Plano, TX";
+                            defaultLocation = "Plano,TX";
                             displayAll();
                         }
                     });
@@ -6735,7 +6769,7 @@
             search.on('select', function (e) {
                 var p = e.data.place;
                 var stateOrCountry = (p.place.state) ? p.place.state : p.place.country;
-                Global_City_State_Country = p.place.name.trim() + ", " + stateOrCountry.trim();
+                Global_City_State_Country = p.place.name.trim() + "," + stateOrCountry.trim();
                 defaultLocation = Global_City_State_Country;
                 displayAll();
             });
