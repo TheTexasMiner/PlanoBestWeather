@@ -4905,51 +4905,49 @@
     <!-- End of Statcounter Code -->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
-    <!--*********************************************************************************************************************************************************************************************-->
-    <!--************
-        <script type="text/javascript">
-            function Example() {
-                var cUrl = "";
-                jQuery(document).ready(function ($) {
-                    $.ajax({
-                        url: cUrl,
-                        cache: false,
-                        async: false
-                    })
-                        .done(function (json) {
-                            if (json.success === true) {
+    <!--*********************************************************************************************************************************************************************************************
 
-                            }
-                            else {
-                                alert('An error occurred: ' + json.error.description);
-                            }
-                        });
-                });
+    <script type="text/javascript">
+        function Example() {
+
+            var cUrl = "https://api.aerisapi.com/precip/summary/" + defaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            jQuery(document).ready(function ($) {
+                $.ajax({
+                    url: cUrl,
+                    cache: false
+                })
+                    .done(function (json) {
+                        callback: callback_Example(json);
+                    });
+            });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function callback_Example(json) {
+            if (json.success === true) {
+                numReturned = json.response.periods.length;
+
             }
-        </script>
+            else {
+                alert('An error occurred: ' + json.error.description);
+            }
+        }
+    </script>
 
-        function getData() {
-        $.ajax({
-            url : 'example.com',
-            type: 'GET',
-            success : handleData
-        })
-    }
 
-    function handleData(data) {
-        alert(data);
-        //do some stuff
-    }
-
-    **********-->
+    *********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
-    <!--*********************************************************************************************************************************************************************************************-->
+
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
         defaultLocation = "";
         Global_City_State_Country = "";
         globalLatLon = "";
+
+        GlobalDaysBack = 2;
 
         global_Est_rainToday = 0;
         global_Est_rainYesterday = 0;
@@ -4984,7 +4982,7 @@
 
         debugMain = Off;
 
-        currentVersion = "Beta Version  3.2.6";
+        currentVersion = "Beta Version  3.2.7";
 
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -5015,19 +5013,19 @@
             currentMinute = date.getMinutes();
             currentSecond = date.getSeconds();
 
-            if (currentHour.toString().length < 2)
+            if (currentHour.toString().trim().length < 2)
                 currentHour = "0" + currentHour;
 
-            if (currentMinute.toString().length < 3)
+            if (currentMinute.toString().trim().length < 3)
                 currentMinute = "0" + currentMinute;
 
-            if (currentSecond.toString().length < 2)
+            if (currentSecond.toString().trim().length < 2)
                 currentSecond = "0" + currentSecond;
 
-            if (currentMonth.toString().length < 2)
+            if (currentMonth.toString().trim().length < 2)
                 currentMonth = "0" + currentMonth;
 
-            if (currentDay.toString().length < 2)
+            if (currentDay.toString().trim().length < 2)
                 currentDay = "0" + currentDay;
 
             var futureMonth = nd.getMonth() + 1;
@@ -5082,16 +5080,16 @@
                     futureDoLong = "Saturday";
                     break;
             }
-            if (currentMonth.toString().length < 2)
+            if (currentMonth.toString().trim().length < 2)
                 currentMonth = "0" + currentMonth;
 
-            if (currentDay.toString().length < 2)
+            if (currentDay.toString().trim().length < 2)
                 currentDay = "0" + currentDay;
 
-            if (futureMonth.toString().length < 2)
+            if (futureMonth.toString().trim().length < 2)
                 futureMonth = "0" + futureMonth;
 
-            if (futureDay.toString().length < 2)
+            if (futureDay.toString().trim().length < 2)
                 futureDay = "0" + futureDay;
 
             return currentMonth + "," + currentDay + "," + currentYear + "," + futureMonth + "," + futureDay + "," + futureYear +
@@ -5128,11 +5126,11 @@
             var hour = a.getHours();
 
             var minute = a.getMinutes();
-            if (minute.toString().length < 2)
+            if (minute.toString().trim().length < 2)
                 minute = "0" + minute;
 
             var second = a.getSeconds();
-            if (second.toString().length < 2)
+            if (second.toString().trim().length < 2)
                 second = "0" + second;
 
             var textMonthNameLong = monthNameLong[numberMonthNumber];
@@ -5140,13 +5138,13 @@
             var textMonthNameShort = monthNameShort[numberMonthNumber];
 
             numberMonthNumber++;
-            if (numberMonthNumber.toString().length < 2)
+            if (numberMonthNumber.toString().trim().length < 2)
                 numberMonthNumber = "0" + numberMonthNumber;
 
             var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
             var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
 
-            if (dayOfMonthNumber.toString().length < 2)
+            if (dayOfMonthNumber.toString().trim().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
 
             /************************************/
@@ -5329,11 +5327,11 @@
             var hour = a.getHours();
 
             var minute = a.getMinutes();
-            if (minute.toString().length < 2)
+            if (minute.toString().trim().length < 2)
                 minute = "0" + minute;
 
             var second = a.getSeconds();
-            if (second.toString().length < 2)
+            if (second.toString().trim().length < 2)
                 second = "0" + second;
 
             var textMonthNameLong = monthNameLong[numberMonthNumber];
@@ -5341,13 +5339,13 @@
             var textMonthNameShort = monthNameShort[numberMonthNumber];
 
             numberMonthNumber++;
-            if (numberMonthNumber.toString().length < 2)
+            if (numberMonthNumber.toString().trim().length < 2)
                 numberMonthNumber = "0" + numberMonthNumber;
 
             var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
             var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
 
-            if (dayOfMonthNumber.toString().length < 2)
+            if (dayOfMonthNumber.toString().trim().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
 
             /************************************/
@@ -5558,7 +5556,7 @@
     <script type="text/javascript">
         function ObservationsRainEstimated() {
 
-            var monthDate = addToCurrentDate(-7);
+            var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
 
@@ -5579,7 +5577,6 @@
         }
     </script>
 
-
     <script type="text/javascript">
         function callback_ObservationsRainEstimated(json) {
 
@@ -5590,7 +5587,7 @@
             if (json.success === true) {
                 var numReturned = json.response[0].periods.length;
 
-                if (numReturned < 3) {
+                if (numReturned < GlobalDaysBack) {
                     Flag_Estimated = false;
                     global_Est_rainToday = 0;
                     global_Est_rainYesterday = 0;
@@ -5612,7 +5609,7 @@
     <script type="text/javascript">
         function ObservationsRain_PWS() {
 
-            var monthDate = addToCurrentDate(-7);
+            var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
 
@@ -5633,7 +5630,6 @@
         }
     </script>
 
-
     <script type="text/javascript">
         function callback_ObservationsRain_PWS(json) {
             if (json.success === true) {
@@ -5646,7 +5642,7 @@
                 document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                 document.getElementById("Wx_24Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Yesterday" + "</span>";
 
-                if (numReturned < 3) {
+                if (numReturned < GlobalDaysBack) {
                     local_PWS = false;
                     document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
                     document.getElementById("Wx_24Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
@@ -5677,7 +5673,7 @@
     <script type="text/javascript">
         function ObservationsRainSummary() {
 
-            var monthDate = addToCurrentDate(-7);
+            var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
 
@@ -5716,7 +5712,7 @@
                 document.getElementById("Wx_Rain").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "Rain Today" + "</span>";
                 document.getElementById("Wx_Rain_data").innerHTML = "<span style=\"font-size: 12pt; color: #000000; font-family: Times New Roman\">" + "--" + "</span>";
 
-                if (numReturned < 3) {
+                if (numReturned < GlobalDaysBack) {
                     Local_Flag_Estimated = false;
                     global_rainToday = 0;
                     global_rainYesterday = 0;
@@ -6629,7 +6625,6 @@
         }
     </script>
 
-
     <script type="text/javascript">
         function callback_Places(json) {
 
@@ -6676,7 +6671,6 @@
             });
         }
     </script>
-
 
     <script type="text/javascript">
         function callback_savedPlace(json) {
