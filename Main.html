@@ -50,9 +50,9 @@
                                             </table>
 
 
-                                            <div id="currentVersion" style="-webkit-padding-start: 0">
+                                            <div id="GlobalCurrentVersion" style="-webkit-padding-start: 0">
                                                 <font size="3" face="Times New Roman" style="-webkit-padding-start: 0">
-                                                    currentVersion
+                                                    GlobalCurrentVersion
                                                 </font>
                                             </div>
                                         </div>
@@ -4943,45 +4943,39 @@
 
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
-        GlobalDefaultLocation = "";
-        GlobalCityStateCountry = "";
-        GlobalLatLon = "";
-
-        GlobalDaysBack = 2;
-
-        GlobalEstRainToday = 0;
-        GlobalEstRainYesterday = 0;
-
-        GlobalRainToday = 0;
-        GlobalRainYesterday = 0;
-
-        GlobalPWSid = "";
-
         On = true;
         Off = false;
 
-        Flag_ObservationsRainEstimated = On;
-        Flag_smallMap1 = On;
-        Flag_LargeMap1 = On;
-        Flag_Phrases_Hours = On;
-        Flag_getThreats = On;
-        Flag_Weather_48Hours = On;
-        Flag_advisoriesDisplay = On;
-        Flag_airQualityDisplay = On;
-        Flag_sunMoonDisplay = On;
-        Flag_getLightningStrikes = On;
-        Flag_get14DayNightForecast = On;
-        Flag_Weather_Closest = On;
-        Flag_Weather_Almanac = On;
-        Flag_getForecastsHours = On;
-        Flag_Normals = On;
+        GlobalDefaultLocation = null;
+        GlobalCityStateCountry = null;
+        GlobalLatLon = null;
 
+        GlobalDaysBack = 2;
+        GlobalEstRainToday = 0;
+        GlobalEstRainYesterday = 0;
+        GlobalRainToday = 0;
+        GlobalRainYesterday = 0;
+        GlobalPWSid = "";
         GlobalFlagEstimated = false;
 
-        debugMain = Off;
+        GlobalFlagObservationsRainEstimated = On;
+        GlobalFlagSmallMap1 = On;
+        GlobalFlagLargeMap1 = On;
+        GlobalFlagPhrasesHours = On;
+        GlobalFlagGetThreats = On;
+        GlobalFlagWeather48Hours = On;
+        GlobalFlagAdvisoriesDisplay = On;
+        GlobalFlagAirQualityDisplay = On;
+        GlobalFlagSunMoonDisplay = On;
+        GlobalFlagGetLightningStrikes = On;
+        GlobalFlagGet14DayNightForecast = On;
+        GlobalFlagWeather_Closest = On;
+        GlobalFlagWeatherAlmanac = On;
+        GlobalFlagGetForecastsHours = On;
+        GlobalFlagNormals = On;
+        GlobaldebugMain = Off;
 
-        currentVersion = "Beta Version  3.2.8";
-
+        GlobalCurrentVersion = "Beta Version  3.2.9";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -5105,7 +5099,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
         function ISOTimeParseAllFields(passedIsDate, type) {
-            var monthNumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
             var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -5116,11 +5109,8 @@
             var shortYear = a.getYear();
 
             var numberMonthNumber = a.getMonth();
-
             var dayOfMonthNumber = a.getDate();
-
             var dayOfWeekNumber = a.getDay();
-
             var hour = a.getHours();
 
             var minute = a.getMinutes();
@@ -5132,7 +5122,6 @@
                 second = "0" + second;
 
             var textMonthNameLong = monthNameLong[numberMonthNumber];
-
             var textMonthNameShort = monthNameShort[numberMonthNumber];
 
             numberMonthNumber++;
@@ -5149,7 +5138,6 @@
 
             // Hour + Minutes + am pm
             var newHour;
-
             if (hour === 0) {
                 newHour = "12:" + minute + " am";
             }
@@ -5167,7 +5155,6 @@
 
             // Hour Only, No minutes + am pm
             var newHourOnly;
-
             if (hour === 0) {
                 newHourOnly = "12:00 am";
             }
@@ -5314,15 +5301,11 @@
 
             var fullYear = a.getFullYear();
             var shortYear = a.getYear();
-
             var numberMonthNumber = a.getMonth();
-
             var dayOfMonthNumber = a.getDate();
-
             var dayOfWeekNumber = a.getDay();
 
             var hour = a.getHours();
-
             var minute = a.getMinutes();
             if (minute.toString().trim().length < 2)
                 minute = "0" + minute;
@@ -5332,7 +5315,6 @@
                 second = "0" + second;
 
             var textMonthNameLong = monthNameLong[numberMonthNumber];
-
             var textMonthNameShort = monthNameShort[numberMonthNumber];
 
             numberMonthNumber++;
@@ -5367,7 +5349,6 @@
 
             // Hour Only, No minutes + am pm
             var newHourOnly;
-
             if (hour === 0) {
                 newHourOnly = "12:00 am";
             }
@@ -5667,7 +5648,6 @@
             Observations_PWS();
         }
     </script>
-
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRainSummary() {
@@ -5780,7 +5760,6 @@
             }
             else {
                 //alert("Function Failed");
-
                 document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                 document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
                 document.getElementById("rain_spacer_2").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
@@ -5820,7 +5799,6 @@
                 var city = capitalizeEachWord(json.response.place.name);
                 var state = capitalizeEachWord(json.response.place.state);
                 var country = capitalizeEachWord(json.response.place.country);
-
                 GlobalCityStateCountry = city + ",  " + state + ", " + country;
 
                 var ob = json.response.ob;
@@ -5849,11 +5827,9 @@
                 country = country.toUpperCase();
 
                 var stationStr = city + ",  " + state + "   " + id;
-
                 var parsedUnixTime = ISOTimeParseAllFields(json.response.ob.dateTimeISO, 15);
 
                 var windString = "";
-
                 if (windMph != null && windMph === 0)
                     windString = "Calm";
                 else if (windDir === null && windMph === null)
@@ -5934,11 +5910,9 @@
         function callback_Observations(json) {
             var index = 0;
             if (json.success === true) {
-                var numReturns = json.response.length;
                 var city = capitalizeEachWord(json.response[index].place.name);
                 var state = capitalizeEachWord(json.response[index].place.state);
                 var country = capitalizeEachWord(json.response[index].place.country);
-
                 GlobalCityStateCountry = city + ",  " + state + ", " + country;
 
                 var ob = json.response[index].ob;
@@ -5965,8 +5939,7 @@
                 state = state.toUpperCase();
                 country = country.toUpperCase();
 
-                stationStr = city + ",  " + state + "   " + id;
-
+                var stationStr = city + ",  " + state + "   " + id;
                 var parsedUnixTime = ISOTimeParseAllFields(json.response[0].ob.dateTimeISO, 15);
 
                 if (dewpointF === null)
@@ -5979,7 +5952,6 @@
                     sky = "-- ";
 
                 var windString = "";
-
                 if (windMph != null && windMph === 0)
                     windString = "Calm";
                 else if (windDir === null && windMph === null)
@@ -6040,7 +6012,6 @@
             }
         }
     </script>
-
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function getForecastsHours() {
@@ -6612,13 +6583,12 @@
                 document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
                 document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
                 document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + GlobalCityStateCountry + "</span>";
-                displayAll();
             }
             else {
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
                 GlobalDefaultLocation = "Plano,TX";
-                displayAll();
             }
+            displayAll();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6651,7 +6621,6 @@
 
     <script type="text/javascript">
         function callback_savedPlace(json) {
-
             if (json.success === true) {
                 GlobalDefaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
                 GlobalCityStateCountry = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
@@ -6659,14 +6628,13 @@
                 document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 38pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
                 document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
                 document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + GlobalCityStateCountry + "</span>";
-                displayAll();
             }
             else {
                 localStorage.removeItem('PBW_GlobalDefaultLocation');
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
                 GlobalDefaultLocation = "Plano,TX";
-                displayAll();
             }
+            displayAll();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
@@ -6837,7 +6805,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function displayAll() {
-            document.getElementById("currentVersion").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + currentVersion + "</span>";
+            document.getElementById("GlobalCurrentVersion").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + GlobalCurrentVersion + "</span>";
             document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
             document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
             document.getElementById("city_state_country3").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
@@ -6848,47 +6816,46 @@
             clearAllFields();
             newLocation();
 
-            if (Flag_ObservationsRainEstimated)
+            if (GlobalFlagObservationsRainEstimated)
                 ObservationsRainEstimated();
-            if (Flag_smallMap1 && !debugMain)
+            if (GlobalFlagSmallMap1 && !GlobaldebugMain)
                 smallMap1();
-            if (Flag_LargeMap1 && !debugMain)
+            if (GlobalFlagLargeMap1 && !GlobaldebugMain)
                 LargeMap1();
-            if (Flag_Phrases_Hours)
+            if (GlobalFlagPhrasesHours)
                 Phrases_Hours();
-            if (Flag_getThreats)
+            if (GlobalFlagGetThreats)
                 getThreats();
-            if (Flag_Weather_48Hours && !debugMain)
+            if (GlobalFlagWeather48Hours && !GlobaldebugMain)
                 Weather_48Hours();
-            if (Flag_advisoriesDisplay && !debugMain)
+            if (GlobalFlagAdvisoriesDisplay && !GlobaldebugMain)
                 advisoriesDisplay();
-            if (Flag_airQualityDisplay && !debugMain)
+            if (GlobalFlagAirQualityDisplay && !GlobaldebugMain)
                 airQualityDisplay();
-            if (Flag_sunMoonDisplay && !debugMain)
+            if (GlobalFlagSunMoonDisplay && !GlobaldebugMain)
                 sunMoonDisplay();
-            if (Flag_getLightningStrikes)
+            if (GlobalFlagGetLightningStrikes)
                 getLightningStrikes();
-            if (Flag_get14DayNightForecast)
+            if (GlobalFlagGet14DayNightForecast)
                 get14DayNightForecast();
-            if (Flag_Weather_Closest && !debugMain)
+            if (GlobalFlagWeather_Closest && !GlobaldebugMain)
                 Weather_Closest();
-            if (Flag_Weather_Almanac && !debugMain)
+            if (GlobalFlagWeatherAlmanac && !GlobaldebugMain)
                 Weather_Almanac();
-            if (Flag_getForecastsHours)
+            if (GlobalFlagGetForecastsHours)
                 getForecastsHours();
-            if (Flag_Normals)
+            if (GlobalFlagNormals)
                 Normals();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
 
-        if (debugMain) {
+        if (GlobaldebugMain) {
             Places();
         }
         else {
             GlobalDefaultLocation = localStorage.getItem('PBW_GlobalDefaultLocation');
-
             if (GlobalDefaultLocation) {
                 setSavedLocation();
             }
