@@ -458,7 +458,7 @@
                         </font>
                         <p>
                             <font color="#FF0000" face="Times New Roman">&nbsp; </font>
-                            <button onclick="SaveGlobalDefaultLocation()" style="font-family: Sylfaen; width:270px; height:30px" type="submit">
+                            <button onclick="SaveDefaultLocation()" style="font-family: Sylfaen; width:270px; height:30px" type="submit">
                                 <b>
                                     <font style="font-size: 12pt">
                                         <font face="Times New Roman">
@@ -4946,6 +4946,7 @@
         On = true;
         Off = false;
 
+        PBW_DefaultLocation = null;
         GlobalDefaultLocation = null;
         GlobalCityStateCountry = null;
         GlobalLatLon = null;
@@ -4975,13 +4976,13 @@
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.2.9";
+        GlobalCurrentVersion = "Beta Version  3.3.0";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
-        function SaveGlobalDefaultLocation() {
+        function SaveDefaultLocation() {
             jQuery(document).ready(function ($) {
-                localStorage.setItem('PBW_GlobalDefaultLocation', GlobalDefaultLocation);
+                localStorage.setItem('PBW_DefaultLocation', GlobalDefaultLocation);
                 alert("Default Location " + GlobalDefaultLocation + " Saved.\nBrowser will now open to this location.");
             });
         }
@@ -6544,21 +6545,6 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
-        function clearAllFields() {
-            jQuery(document).ready(function ($) { });
-            document.getElementById("place-search").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox1").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox2").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox4").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox6").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox7").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox9").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox10").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-            document.getElementById("wxblox15").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
-        }
-    </script>
-    <!--*********************************************************************************************************************************************************************************************-->
-    <script type="text/javascript">
         function Places() {
             var cUrl = "https://api.aerisapi.com/places/closest?p=:auto&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
@@ -6588,17 +6574,19 @@
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
                 GlobalDefaultLocation = "Plano,TX";
             }
+            document.getElementById("place-search").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            newLocation();
             displayAll();
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function setSavedLocation() {
-            var locParts = localStorage.getItem('PBW_GlobalDefaultLocation').split(',');
+            var locParts = localStorage.getItem('PBW_DefaultLocation').split(',');
             var part1 = locParts[0].trim();
             var part2 = locParts[1].trim();
             var fullLocal = part1 + "," + part2;
-            localStorage.setItem('PBW_GlobalDefaultLocation', fullLocal);
+            localStorage.setItem('PBW_DefaultLocation', fullLocal);
             GlobalDefaultLocation = fullLocal;
             savedPlace();
         }
@@ -6630,10 +6618,12 @@
                 document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on&nbsp;&nbsp;" + GlobalCityStateCountry + "</span>";
             }
             else {
-                localStorage.removeItem('PBW_GlobalDefaultLocation');
+                localStorage.removeItem('PBW_DefaultLocation');
                 alert("Your location was not determined, switching to host city Plano, Tx. 75075");
                 GlobalDefaultLocation = "Plano,TX";
             }
+            document.getElementById("place-search").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            newLocation();
             displayAll();
         }
     </script>
@@ -6681,7 +6671,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Weather_Almanac() {
-
             Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
             var view = new Aeris.wxblox.views.Almanac('#wxblox10');
             view.load({
@@ -6805,6 +6794,15 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function displayAll() {
+            document.getElementById("wxblox1").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox2").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox4").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox6").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox7").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox9").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox10").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            document.getElementById("wxblox15").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+
             document.getElementById("GlobalCurrentVersion").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + GlobalCurrentVersion + "</span>";
             document.getElementById("city_state_country").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
             document.getElementById("city_state_country2").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + GlobalCityStateCountry + "</span>";
@@ -6812,9 +6810,6 @@
             document.getElementById("largeMapHeader").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + "Radar Map Centered on  " + GlobalCityStateCountry + "</span>";
             document.getElementById('ViewStormThreats').style.display = 'none';
             document.getElementById('ViewLightning').style.display = 'none';
-
-            clearAllFields();
-            newLocation();
 
             if (GlobalFlagObservationsRainEstimated)
                 ObservationsRainEstimated();
@@ -6850,12 +6845,11 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
-
         if (GlobaldebugMain) {
             Places();
         }
         else {
-            GlobalDefaultLocation = localStorage.getItem('PBW_GlobalDefaultLocation');
+            GlobalDefaultLocation = localStorage.getItem('PBW_DefaultLocation');
             if (GlobalDefaultLocation) {
                 setSavedLocation();
             }
@@ -6865,6 +6859,5 @@
         }
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
-
 </body>
 </html>
