@@ -22,9 +22,7 @@
     <script src="https://cdn.aerisapi.com/wxblox/aeris-wxblox.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
-
 <body>
-
     <div align="center">
         <table border="0" width="85%" cellspacing="0" bordercolor="#000000" height="900" cellpadding="0">
             <tr>
@@ -4936,11 +4934,9 @@
         }
     </script>
 
-
     *********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
     <!--*********************************************************************************************************************************************************************************************-->
-
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
         On = true;
@@ -4949,15 +4945,14 @@
         PBW_DefaultLocation = null;
         GlobalDefaultLocation = null;
         GlobalCityStateCountry = null;
-        GlobalLatLon = null;
+        GlobalFlagEstimated = false;
+        GlobalPWSid = null;
 
         GlobalDaysBack = 2;
         GlobalEstRainToday = 0;
         GlobalEstRainYesterday = 0;
         GlobalRainToday = 0;
         GlobalRainYesterday = 0;
-        GlobalPWSid = "";
-        GlobalFlagEstimated = false;
 
         GlobalFlagObservationsRainEstimated = On;
         GlobalFlagSmallMap1 = On;
@@ -4976,7 +4971,7 @@
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.0";
+        GlobalCurrentVersion = "Beta Version  3.3.2";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -4990,21 +4985,21 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function addToCurrentDate(days) {
-            var date, nd, newTestDate, currentHour, currentMonth, currentDay, currentMinute, currentYear;
-            var currentSecond, futureDoLong, recurrentOfWeekLong, recurrentOfWeek;
+            var futureDoLong;
+            var recurrentOfWeekLong;
 
-            date = new Date();
-            newTestDate = new Date(date);
-            recurrentOfWeek = date.getDay();
+            var date = new Date();
+            var newTestDate = new Date(date);
+            var recurrentOfWeek = date.getDay();
             newTestDate.setDate(newTestDate.getDate() + days);
-            nd = new Date(newTestDate);
+            var nd = new Date(newTestDate);
 
-            currentYear = date.getFullYear();
-            currentMonth = date.getMonth() + 1;
-            currentDay = date.getDate();
-            currentHour = date.getHours();
-            currentMinute = date.getMinutes();
-            currentSecond = date.getSeconds();
+            var currentYear = date.getFullYear();
+            var currentMonth = date.getMonth() + 1;
+            var currentDay = date.getDate();
+            var currentHour = date.getHours();
+            var currentMinute = date.getMinutes();
+            var currentSecond = date.getSeconds();
 
             if (currentHour.toString().trim().length < 2)
                 currentHour = "0" + currentHour;
@@ -5049,7 +5044,6 @@
                     recurrentOfWeekLong = "Saturday";
                     break;
             }
-
             switch (futureOfWeek) {
                 case 0:
                     futureDoLong = "Sunday";
@@ -5075,13 +5069,10 @@
             }
             if (currentMonth.toString().trim().length < 2)
                 currentMonth = "0" + currentMonth;
-
             if (currentDay.toString().trim().length < 2)
                 currentDay = "0" + currentDay;
-
             if (futureMonth.toString().trim().length < 2)
                 futureMonth = "0" + futureMonth;
-
             if (futureDay.toString().trim().length < 2)
                 futureDay = "0" + futureDay;
 
@@ -5107,7 +5098,6 @@
 
             var a = new Date(passedIsDate);
             var fullYear = a.getFullYear();
-            var shortYear = a.getYear();
 
             var numberMonthNumber = a.getMonth();
             var dayOfMonthNumber = a.getDate();
@@ -5135,9 +5125,6 @@
             if (dayOfMonthNumber.toString().trim().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
 
-            /************************************/
-
-            // Hour + Minutes + am pm
             var newHour;
             if (hour === 0) {
                 newHour = "12:" + minute + " am";
@@ -5152,9 +5139,6 @@
                 newHour = (hour - 12) + ":" + minute + " pm";
             }
 
-            /************************************/
-
-            // Hour Only, No minutes + am pm
             var newHourOnly;
             if (hour === 0) {
                 newHourOnly = "12:00 am";
@@ -5169,120 +5153,96 @@
                 newHourOnly = (hour - 12) + ":00 pm";
             }
 
-            /************************************/
-
             var tString;
             switch (type) {
                 case 1:
                     // Friday July 13 2018
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 2:
                     // Fri September 13 2018
                     tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 3:
                     // Fri Sept 13 2018
                     tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 4:
                     // Friday Sept 13 2018
                     tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 5:
                     // Friday 07/04/2018
                     tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
-
                 case 6:
                     // Fri 07/04/18
                     tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
-
                 case 7:
                     // Fri 07/04
                     tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
-
                 case 8:
                     // 07/04/2018
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
-
                 case 9:
                     // 07/04/18
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
-
                 case 10:
                     // 07/04
                     tString = numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
-
                 case 11:
                     // 07
                     tString = numberMonthNumber;
                     break;
-
                 case 12:
                     // 2018
                     tString = fullYear;
                     break;
-
                 case 13:
                     // January
                     tString = textMonthNameLong;
                     break;
-
                 case 14:
                     // Jan
                     tString = textMonthNameShort;
                     break;
-
                 case 15:
                     // 07/13/2018  9:09 pm
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
-
                 case 16:
                     // 9:00 pm (Hour Only, no minutes)
                     tString = newHourOnly;
                     break;
-
                 case 17:
                     // Fri Jul 13
                     tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
                     break;
-
                 case 20:
                     // 08:30 am ( Plus Minutes)
                     tString = newHour;
                     break;
-
                 case 21:
                     // Friday July 13
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
-
                 case 22:
                     // Friday July 13
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
-
                 case 23:
                     // Thu 9:00 PM
                     tString = textDayOfWeekShort + " " + newHourOnly;
                     break;
-
                 case 24:
                     // Thu
                     tString = textDayOfWeekShort;
                     break;
-
                 default:
                     tString = "Unknown";
                     break;
@@ -5301,7 +5261,6 @@
             var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             var fullYear = a.getFullYear();
-            var shortYear = a.getYear();
             var numberMonthNumber = a.getMonth();
             var dayOfMonthNumber = a.getDate();
             var dayOfWeekNumber = a.getDay();
@@ -5328,11 +5287,7 @@
             if (dayOfMonthNumber.toString().trim().length < 2)
                 dayOfMonthNumber = "0" + dayOfMonthNumber;
 
-            /************************************/
-
-            // Hour + Minutes + am pm
             var newHour;
-
             if (hour === 0) {
                 newHour = "12:" + minute + " am";
             }
@@ -5346,9 +5301,6 @@
                 newHour = (hour - 12) + ":" + minute + " pm";
             }
 
-            /************************************/
-
-            // Hour Only, No minutes + am pm
             var newHourOnly;
             if (hour === 0) {
                 newHourOnly = "12:00 am";
@@ -5363,120 +5315,96 @@
                 newHourOnly = (hour - 12) + ":00 pm";
             }
 
-            /************************************/
-
             var tString;
             switch (type) {
                 case 1:
                     // Friday July 13 2018
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 2:
                     // Fri September 13 2018
                     tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 3:
                     // Fri Sept 13 2018
                     tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 4:
                     // Friday Sept 13 2018
                     tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
                     break;
-
                 case 5:
                     // Friday 07/04/2018
                     tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
-
                 case 6:
                     // Fri 07/04/18
                     tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
-
                 case 7:
                     // Fri 07/04
                     tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
-
                 case 8:
                     // 07/04/2018
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
                     break;
-
                 case 9:
                     // 07/04/18
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
                     break;
-
                 case 10:
                     // 07/04
                     tString = numberMonthNumber + "/" + dayOfMonthNumber;
                     break;
-
                 case 11:
                     // 07
                     tString = numberMonthNumber;
                     break;
-
                 case 12:
                     // 2018
                     tString = fullYear;
                     break;
-
                 case 13:
                     // January
                     tString = textMonthNameLong;
                     break;
-
                 case 14:
                     // Jan
                     tString = textMonthNameShort;
                     break;
-
                 case 15:
                     // 07/13/2018  9:09 pm
                     tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
                     break;
-
                 case 16:
                     // 9:00 pm (Hour Only, no minutes)
                     tString = newHourOnly;
                     break;
-
                 case 17:
                     // Fri Jul 13
                     tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
                     break;
-
                 case 20:
                     // 08:30 am ( Plus Minutes)
                     tString = newHour;
                     break;
-
                 case 21:
                     // Friday July 13
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
-
                 case 22:
                     // Friday July 13
                     tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
                     break;
-
                 case 23:
                     // Thu 9:00 PM
                     tString = textDayOfWeekShort + " " + newHourOnly;
                     break;
-
                 case 24:
                     // Thu
                     tString = textDayOfWeekShort;
                     break;
-
                 default:
                     tString = "Unknown";
                     break;
@@ -5486,7 +5414,6 @@
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
-
         function daysInMonth(anyDateInMonth) {
             return new Date(anyDateInMonth.getFullYear(), anyDateInMonth.getMonth() + 1, 0).getDate();
         }
@@ -5494,8 +5421,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRouter() {
-            var tempLoc = "";
-            tempLoc = GlobalDefaultLocation;
+            var tempLoc = GlobalDefaultLocation;
             tempLoc = tempLoc.toUpperCase();
 
             if ((tempLoc.indexOf("PLANO,TX") >= 0)) {
@@ -5534,7 +5460,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRainEstimated() {
-
             var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
@@ -5558,7 +5483,6 @@
 
     <script type="text/javascript">
         function callback_ObservationsRainEstimated(json) {
-
             GlobalFlagEstimated = true;
             GlobalEstRainYesterday = 0;
             GlobalEstRainToday = 0;
@@ -5612,7 +5536,6 @@
     <script type="text/javascript">
         function callback_ObservationsRain_PWS(json) {
             var localPws;
-
             if (json.success === true) {
                 var numReturned = json.response.periods.length;
 
@@ -5652,7 +5575,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function ObservationsRainSummary() {
-
             var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
             var startDate = splitMonth[3] + "/" + splitMonth[4] + "/" + splitMonth[5];
@@ -5676,14 +5598,12 @@
 
     <script type="text/javascript">
         function callback_ObservationsRainSummary(json) {
-
-            var numReturned;
             var localFlagEstimated = true;
             GlobalRainYesterday = 0;
             GlobalRainToday = 0;
 
             if (json.success === true) {
-                numReturned = json.response[0].periods.length;
+                var numReturned = json.response[0].periods.length;
 
                 document.getElementById("WX_Messages").innerHTML = "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "" + "</span>";
                 document.getElementById("rain_spacer_1").innerHTML = "<span style=\"font-size: 6pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;" + "</span>";
@@ -5777,7 +5697,6 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function Observations_PWS() {
-
             var cUrl = "https://api.aerisapi.com/observations/" + GlobalPWSid + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
             jQuery(document).ready(function ($) {
                 $.ajax({
@@ -5793,10 +5712,7 @@
 
     <script type="text/javascript">
         function callback_Observations_PWS(json) {
-            var index = 0;
             if (json.success === true) {
-                index = 0;
-
                 var city = capitalizeEachWord(json.response.place.name);
                 var state = capitalizeEachWord(json.response.place.state);
                 var country = capitalizeEachWord(json.response.place.country);
@@ -6031,30 +5947,27 @@
 
     <script type="text/javascript">
         function callback_getForecastsHours(json) {
-            var hourlyResponse, pDateTime, icon, weather, avgTemp, rainProb, pressure, avgDewPoint, rainIN;
-            var winddir, windMax, humidity;
-            var x = 0;
-            var y = 0;
+            var x;
             if (json.success === true) {
                 var hourResults = json.response[0].periods.length;
                 if (hourResults >= 25)
                     hourResults = 25;
-                y = 0;
+                var y = 0;
 
                 for (x = 0; x < hourResults; x++) {
-                    hourlyResponse = json.response[0].periods[x];
-                    pDateTime = ISOTimeParseAllFields(hourlyResponse.dateTimeISO, 23);
+                    var hourlyResponse = json.response[0].periods[x];
+                    var pDateTime = ISOTimeParseAllFields(hourlyResponse.dateTimeISO, 23);
 
-                    weather = hourlyResponse.weather;
-                    icon = hourlyResponse.icon;
-                    avgTemp = hourlyResponse.avgTempF.toFixed(0);
-                    avgDewPoint = hourlyResponse.avgDewpointF.toFixed(0);
-                    humidity = hourlyResponse.humidity.toFixed(0);
-                    pressure = hourlyResponse.pressureIN.toFixed(2);
-                    winddir = hourlyResponse.windDir;
-                    windMax = hourlyResponse.windSpeedMaxMPH.toFixed(0);
-                    rainProb = hourlyResponse.pop.toFixed(0);
-                    rainIN = hourlyResponse.precipIN.toFixed(2);
+                    var weather = hourlyResponse.weather;
+                    var icon = hourlyResponse.icon;
+                    var avgTemp = hourlyResponse.avgTempF.toFixed(0);
+                    var avgDewPoint = hourlyResponse.avgDewpointF.toFixed(0);
+                    var humidity = hourlyResponse.humidity.toFixed(0);
+                    var pressure = hourlyResponse.pressureIN.toFixed(2);
+                    var winddir = hourlyResponse.windDir;
+                    var windMax = hourlyResponse.windSpeedMaxMPH.toFixed(0);
+                    var rainProb = hourlyResponse.pop.toFixed(0);
+                    var rainIn = hourlyResponse.precipIN.toFixed(2);
 
                     document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Courier New\">" + "<b/>" + pDateTime + "</span>";
                     document.getElementById("hf_" + y++).innerHTML = "<img border=0 src = " + IconBase + icon + " width=25" + " height=25>";
@@ -6065,7 +5978,7 @@
                     document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + pressure + "&nbsp;in" + "</span>";
                     document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + winddir + "&nbsp;" + windMax + "</span>";
                     document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainProb + "%" + "</span>";
-                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainIN + "\"" + "</span>";
+                    document.getElementById("hf_" + y++).innerHTML = "<span style=\"font-size: 10pt; 	color: 	#000000; font-family: Times New Roman\">" + "<b/>" + rainIn + "\"" + "</span>";
                 }
             }
             else {
@@ -6109,7 +6022,6 @@
             var newcolor = "#FF0000;";
 
             if (json.success === true) {
-                var lRetuens = json.response.length - 1;
                 if (json.response.length > 10)
                     newCount = 10;
                 else
@@ -6166,7 +6078,6 @@
                             else
                                 cloudToCloudCtr++;
                         }
-
                         var stats1Txt;
                         if (json.response.length >= 100)
                             stats1Txt = "Over  " + json.response.length + "  Strikes Detected in Last 30 Minutes";
@@ -6214,7 +6125,6 @@
     <script type="text/javascript">
         function sunMoonDisplay() {
             Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
-
             var nnDate = addToCurrentDate(1);
             var bbDateSplit = nnDate.split(",");
             var startDate = bbDateSplit[0] + "/" + bbDateSplit[1] + "/" + bbDateSplit[2];
@@ -6251,34 +6161,32 @@
 
     <script type="text/javascript">
         function callback_get14DayNightForecast(json) {
-            var forecast, icon, minTempF, maxTempF, pop, index;
-            var dDate, hum, pressure, dp, amt, wx, wind, isDay;
-            var windGust, wdir, tmpStr, windStr, rest, dateStr, returnedNum;
+            var tmpStr, rest, dateStr;
             var color = "#000000;";
 
             if (json.success === true) {
-                index = 0;
-                returnedNum = json.response[0].periods.length;
+                var index = 0;
+                var returnedNum = json.response[0].periods.length;
 
                 if (returnedNum > 14)
                     returnedNum = 14;
 
                 for (index = 0; index < returnedNum; index++) {
-                    forecast = json.response[0].periods[index];
-                    dDate = forecast.dateTimeISO;
-                    icon = forecast.icon;
-                    isDay = forecast.isDay;
-                    minTempF = forecast.minTempF;
-                    maxTempF = forecast.maxTempF;
-                    pop = forecast.pop;
-                    hum = forecast.humidity;
-                    pressure = forecast.pressureIN.toFixed(2);
-                    dp = forecast.dewpointF;
-                    amt = forecast.precipIN.toFixed(2);
-                    wx = forecast.weather;
-                    wind = forecast.windSpeedMPH;
-                    wdir = forecast.windDir;
-                    windGust = forecast.windGustMPH;
+                    var forecast = json.response[0].periods[index];
+                    var dDate = forecast.dateTimeISO;
+                    var icon = forecast.icon;
+                    var isDay = forecast.isDay;
+                    var minTempF = forecast.minTempF;
+                    var maxTempF = forecast.maxTempF;
+                    var pop = forecast.pop;
+                    var hum = forecast.humidity;
+                    var pressure = forecast.pressureIN.toFixed(2);
+                    var dp = forecast.dewpointF;
+                    var amt = forecast.precipIN.toFixed(2);
+                    var wx = forecast.weather;
+                    var wind = forecast.windSpeedMPH;
+                    var wdir = forecast.windDir;
+                    var windGust = forecast.windGustMPH;
                     dDate = ISOTimeParseAllFields(dDate, 17);
 
                     if (index < returnedNum) {
@@ -6291,7 +6199,7 @@
                             dateStr = dDate + "&nbsp;(Night)";
                         }
 
-                        windStr = wdir + "&nbsp;at&nbsp;" + wind + "&nbsp;gusting to&nbsp;" + windGust;
+                        var windStr = wdir + "&nbsp;at&nbsp;" + wind + "&nbsp;gusting to&nbsp;" + windGust;
 
                         if (amt > 0)
                             rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;possible rain amounts of&nbsp;&nbsp;" + amt + "&nbsp;in";
@@ -6299,7 +6207,7 @@
                             rest = ".&nbsp;Humidity will be&nbsp;&nbsp;" + hum + "%&nbsp;&nbsp;and Dewpoint around&nbsp;&nbsp;" + dp + "&nbsp;°F.&nbsp;Pressure&nbsp;&nbsp;" + pressure + "\"&nbsp;&nbsp;no rain amounts predicted";
 
                         document.getElementById("fd_" + index).innerHTML = "<span style=\"font-size: 14pt; color:  #7E0023; font-family: Courier New\">" + "<b/>" + dateStr + "</span>";
-                        document.getElementById("fx_" + index).innerHTML = "<img border=0 src = " + IconBase + icon + " width=40" + " height=40>"
+                        document.getElementById("fx_" + index).innerHTML = "<img border=0 src = " + IconBase + icon + " width=40" + " height=40>";
                         document.getElementById("fhl_" + index).innerHTML = "<span style=\"font-size: 13pt; color:  " + color + " font-family: Times New Roman\">" + "<b>" + tmpStr + "</b>" + "&nbsp;°F" + "</span>";
                         document.getElementById("fwg_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Winds " + windStr + "</span>";
                         document.getElementById("frn_" + index).innerHTML = "<span style=\"font-size: 11pt; color:  " + color + " font-family: Times New Roman\">" + "<b/>" + "Rain chance  " + pop + "%" + "</span>";
@@ -6381,16 +6289,14 @@
 
     <script type="text/javascript">
         function callback_getThreats(json) {
-            var threatResponse, threatNumber, threatResult, threatAnyStorms, threatTimeStamp, threatPhraseLong, threatDistanceMin, threatDistanceMax;
-            var threatDirectionFrom, threatDirectionTo, threatApproaching, threatApproachingSpeedMin, threatApproachingSpeedMax, threatHail, threatRotation;
-            var threatTornadic, distanceMinMaxString, aprochingString, aprochingSpeedString, directionString, threathailString, threatrotationString, threattornadicString;
+            var aprochingString, threathailString, threatrotationString, threattornadicString;
             var tctr = 0;
 
             if (json.success === true) {
-                threatResponse = json.response;
-                threatNumber = threatResponse.length;
-                threatResult = json.response[0].periods[0];
-                threatAnyStorms = threatResult.storms;
+                var threatResponse = json.response;
+                var threatNumber = threatResponse.length;
+                var threatResult = json.response[0].periods[0];
+                var threatAnyStorms = threatResult.storms;
 
                 if (threatNumber > 3)
                     threatNumber = 3;
@@ -6436,34 +6342,34 @@
                         document.getElementById("threat_Spacer" + tctr).style.backgroundColor = "#ffffff";
                         document.getElementById("threat_TimeStamp" + tctr).style.backgroundColor = "#FF0000";
                         document.getElementById("threat_Phrase_Long" + tctr).style.backgroundColor = "#FF0000";
-                        threatTimeStamp = ISOTimeParseAllFields(threatResult.dateTimeISO, 15);
-                        threatPhraseLong = threatResult.storms.phrase.long;
+                        var threatTimeStamp = ISOTimeParseAllFields(threatResult.dateTimeISO, 15);
+                        var threatPhraseLong = threatResult.storms.phrase.long;
                         document.getElementById("threat_TimeStamp" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + "Weather Alert at:&nbsp;&nbsp;" + threatTimeStamp + "</span>";
                         document.getElementById("threat_Phrase_Long" + tctr).innerHTML = "<span style=\"font-size: 12pt; color: #ffffff; font-family: Times New Roman\">" + threatPhraseLong + "</span>";
 
                         //********************************************
 
                         threatPhraseLong = threatResult.storms.phrase.long;
-                        threatDistanceMin = threatResult.storms.distance.minMI.toFixed(0);
-                        threatDistanceMax = threatResult.storms.distance.maxMI.toFixed(0);
-                        threatDirectionFrom = threatResult.storms.direction.from;
-                        threatDirectionTo = threatResult.storms.direction.to;
-                        threatApproaching = threatResult.storms.approaching;
-                        threatApproachingSpeedMin = threatResult.storms.speed.minMPH.toFixed(0);
-                        threatApproachingSpeedMax = threatResult.storms.speed.maxMPH.toFixed(0);
-                        threatHail = threatResult.storms.hail;
-                        threatRotation = threatResult.storms.rotation;
-                        threatTornadic = threatResult.storms.tornadic;
+                        var threatDistanceMin = threatResult.storms.distance.minMI.toFixed(0);
+                        var threatDistanceMax = threatResult.storms.distance.maxMI.toFixed(0);
+                        var threatDirectionFrom = threatResult.storms.direction.from;
+                        var threatDirectionTo = threatResult.storms.direction.to;
+                        var threatApproaching = threatResult.storms.approaching;
+                        var threatApproachingSpeedMin = threatResult.storms.speed.minMPH.toFixed(0);
+                        var threatApproachingSpeedMax = threatResult.storms.speed.maxMPH.toFixed(0);
+                        var threatHail = threatResult.storms.hail;
+                        var threatRotation = threatResult.storms.rotation;
+                        var threatTornadic = threatResult.storms.tornadic;
 
-                        directionString = "Approaching from the&nbsp;" + threatDirectionFrom + "&nbsp;To the&nbsp;" + threatDirectionTo;
-                        distanceMinMaxString = "Min Distance&nbsp;" + threatDistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threatDistanceMax + "&nbsp;miles";
+                        var directionString = "Approaching from the&nbsp;" + threatDirectionFrom + "&nbsp;To the&nbsp;" + threatDirectionTo;
+                        var distanceMinMaxString = "Min Distance&nbsp;" + threatDistanceMin + "&nbsp;miles,&nbsp;&nbsp;" + " Max Distance&nbsp;" + threatDistanceMax + "&nbsp;miles";
 
                         if (threatApproaching)
                             aprochingString = "Storm is approaching";
                         else
                             aprochingString = "Storm is not approaching";
 
-                        aprochingSpeedString = "Min speed moving at&nbsp;" + threatApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threatApproachingSpeedMax + "&nbsp;mph";
+                        var aprochingSpeedString = "Min speed moving at&nbsp;" + threatApproachingSpeedMin + "&nbsp;mph,&nbsp;&nbsp;" + "&nbsp;Max speed moving at&nbsp;" + threatApproachingSpeedMax + "&nbsp;mph";
 
                         if (threatHail)
                             threathailString = "Hail has been detected";
@@ -6561,7 +6467,6 @@
 
     <script type="text/javascript">
         function callback_Places(json) {
-
             if (json.success === true) {
                 GlobalDefaultLocation = json.response[0].place.name.trim() + "," + json.response[0].place.state.trim();
                 GlobalCityStateCountry = json.response[0].place.name.trim() + ", " + json.response[0].place.state.trim() + ",  " + json.response[0].place.country.trim();
@@ -6682,7 +6587,6 @@
     <script type="text/javascript">
         function Weather_48Hours() {
             Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
-
             var view = new Aeris.wxblox.views.DayNightForecast('#wxblox2', {
                 request: {
                     limit: 3
