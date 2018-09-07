@@ -4636,27 +4636,30 @@
         </table>
     </div>
 
-<!-- Default Statcounter code for MainIPad
-http://www.PlanoBestWeather.com/MainIPad -->
-<script type="text/javascript">
-var sc_project=11783000; 
-var sc_invisible=0; 
-var sc_security="57b8e8f6"; 
-var sc_https=1; 
-var scJsHost = (("https:" == document.location.protocol) ?
-"https://secure." : "http://www.");
-document.write("<sc"+"ript type='text/javascript' src='" +
-scJsHost+
-"statcounter.com/counter/counter.js'></"+"script>");
-</script>
-<noscript><div class="statcounter"><a title="Web Analytics"
-href="http://statcounter.com/" target="_blank"><img
-class="statcounter"
-src="//c.statcounter.com/11783000/0/57b8e8f6/0/" alt="Web
-Analytics"></a></div></noscript>
-<!-- End of Statcounter Code -->
-
-
+    <!-- Default Statcounter code for MainIPad
+    http://www.PlanoBestWeather.com/MainIPad -->
+    <script type="text/javascript">
+        var sc_project = 11783000;
+        var sc_invisible = 0;
+        var sc_security = "57b8e8f6";
+        var sc_https = 1;
+        var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+        document.write("<sc" + "ript type='text/javascript' src='" +
+            scJsHost +
+            "statcounter.com/counter/counter.js'></" + "script>");
+    </script>
+    <noscript>
+        <div class="statcounter">
+            <a title="Web Analytics"
+               href="http://statcounter.com/" target="_blank">
+                <img class="statcounter"
+                     src="//c.statcounter.com/11783000/0/57b8e8f6/0/" alt="Web
+Analytics">
+            </a>
+        </div>
+    </noscript>
+    <!-- End of Statcounter Code -->
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
@@ -4693,7 +4696,7 @@ Analytics"></a></div></noscript>
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.2";
+        GlobalCurrentVersion = "Beta Version  3.3.3";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -6374,11 +6377,14 @@ Analytics"></a></div></noscript>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function advisoriesDisplay() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
-            var view = new Aeris.wxblox.views.Advisories('#wxblox4', {
-                fullDetails: true,
-                showModal: false
+            var view = new Aeris.wxblox.layouts.local.Advisories('#wxblox4', {
+                advisories: {
+                    request: {},
+                    fullDetails: true,
+                    showModal: true
+                }
             });
+            ;
             view.load({
                 p: GlobalDefaultLocation
             });

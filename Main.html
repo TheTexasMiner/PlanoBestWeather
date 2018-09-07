@@ -1216,7 +1216,7 @@
                                     <p></p>
                                     <p>&nbsp;</p>
                                 </div>
-                                <table border="0" width="50%" cellspacing="0" cellpadding="0" height="50">
+                                <table border="0" width="65%" cellspacing="0" cellpadding="0" height="50">
                                     <tr>
                                         <td align="center" bgcolor="#E8F3FF" style="border-style: solid; border-width: 1px; padding: 0">
                                             <div id="wxblox4" class="aeris-wrapper">
@@ -4971,7 +4971,7 @@
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.2";
+        GlobalCurrentVersion = "Beta Version  3.3.3";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -6547,11 +6547,14 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function advisoriesDisplay() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
-            var view = new Aeris.wxblox.views.Advisories('#wxblox4', {
-                fullDetails: true,
-                showModal: false
+            var view = new Aeris.wxblox.layouts.local.Advisories('#wxblox4', {
+                advisories: {
+                    request: {},
+                    fullDetails: true,
+                    showModal: true
+                }
             });
+            ;
             view.load({
                 p: GlobalDefaultLocation
             });
