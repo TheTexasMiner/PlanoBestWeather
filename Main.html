@@ -4971,7 +4971,7 @@
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.3";
+        GlobalCurrentVersion = "Beta Version  3.3.5";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -6608,14 +6608,12 @@
                 map: {
                     loc: GlobalDefaultLocation,
                     layers: {
-                        base: "terrain",
+                        base: "flat",
                         data: "radar",
                         overlays: "admin"
                     },
                     zoom: 7,
                     size: {
-                        width: "auto",
-                        height: "auto",
                         factor: 0.75,
                         autoscale: true
                     }
@@ -6625,7 +6623,7 @@
                     autoplay: false,
                     alwaysShowPast: false,
                     alwaysShowFuture: false,
-                    from: -3,
+                    from: -2,
                     to: 0,
                     duration: 2,
                     endDelay: 1,
@@ -6636,8 +6634,18 @@
                     branding: {}
                 },
                 controls: {
-                    layers: [],
-                    regions: []
+                    regions: [
+                        {
+                            loc: GlobalDefaultLocation,
+                            zoom: 6,
+                            title: "Multiple States"
+                        }, 
+                         {
+                            loc: GlobalDefaultLocation,
+                            zoom: 8,
+                            title: "Close"
+                        }
+                    ]
                 }
             });
             view.load();
