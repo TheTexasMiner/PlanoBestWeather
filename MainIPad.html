@@ -166,25 +166,36 @@
                                             </font>
                                         </div>
                                         <div id="current_temp" style="-webkit-padding-start: 0">
-                                            <font color="#FFFFFF" face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt">
+                                            <font face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt" color="#FFFFFF">
                                                 current_temp
                                             </font>
                                         </div>
                                         <div id="feels_like" style="-webkit-padding-start: 0">
-                                            <font color="#FFFFFF" face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt">
+                                            <font face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt" color="#FFFFFF">
                                                 feels_like
                                             </font>
                                         </div>
                                         <div id="spacer_17" style="-webkit-padding-start: 0">
-                                            <font color="#FFFFFF" face="Times New Roman" style="-webkit-padding-start: 0" size="2">
+                                            <font face="Times New Roman" style="-webkit-padding-start: 0" size="2" color="#FFFFFF">
                                                 spacer_17
                                             </font>
                                         </div>
                                         <div id="Wx_Icon" style="-webkit-padding-start: 0">
-                                            <font color="#FFFFFF" face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt">
+                                            <font face="Times New Roman" style="-webkit-padding-start: 0; font-size:10pt" color="#FFFFFF">
                                                 Wx_Icon
                                             </font>
                                         </div>
+                                        
+                                            <div id="weatherShortSpacer" style="-webkit-padding-start: 0">
+                                                <font size="2" face="Times New Roman" style="-webkit-padding-start: 0" color="#FFFFFF">
+                                                    weatherShortSpacer
+                                                </font>
+                                            </div>  
+                                                                                    
+                                            <div id="weatherShort" style="-webkit-padding-start: 0">
+                                                <font size="2" face="Times New Roman" style="-webkit-padding-start: 0" color="#FFFFFF">
+                                                    weatherShort</font></div>                                           
+                                        
                                     </td>
                                     <td align="center" valign="top" width="14%">
                                         <font face="Times New Roman">
@@ -4662,7 +4673,9 @@ Analytics">
     <!-- End of Statcounter Code -->
     <!--*********************************************************************************************************************************************************************************************-->
     <script>
-        IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
+        //IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
+        IconBase = "HTTP://www.PlanoBestWeather.com/latest_icons/";
+        
         On = true;
         Off = false;
 
@@ -4696,7 +4709,7 @@ Analytics">
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.6";
+        GlobalCurrentVersion = "Beta Version  3.3.7";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -5589,7 +5602,15 @@ Analytics">
                 document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 42pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;C" + ")" + "</span>";
                 document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F   " + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 28pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
+                
+             
+                
                 document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=100" + " height=100>";
+                
+                document.getElementById("weatherShortSpacer").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + " " + "</span>";
+                document.getElementById("weatherShort").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + ob.weatherShort + "</span>";                   
+                
+                
                 document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
                 document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
                 document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
@@ -5711,7 +5732,12 @@ Analytics">
                 document.getElementById("current_temp").innerHTML = "<span style=\"font-size: 42pt; color: #000000; font-family: Times New Roman\">" + tempF + "<span style=\"font-size: 26pt; color: #000000; font-family: Times New Roman\">" + "°F&nbsp;&nbsp;" + "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (tempF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("feels_like").innerHTML = "<span style=\"font-size: 14pt; color: #000000; font-family: Times New Roman\">" + "Feels Like " + feelslikeF + "<span style=\"font-size: 11pt; color: #000000; font-family: Times New Roman\">" + "&nbsp;°F&nbsp;&nbsp;&nbsp;" + "<span style=\"font-size: 10pt; color: #000000; font-family: Times New Roman\">" + "(" + ((5 / 9) * (feelslikeF - 32)).toFixed(0) + "&nbsp;°C" + ")" + "</span>";
                 document.getElementById("Wx_Forecast").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + weather + "</span>";
+                
                 document.getElementById("Wx_Icon").innerHTML = "<img border=0 src = " + IconBase + wIcon + " width=100" + " height=100>";
+                
+                document.getElementById("weatherShortSpacer").innerHTML = "<span style=\"font-size: 18pt; color: #000000; font-family: Times New Roman\">" + " " + "</span>";
+                document.getElementById("weatherShort").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + ob.weatherShort + "</span>";                   
+                
                 document.getElementById("Wx_Station").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "<b/>" + stationStr + "</span>";
                 document.getElementById("Wx_Winds").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Winds" + "</span>";
                 document.getElementById("Wx_DewPoint").innerHTML = "<span style=\"font-size: 16pt; color: #000000; font-family: Times New Roman\">" + "Dew Point" + "</span>";
@@ -6377,14 +6403,14 @@ Analytics">
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function advisoriesDisplay() {
-            var view = new Aeris.wxblox.layouts.local.Advisories('#wxblox4', {
-                advisories: {
-                    request: {},
-                    fullDetails: true,
-                    showModal: true
-                }
+            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var view = new Aeris.wxblox.views.Advisories('#wxblox4', {
+				request: {
+        			limit: 10
+    				},
+                fullDetails: true,
+                showModal: false
             });
-            ;
             view.load({
                 p: GlobalDefaultLocation
             });
