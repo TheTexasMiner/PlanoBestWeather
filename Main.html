@@ -63,7 +63,7 @@
                             </tr>
                         </table>
                         <font color="#FF0000" face="Times New Roman">
-                            <table border="0" width="70%" cellspacing="0" height="357" cellpadding="0" style="border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px">
+                            <table border="0" width="90%" cellspacing="0" height="357" cellpadding="0" style="border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-style: solid; border-bottom-width: 1px">
                                 <tr>
                                     <td colspan="5" height="23" align="center">
                                         <div id="city_state_country" style="-webkit-padding-start: 0">
@@ -394,9 +394,15 @@
                                     </td>
                                     <td rowspan="9" width="2%" align="center" valign="top"></td>
                                     <td rowspan="9" width="48%" align="center" valign="top">
-                                        <div id="wxblox1" class="aeris-wrapper">
-                                        </div>
-                                    </td>
+
+
+                                    <font face="Times New Roman" style="-webkit-padding-start: 0; " color="#000000" size="2">
+
+                                    <font size="5">Satellite Infrared Cloud Cover</font><br>
+									</font>
+                                    </font>
+
+									<img border="0" src="https://maps.aerisapi.com/1tV74P76ZY0zx1vS0wAMv_1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy/flat,states,satellite/750x500/39.70,-93.83,4/current.png" width="750" height="500"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="top" width="51%" height="13" colspan="3">
@@ -499,7 +505,7 @@
                         </font>
                         <div align="center">
                             <font color="#FF0000" face="Times New Roman">
-                                <table border="0" width="65%" cellspacing="0" cellpadding="0" height="150">
+                                <table border="0" width="75%" cellspacing="0" cellpadding="0" height="150">
                                     <tr>
                                         <td align="center">
                                             <div id="wxblox15" class="aeris-wrapper">
@@ -4989,7 +4995,7 @@
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.3.7";
+        GlobalCurrentVersion = "Beta Version  3.4.0";
     </script>
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
@@ -6673,7 +6679,7 @@
                          {
                             loc: GlobalDefaultLocation,
                             zoom: 8,
-                            title: "Close"
+                            title: "ZOOM Map"
                         }
                     ]
                 }
@@ -6739,7 +6745,7 @@
     <!--*********************************************************************************************************************************************************************************************-->
     <script type="text/javascript">
         function displayAll() {
-            document.getElementById("wxblox1").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
+            //document.getElementById("wxblox1").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
             document.getElementById("wxblox2").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
             document.getElementById("wxblox4").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
             document.getElementById("wxblox6").innerHTML = "<span style=\"font-size: 11pt; color: #FFFF00; font-family: Times New Roman\">" + "" + "</span>";
@@ -6758,8 +6764,8 @@
 
             if (GlobalFlagObservationsRainEstimated)
                 ObservationsRainEstimated();
-            if (GlobalFlagSmallMap1 && !GlobaldebugMain)
-                smallMap1();
+            //if (GlobalFlagSmallMap1 && !GlobaldebugMain)
+            //    smallMap1();
             if (GlobalFlagLargeMap1 && !GlobaldebugMain)
                 LargeMap1();
             if (GlobalFlagPhrasesHours)
