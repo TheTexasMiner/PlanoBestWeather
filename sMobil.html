@@ -388,8 +388,7 @@
                                 <tr>
                                     <td align="center" valign="top" width="100%" height="13" colspan="3">
                                         <font color="#FFFFFF" size="7">
-                                            <span style="background-color: #3399FF">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span style="background-color: #3399FF">&nbsp;&nbsp;&nbsp;&nbsp;
                                                 NOW&nbsp;&nbsp;&nbsp;&nbsp;
                                             </span>
                                         </font>
@@ -415,6 +414,7 @@
                                             <span style="background-color: #3399FF">
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                                 SHORT TERM&nbsp;&nbsp;&nbsp;&nbsp;
+                                            bsp;
                                             </span>
                                         </font>
                                     </td>
@@ -3914,9 +3914,9 @@ Analytics">
                     layers: {
                         base: "flat",
                         data: "radar",
-                        overlays: "admin"
+                        overlays: "admin,counties"
                     },
-                    zoom: 7,
+                    zoom: 6,
                     size: {
                         factor: 0.75,
                         autoscale: true
@@ -3941,7 +3941,7 @@ Analytics">
                     regions: [
                         {
                             loc: GlobalDefaultLocation,
-                            zoom: 8,
+                            zoom: 9,
                             title: "Multiple States"
                         }
                     ]
