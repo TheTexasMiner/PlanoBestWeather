@@ -2,25 +2,28 @@
 <html>
 <head>
     <title>US and Global Weather Forecast</title>
-    <meta name="description" content="Current weather and forecast for all cities and all countries" />
-    <meta name="keywords" content="weather, global weather, local weather, world weather, weather maps, forecasts, local forecast, global forecast, world forecast, forecast, US Weather, City Weather, best forecast, weather forecast, best weather site" />
-    <meta name="author" content="James Anding" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="-1" />
-    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
-    <meta name="dcterms.created" content="PlanoBestWeather.com" />
-    <meta name="designer" content="James Anding" />
-    <meta name="revisit" content="Sun, 29 Jan 2017 02:57:57 GMT" />
-    <meta name="distribution" content="global" />
-    <meta name="robots" content="index, nofollow" />
-    <meta http-equiv="last-modified" content="Sun, 29 Jan 2017 02:59:10 GMT" />
-    <meta http-equiv="date" content="Sun, 29 Jan 2017 02:59:12 GMT" />
-    <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <meta http-equiv="refresh" content="7200" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.aerisapi.com/wxblox/aeris-wxblox.css" />
-    <script src="https://cdn.aerisapi.com/wxblox/aeris-wxblox.min.js"></script>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="Current weather and forecast for all cities and all countries" name="description" />
+    <meta content="weather, global weather, local weather, world weather, weather maps, forecasts, local forecast, global forecast, world forecast, forecast, US Weather, City Weather, best forecast, weather forecast, best weather site" name="keywords" />
+    <meta content="James Anding" name="author" />
+    <meta content="-1" http-equiv="Expires" />
+    <meta content="no-cache" http-equiv="Pragma" />
+    <meta content="NO-CACHE" http-equiv="CACHE-CONTROL" />
+    <meta content="PlanoBestWeather.com" name="dcterms.created" />
+    <meta content="James Anding" name="designer" />
+    <meta content="Sun, 29 Jan 2017 02:57:57 GMT" name="revisit" />
+    <meta content="global" name="distribution" />
+    <meta content="index, nofollow" name="robots" />
+    <meta content="Sun, 29 Jan 2017 02:59:10 GMT" http-equiv="last-modified" />
+    <meta content="Sun, 29 Jan 2017 02:59:12 GMT" http-equiv="date" />
+    <meta content="IE=10" http-equiv="X-UA-Compatible" />
+    <!--*********************************************************************   
+    <meta content="43265" http-equiv="refresh" />
+	**********************************************************************-->     
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link href="https://cdn.aerisapi.com/wxblox/aeris-wxblox.css" rel="stylesheet" />
+    <script src="https://cdn.aerisapi.com/wxblox/aeris-wxblox.min.js"></script>    
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <script src="http://www.PlanoBestWeather.com/WxLibs/Wxlib3.js"></script>    
 </head>
 <body>
     <div align="center">
@@ -414,7 +417,6 @@
                                             <span style="background-color: #3399FF">
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                                 SHORT TERM&nbsp;&nbsp;&nbsp;&nbsp;
-                                            bsp;
                                             </span>
                                         </font>
                                     </td>
@@ -2214,31 +2216,26 @@
         </table>
     </div>
 
-    <!-- Default Statcounter code for sMobil.html
-    http://www.PlanoBestWeather.com/sMobil.html -->
-    <script type="text/javascript">
-        var sc_project = 11305214;
-        var sc_invisible = 0;
-        var sc_security = "38352ce5";
-        var sc_https = 1;
-        var scJsHost = (("https:" == document.location.protocol) ?
-            "https://secure." : "http://www.");
-        document.write("<sc" + "ript type='text/javascript' src='" +
-            scJsHost +
-            "statcounter.com/counter/counter.js'></" + "script>");
-    </script>
-    <noscript>
-        <div class="statcounter">
-            <a title="Web Analytics"
-               href="http://statcounter.com/" target="_blank">
-                <img class="statcounter"
-                     src="//c.statcounter.com/11305214/0/38352ce5/0/" alt="Web
-Analytics">
-            </a>
-        </div>
-    </noscript>
-    <!-- End of Statcounter Code -->
-    <!--******-->
+<!-- Default Statcounter code for sMobil.html
+http://www.PlanoBestWeather.com/sMobil.html -->
+<script type="text/javascript">
+var sc_project=11305214; 
+var sc_invisible=0; 
+var sc_security="38352ce5"; 
+var sc_https=1; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="Web Analytics
+Made Easy - StatCounter" href="http://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="//c.statcounter.com/11305214/0/38352ce5/0/" alt="Web
+Analytics Made Easy - StatCounter"></a></div></noscript>
+<!-- End of Statcounter Code -->
+
     <script>
         IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
         On = true;
@@ -2274,7 +2271,7 @@ Analytics">
         GlobalFlagNormals = On;
         GlobaldebugMain = Off;
 
-        GlobalCurrentVersion = "Beta Version  3.4.1";
+        GlobalCurrentVersion = "Beta Version  3.6.8";
     </script>
     <!--******-->
     <script type="text/javascript">
@@ -4039,7 +4036,10 @@ Analytics">
         }
     </script>
     <!--******-->
+    
     <script type="text/javascript">
+        function PrepWork() {
+    
         if (GlobaldebugMain) {
             Places();
         }
@@ -4052,7 +4052,15 @@ Analytics">
                 Places();
             }
         }
+      }
     </script>
+    
+    <script type="text/javascript">            
+    SetupProcuderes();
+    PrepWork();
+    </script>
+    
+    
     <!--******-->
 </body>
 </html>
