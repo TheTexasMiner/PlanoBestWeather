@@ -1,0 +1,49 @@
+
+        
+        // Encrypt        
+        //var encryptedString = EnCode(message,getKey());
+        //alert("Encrypted = " + encryptedString);
+        
+        // Decrypt        
+		// var decryptedString = DeCode(getCKid(),getKey());
+		// alert("Decrypted = " + decryptedString);
+        
+
+		In Wxlib.js
+      	getPhotonWeigth		( 1 thru 8 builds encrypted ID String )
+      	getstrangelet		( 1 thre 6 builds encrypted Secret Key )
+        getWarpParticles	( 1 thru 5 builds Key for decreption)
+        
+        //Original Keys:
+        var client_id      =  1tV74P76ZY0zx1vS0wAMv;
+        var client_secret  =  xETyU4AxAM94vSyIWKGajOhct7UG0PcmRUTHej12;
+        
+        var message1 = 1tV74P76ZY0zx1vS0wAMv;
+        var message2 = xETyU4AxAM94vSyIWKGajOhct7UG0PcmRUTHej12;
+
+        var encryptedString = EnCode(message1,"R&aU7hWqKvc44!vT3_8_tE8pS!J#G5");
+        alert("client_id = " + encryptedString);
+        
+        
+        var encryptedString = EnCode(message2,"R&aU7hWqKvc44!vT3_8_tE8pS!J#G5");
+        alert("client_id = " + encryptedString)
+        
+        
+        KEY for Decript/Encrypt = R&aU7hWqKvc44!vT3_8_tE8pS!J#G5;
+
+ 		Encrypted Keys:
+ 		
+    	ID Key = U2FsdGVkX19cessIQvNDPIMVH12S5n6s7DKsHO/D1TA3QLhxNur7qmhb6y2+5/i+
+    	Sec Key = U2FsdGVkX19QaP3NQxPjCvtupHV8pWMBOkq0/TqdAvhMRF1XT/pVwDNJIKLRFbFdQ+LWxu92DxUJdEWBl/heZA==             
+    		
+    	// Decrypt        
+		var decryptedString = DeCode(getCKid(),getKey());
+		alert("Decrypted = " + decryptedString);	
+		
+		
+		var decryptedString = DeCode(getCKid(),getKey());
+		alert("Decrypted = " + decryptedString);		
+    		
+    		
+    		
+    		

@@ -6,28 +6,27 @@
     <meta content="weather, global weather, local weather, world weather, weather maps, forecasts, local forecast, global forecast, world forecast, forecast, US Weather, City Weather, best forecast, weather forecast, best weather site" name="keywords" />
     <meta content="James Anding" name="author" />
     <meta content="-1" http-equiv="Expires" />
-    <meta content="no-cache" http-equiv="Pragma" />
-    <meta content="NO-CACHE" http-equiv="CACHE-CONTROL" />
     <meta content="PlanoBestWeather.com" name="dcterms.created" />
     <meta content="James Anding" name="designer" />
     <meta content="Sun, 29 Jan 2017 02:57:57 GMT" name="revisit" />
     <meta content="global" name="distribution" />
     <meta content="index, nofollow" name="robots" />
-    <meta content="Sun, 29 Jan 2017 02:59:10 GMT" http-equiv="last-modified" />
-    <meta content="Sun, 29 Jan 2017 02:59:12 GMT" http-equiv="date" />
     <meta content="IE=10" http-equiv="X-UA-Compatible" />
-    <!--*********************************************************************   
-    <meta content="43265" http-equiv="refresh" />
-	**********************************************************************-->     
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <link href="https://cdn.aerisapi.com/wxblox/aeris-wxblox.css" rel="stylesheet" />
-    <script src="https://cdn.aerisapi.com/wxblox/aeris-wxblox.min.js"></script>    
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <script src="http://www.PlanoBestWeather.com/WxLibs/Wxlib3.js"></script>    
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link href="https://cdn.aerisapi.com/wxblox/aeris-wxblox.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="http://www.PlanoBestWeather.com/WxLibs/Wxlib14.js"></script>
+    <script src="https://cdn.aerisapi.com/wxblox/aeris-wxblox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
 </head>
 <body>
     <div align="center">
-        <table border="0" width="100%" cellspacing="0" bordercolor="#000000" height="900" cellpadding="0">
+        <table id="MainTable" style="width: 100%; height: 900pt; display: none">
             <tr>
                 <td align="center" valign="top" bgcolor="#FFFFFF">
                     <div align="center">
@@ -391,7 +390,8 @@
                                 <tr>
                                     <td align="center" valign="top" width="100%" height="13" colspan="3">
                                         <font color="#FFFFFF" size="7">
-                                            <span style="background-color: #3399FF">&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span style="background-color: #3399FF">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
                                                 NOW&nbsp;&nbsp;&nbsp;&nbsp;
                                             </span>
                                         </font>
@@ -2213,66 +2213,9 @@
                     </div>
                 </td>
             </tr>
-        </table>
     </div>
+    </table>
 
-<!-- Default Statcounter code for sMobil.html
-http://www.PlanoBestWeather.com/sMobil.html -->
-<script type="text/javascript">
-var sc_project=11305214; 
-var sc_invisible=0; 
-var sc_security="38352ce5"; 
-var sc_https=1; 
-var scJsHost = (("https:" == document.location.protocol) ?
-"https://secure." : "http://www.");
-document.write("<sc"+"ript type='text/javascript' src='" +
-scJsHost+
-"statcounter.com/counter/counter.js'></"+"script>");
-</script>
-<noscript><div class="statcounter"><a title="Web Analytics
-Made Easy - StatCounter" href="http://statcounter.com/"
-target="_blank"><img class="statcounter"
-src="//c.statcounter.com/11305214/0/38352ce5/0/" alt="Web
-Analytics Made Easy - StatCounter"></a></div></noscript>
-<!-- End of Statcounter Code -->
-
-    <script>
-        IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
-        On = true;
-        Off = false;
-
-        PBW_DefaultLocation = null;
-        GlobalDefaultLocation = null;
-        GlobalCityStateCountry = null;
-        GlobalLatLon = null;
-
-        GlobalDaysBack = 2;
-        GlobalEstRainToday = 0;
-        GlobalEstRainYesterday = 0;
-        GlobalRainToday = 0;
-        GlobalRainYesterday = 0;
-        GlobalPWSid = "";
-        GlobalFlagEstimated = false;
-
-        GlobalFlagObservationsRainEstimated = On;
-        GlobalFlagSmallMap1 = On;
-        GlobalFlagLargeMap1 = On;
-        GlobalFlagPhrasesHours = On;
-        GlobalFlagGetThreats = On;
-        GlobalFlagWeather48Hours = On;
-        GlobalFlagAdvisoriesDisplay = On;
-        GlobalFlagAirQualityDisplay = On;
-        GlobalFlagSunMoonDisplay = On;
-        GlobalFlagGetLightningStrikes = On;
-        GlobalFlagGet14DayNightForecast = On;
-        GlobalFlagWeather_Closest = On;
-        GlobalFlagWeatherAlmanac = On;
-        GlobalFlagGetForecastsHours = On;
-        GlobalFlagNormals = On;
-        GlobaldebugMain = Off;
-
-        GlobalCurrentVersion = "Beta Version  3.6.8";
-    </script>
     <!--******-->
     <script type="text/javascript">
         function SaveDefaultLocation() {
@@ -2280,431 +2223,6 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
                 localStorage.setItem('PBW_DefaultLocation', GlobalDefaultLocation);
                 alert("Default Location " + GlobalDefaultLocation + " Saved.\nBrowser will now open to this location.");
             });
-        }
-    </script>
-    <!--******-->
-    <script type="text/javascript">
-        function addToCurrentDate(days) {
-            var futureDoLong, recurrentOfWeekLong;
-            var date = new Date();
-            var newTestDate = new Date(date);
-            var recurrentOfWeek = date.getDay();
-            newTestDate.setDate(newTestDate.getDate() + days);
-            var nd = new Date(newTestDate);
-
-            var currentYear = date.getFullYear();
-            var currentMonth = date.getMonth() + 1;
-            var currentDay = date.getDate();
-            var currentHour = date.getHours();
-            var currentMinute = date.getMinutes();
-            var currentSecond = date.getSeconds();
-
-            if (currentHour.toString().trim().length < 2)
-                currentHour = "0" + currentHour;
-            if (currentMinute.toString().trim().length < 3)
-                currentMinute = "0" + currentMinute;
-            if (currentSecond.toString().trim().length < 2)
-                currentSecond = "0" + currentSecond;
-            if (currentMonth.toString().trim().length < 2)
-                currentMonth = "0" + currentMonth;
-            if (currentDay.toString().trim().length < 2)
-                currentDay = "0" + currentDay;
-
-            var futureMonth = nd.getMonth() + 1;
-            var futureDay = nd.getDate();
-            var futureYear = nd.getFullYear();
-            var futureOfWeek = nd.getDay();
-
-            switch (recurrentOfWeek) {
-                case 0:
-                    recurrentOfWeekLong = "Sunday";
-                    break;
-                case 1:
-                    recurrentOfWeekLong = "Monday";
-                    break;
-                case 2:
-                    recurrentOfWeekLong = "Tuesday";
-                    break;
-                case 3:
-                    recurrentOfWeekLong = "Wednesday";
-                    break;
-                case 4:
-                    recurrentOfWeekLong = "Thursday";
-                    break;
-                case 5:
-                    recurrentOfWeekLong = "Friday";
-                    break;
-                case 6:
-                    recurrentOfWeekLong = "Saturday";
-                    break;
-            }
-            switch (futureOfWeek) {
-                case 0:
-                    futureDoLong = "Sunday";
-                    break;
-                case 1:
-                    futureDoLong = "Monday";
-                    break;
-                case 2:
-                    futureDoLong = "Tuesday";
-                    break;
-                case 3:
-                    futureDoLong = "Wednesday";
-                    break;
-                case 4:
-                    futureDoLong = "Thursday";
-                    break;
-                case 5:
-                    futureDoLong = "Friday";
-                    break;
-                case 6:
-                    futureDoLong = "Saturday";
-                    break;
-            }
-            if (currentMonth.toString().trim().length < 2)
-                currentMonth = "0" + currentMonth;
-            if (currentDay.toString().trim().length < 2)
-                currentDay = "0" + currentDay;
-            if (futureMonth.toString().trim().length < 2)
-                futureMonth = "0" + futureMonth;
-            if (futureDay.toString().trim().length < 2)
-                futureDay = "0" + futureDay;
-
-            return currentMonth + "," + currentDay + "," + currentYear + "," + futureMonth + "," + futureDay + "," + futureYear +
-                "," + currentHour + "," + currentMinute + "," + currentSecond + "," + recurrentOfWeekLong + "," + futureDoLong;
-        }
-    </script>
-    <!--******-->
-    <script type="text/javascript">
-        function capitalizeEachWord(str) {
-            return str.replace(/\w\S*/g, function (txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            });
-        }
-    </script>
-    <!--******-->
-    <script>
-        function ISOTimeParseAllFields(passedIsDate, type) {
-            var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-            var a = new Date(passedIsDate);
-            var fullYear = a.getFullYear();
-
-            var numberMonthNumber = a.getMonth();
-            var dayOfMonthNumber = a.getDate();
-            var dayOfWeekNumber = a.getDay();
-            var hour = a.getHours();
-
-            var minute = a.getMinutes();
-            if (minute.toString().trim().length < 2)
-                minute = "0" + minute;
-
-            var second = a.getSeconds();
-            if (second.toString().trim().length < 2)
-                second = "0" + second;
-
-            var textMonthNameLong = monthNameLong[numberMonthNumber];
-            var textMonthNameShort = monthNameShort[numberMonthNumber];
-
-            numberMonthNumber++;
-            if (numberMonthNumber.toString().trim().length < 2)
-                numberMonthNumber = "0" + numberMonthNumber;
-
-            var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
-            var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
-
-            if (dayOfMonthNumber.toString().trim().length < 2)
-                dayOfMonthNumber = "0" + dayOfMonthNumber;
-            var newHour;
-            if (hour === 0) {
-                newHour = "12:" + minute + " am";
-            }
-            else if (hour === 12) {
-                newHour = "12:" + minute + " pm";
-            }
-            else if (hour < 12) {
-                newHour = (hour + ":" + minute + " am");
-            }
-            else {
-                newHour = (hour - 12) + ":" + minute + " pm";
-            }
-            var newHourOnly;
-            if (hour === 0) {
-                newHourOnly = "12:00 am";
-            }
-            else if (hour === 12) {
-                newHourOnly = "12:00 pm";
-            }
-            else if (hour < 12) {
-                newHourOnly = hour + ":00 am";
-            }
-            else {
-                newHourOnly = (hour - 12) + ":00 pm";
-            }
-            var tString;
-            switch (type) {
-                case 1:
-                    // Friday July 13 2018
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 2:
-                    // Fri September 13 2018
-                    tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 3:
-                    // Fri Sept 13 2018
-                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 4:
-                    // Friday Sept 13 2018
-                    tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 5:
-                    // Friday 07/04/2018
-                    tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
-                    break;
-                case 6:
-                    // Fri 07/04/18
-                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
-                    break;
-                case 7:
-                    // Fri 07/04
-                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
-                    break;
-                case 8:
-                    // 07/04/2018
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
-                    break;
-                case 9:
-                    // 07/04/18
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
-                    break;
-                case 10:
-                    // 07/04
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber;
-                    break;
-                case 11:
-                    // 07
-                    tString = numberMonthNumber;
-                    break;
-                case 12:
-                    // 2018
-                    tString = fullYear;
-                    break;
-                case 13:
-                    // January
-                    tString = textMonthNameLong;
-                    break;
-                case 14:
-                    // Jan
-                    tString = textMonthNameShort;
-                    break;
-                case 15:
-                    // 07/13/2018  9:09 pm
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
-                    break;
-                case 16:
-                    // 9:00 pm (Hour Only, no minutes)
-                    tString = newHourOnly;
-                    break;
-                case 17:
-                    // Fri Jul 13
-                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
-                    break;
-                case 20:
-                    // 08:30 am ( Plus Minutes)
-                    tString = newHour;
-                    break;
-                case 21:
-                    // Friday July 13
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
-                    break;
-                case 22:
-                    // Friday July 13
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
-                    break;
-                case 23:
-                    // Thu 9:00 PM
-                    tString = textDayOfWeekShort + " " + newHourOnly;
-                    break;
-                case 24:
-                    // Thu
-                    tString = textDayOfWeekShort;
-                    break;
-                default:
-                    tString = "Unknown";
-                    break;
-            }
-            return tString;
-        }
-    </script>
-    <!--******-->
-    <script>
-        function UnixTimeParseAll(unixTimestamp, type) {
-            var a = new Date(unixTimestamp * 1000);
-            var monthNameShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            var monthNameLong = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            var dayOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            var dayOfWeekLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-            var fullYear = a.getFullYear();
-            var numberMonthNumber = a.getMonth();
-            var dayOfMonthNumber = a.getDate();
-            var dayOfWeekNumber = a.getDay();
-
-            var hour = a.getHours();
-            var minute = a.getMinutes();
-            if (minute.toString().trim().length < 2)
-                minute = "0" + minute;
-
-            var second = a.getSeconds();
-            if (second.toString().trim().length < 2)
-                second = "0" + second;
-
-            var textMonthNameLong = monthNameLong[numberMonthNumber];
-            var textMonthNameShort = monthNameShort[numberMonthNumber];
-
-            numberMonthNumber++;
-            if (numberMonthNumber.toString().trim().length < 2)
-                numberMonthNumber = "0" + numberMonthNumber;
-
-            var textDayOfWeekLong = dayOfWeekLong[dayOfWeekNumber];
-            var textDayOfWeekShort = dayOfWeekShort[dayOfWeekNumber];
-
-            if (dayOfMonthNumber.toString().trim().length < 2)
-                dayOfMonthNumber = "0" + dayOfMonthNumber;
-
-            var newHour;
-            if (hour === 0) {
-                newHour = "12:" + minute + " am";
-            }
-            else if (hour === 12) {
-                newHour = "12:" + minute + " pm";
-            }
-            else if (hour < 12) {
-                newHour = (hour + ":" + minute + " am");
-            }
-            else {
-                newHour = (hour - 12) + ":" + minute + " pm";
-            }
-            var newHourOnly;
-            if (hour === 0) {
-                newHourOnly = "12:00 am";
-            }
-            else if (hour === 12) {
-                newHourOnly = "12:00 pm";
-            }
-            else if (hour < 12) {
-                newHourOnly = hour + ":00 am";
-            }
-            else {
-                newHourOnly = (hour - 12) + ":00 pm";
-            }
-            var tString;
-            switch (type) {
-                case 1:
-                    // Friday July 13 2018
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 2:
-                    // Fri September 13 2018
-                    tString = textDayOfWeekShort + " " + textMonthNameLong + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 3:
-                    // Fri Sept 13 2018
-                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 4:
-                    // Friday Sept 13 2018
-                    tString = textDayOfWeekLong + " " + textMonthNameShort + " " + dayOfMonthNumber + " " + fullYear;
-                    break;
-                case 5:
-                    // Friday 07/04/2018
-                    tString = textDayOfWeekLong + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
-                    break;
-                case 6:
-                    // Fri 07/04/18
-                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
-                    break;
-                case 7:
-                    // Fri 07/04
-                    tString = textDayOfWeekShort + " " + numberMonthNumber + "/" + dayOfMonthNumber;
-                    break;
-                case 8:
-                    // 07/04/2018
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear;
-                    break;
-                case 9:
-                    // 07/04/18
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + realShortYear;
-                    break;
-                case 10:
-                    // 07/04
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber;
-                    break;
-                case 11:
-                    // 07
-                    tString = numberMonthNumber;
-                    break;
-                case 12:
-                    // 2018
-                    tString = fullYear;
-                    break;
-                case 13:
-                    // January
-                    tString = textMonthNameLong;
-                    break;
-                case 14:
-                    // Jan
-                    tString = textMonthNameShort;
-                    break;
-                case 15:
-                    // 07/13/2018  9:09 pm
-                    tString = numberMonthNumber + "/" + dayOfMonthNumber + "/" + fullYear + "  " + newHour;
-                    break;
-                case 16:
-                    // 9:00 pm (Hour Only, no minutes)
-                    tString = newHourOnly;
-                    break;
-                case 17:
-                    // Fri Jul 13
-                    tString = textDayOfWeekShort + " " + textMonthNameShort + " " + dayOfMonthNumber;
-                    break;
-                case 20:
-                    // 08:30 am ( Plus Minutes)
-                    tString = newHour;
-                    break;
-                case 21:
-                    // Friday July 13
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
-                    break;
-                case 22:
-                    // Friday July 13
-                    tString = textDayOfWeekLong + " " + textMonthNameLong + " " + dayOfMonthNumber;
-                    break;
-                case 23:
-                    // Thu 9:00 PM
-                    tString = textDayOfWeekShort + " " + newHourOnly;
-                    break;
-                case 24:
-                    // Thu
-                    tString = textDayOfWeekShort;
-                    break;
-                default:
-                    tString = "Unknown";
-                    break;
-            }
-            return tString;
-        }
-    </script>
-    <!--******-->
-    <script type="text/javascript">
-
-        function daysInMonth(anyDateInMonth) {
-            return new Date(anyDateInMonth.getFullYear(), anyDateInMonth.getMonth() + 1, 0).getDate();
         }
     </script>
     <!--******-->
@@ -2725,30 +2243,6 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     </script>
     <!--******-->
     <script type="text/javascript">
-        function compareDateToCurrentDate(testDate) {
-            var todayDate = new Date();
-
-            var tempMonth = (todayDate.getMonth() + 1);
-            if (tempMonth.toString().trim().length < 2)
-                tempMonth = "0" + tempMonth;
-
-            var tempDay = todayDate.getDate();
-            if (tempDay.toString().trim().length < 2)
-                tempDay = "0" + tempDay;
-
-            var tempYear = todayDate.getFullYear();
-            var paydaysDate = tempMonth + "/" + tempDay + "/" + tempYear;
-
-            if (paydaysDate === testDate) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    </script>
-    <!--******-->
-    <script type="text/javascript">
         function ObservationsRainEstimated() {
             var monthDate = addToCurrentDate(-GlobalDaysBack);
             var splitMonth = monthDate.split(',');
@@ -2758,7 +2252,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/precip/summary/" + GlobalDefaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/precip/summary/" + GlobalDefaultLocation + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -2773,6 +2267,14 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
 
     <script type="text/javascript">
         function callback_ObservationsRainEstimated(json) {
+
+            if (json.response.length <= 0) {
+                GlobalFlagEstimated = false;
+                GlobalEstRainYesterday = 0;
+                GlobalEstRainToday = 0;
+                ObservationsRouter();
+            }
+
             GlobalFlagEstimated = true;
             GlobalEstRainYesterday = 0;
             GlobalEstRainToday = 0;
@@ -2809,7 +2311,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/observations/summary/" + GlobalPWSid + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/summary/" + GlobalPWSid + "?from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -2873,7 +2375,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
             var splitDate = returnedStr.split(',');
             var endDate = splitDate[3] + "/" + splitDate[4] + "/" + splitDate[5];
 
-            var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + GlobalDefaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/summary/closest?p=" + GlobalDefaultLocation + "&from=" + startDate + "&to=" + endDate + "&plimit=8&filter=qcok&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -2978,7 +2480,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Observations_PWS() {
-            var cUrl = "https://api.aerisapi.com/observations/" + GlobalPWSid + "?client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/" + GlobalPWSid + "?" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3094,7 +2596,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Observations() {
-            var cUrl = "https://api.aerisapi.com/observations/closest?p=" + GlobalDefaultLocation + "&filter=qcok&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/observations/closest?p=" + GlobalDefaultLocation + "&filter=qcok&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3216,7 +2718,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function getForecastsHours() {
-            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=1hr&limit=72&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=1hr&limit=72&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3274,7 +2776,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function getLightningStrikes() {
-            var cUrl = "https://api.aerisapi.com/lightning/" + GlobalDefaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/lightning/" + GlobalDefaultLocation + "?filter=all&limit=100&radius=50miles&from=-30minutes&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3412,7 +2914,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function sunMoonDisplay() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var nnDate = addToCurrentDate(1);
             var bbDateSplit = nnDate.split(",");
             var startDate = bbDateSplit[0] + "/" + bbDateSplit[1] + "/" + bbDateSplit[2];
@@ -3434,8 +2939,8 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function get14DayNightForecast() {
-            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=daynight&limit=14&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
-            jQuery(document).ready(function ($) {
+            var cUrl = "https://api.aerisapi.com/forecasts/" + GlobalDefaultLocation + "?filter=daynight&limit=14&" + getTags2();
+            jQuery(document).ready(function ($) {2
                 $.ajax({
                     url: cUrl,
                     cache: false
@@ -3521,7 +3026,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Normals() {
-            var cUrl = "https://api.aerisapi.com/normals/" + GlobalDefaultLocation + "?from=tomorrow&to=+13day&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/normals/" + GlobalDefaultLocation + "?from=tomorrow&to=+13day&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3572,7 +3077,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function getThreats() {
-            var cUrl = "https://api.aerisapi.com/threats/" + GlobalDefaultLocation + "?radius=50miles&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/threats/" + GlobalDefaultLocation + "?radius=50miles&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3727,7 +3232,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Phrases_Hours() {
-            var cUrl = "https://api.aerisapi.com/phrases/summary?p=" + GlobalDefaultLocation + "&limit=8&fields=phrases.long&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/phrases/summary?p=" + GlobalDefaultLocation + "&limit=8&fields=phrases.long&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3754,7 +3259,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Places() {
-            var cUrl = "https://api.aerisapi.com/places/closest?p=:auto&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/places/closest?p=:auto&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3766,7 +3271,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
             });
         }
     </script>
-
+    <!--******-->
     <script type="text/javascript">
         function callback_Places(json) {
 
@@ -3802,7 +3307,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function savedPlace() {
-            var cUrl = "https://api.aerisapi.com/places/closest?p=" + GlobalDefaultLocation + "&client_id=1tV74P76ZY0zx1vS0wAMv&client_secret=1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy";
+            var cUrl = "https://api.aerisapi.com/places/closest?p=" + GlobalDefaultLocation + "&" + getTags2();
             jQuery(document).ready(function ($) {
                 $.ajax({
                     url: cUrl,
@@ -3814,7 +3319,7 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
             });
         }
     </script>
-
+    <!--******-->
     <script type="text/javascript">
         function callback_savedPlace(json) {
             if (json.success === true) {
@@ -3837,7 +3342,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function airQualityDisplay() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var view = new Aeris.wxblox.views.AirQuality('#wxblox9', {
                 dataType: "obs"
             });
@@ -3849,7 +3357,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function advisoriesDisplay() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var view = new Aeris.wxblox.views.Advisories('#wxblox4', {
                 fullDetails: true,
                 showModal: false
@@ -3862,7 +3373,9 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Weather_Closest() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
 
             var view = new Aeris.wxblox.views.NearbyObservations('#wxblox7', {
                 request: {
@@ -3878,8 +3391,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Weather_Almanac() {
-
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var view = new Aeris.wxblox.views.Almanac('#wxblox10');
             view.load({
                 p: GlobalDefaultLocation
@@ -3889,7 +3404,9 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function Weather_48Hours() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);;
 
             var view = new Aeris.wxblox.views.DayNightForecast('#wxblox2', {
                 request: {
@@ -3904,7 +3421,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function LargeMap1() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var view = new Aeris.wxblox.views.MapViewer('#wxblox15', {
                 map: {
                     loc: GlobalDefaultLocation,
@@ -3950,7 +3470,9 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function smallMap1() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
 
             var view = new Aeris.wxblox.views.MapViewer('#wxblox1', {
                 map: {
@@ -3991,7 +3513,10 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
     <!--******-->
     <script type="text/javascript">
         function newLocation() {
-            Aeris.wxblox.setAccess('1tV74P76ZY0zx1vS0wAMv', '1W1cHP4jgDHaaJS4AOMYLlnuZU8l1Q71ElRJQLKy');
+            var par1 = DeCode(getCKid2(), buildTransWarpSpeed());
+            var par2 = DeCode(getCKsk2(), buildTransWarpSpeed());
+            Aeris.wxblox.setAccess(par1, par2);
+            
             var search = new Aeris.wxblox.views.PlaceSearch('#place-search');
             search.on('select', function (e) {
                 var p = e.data.place;
@@ -4033,34 +3558,123 @@ Analytics Made Easy - StatCounter"></a></div></noscript>
                 getLightningStrikes();
             if (GlobalFlagGet14DayNightForecast)
                 get14DayNightForecast();
+
+            document.getElementById('MainTable').style.display = 'block';
         }
     </script>
     <!--******-->
-    
     <script type="text/javascript">
-        function PrepWork() {
-    
-        if (GlobaldebugMain) {
-            Places();
-        }
-        else {
-            GlobalDefaultLocation = localStorage.getItem('PBW_DefaultLocation');
-            if (GlobalDefaultLocation) {
-                setSavedLocation();
-            }
-            else {
+        function startPage() {
+            IconBase = "HTTP://www.PlanoBestWeather.com/icons/";
+            On = true;
+            Off = false;
+
+            PBW_DefaultLocation = null;
+            GlobalDefaultLocation = null;
+            GlobalCityStateCountry = null;
+            GlobalLatLon = null;
+
+            GlobalDaysBack = 2;
+            GlobalEstRainToday = 0;
+            GlobalEstRainYesterday = 0;
+            GlobalRainToday = 0;
+            GlobalRainYesterday = 0;
+            GlobalPWSid = "";
+            GlobalFlagEstimated = false;
+
+            GlobalFlagObservationsRainEstimated = On;
+            GlobalFlagSmallMap1 = On;
+            GlobalFlagLargeMap1 = On;
+            GlobalFlagPhrasesHours = On;
+            GlobalFlagGetThreats = On;
+            GlobalFlagWeather48Hours = On;
+            GlobalFlagAdvisoriesDisplay = On;
+            GlobalFlagAirQualityDisplay = On;
+            GlobalFlagSunMoonDisplay = On;
+            GlobalFlagGetLightningStrikes = On;
+            GlobalFlagGet14DayNightForecast = On;
+            GlobalFlagWeather_Closest = On;
+            GlobalFlagWeatherAlmanac = On;
+            GlobalFlagGetForecastsHours = On;
+            GlobalFlagNormals = On;
+            GlobaldebugMain = Off;
+
+            GlobalCurrentVersion = "HTML Code Version 4.0.5";
+
+            if (GlobaldebugMain) {
                 Places();
             }
+            else {
+                GlobalDefaultLocation = localStorage.getItem('PBW_DefaultLocation');
+                if (GlobalDefaultLocation) {
+                    setSavedLocation();
+                }
+                else {
+                    Places();
+                }
+            }
         }
-      }
     </script>
-    
-    <script type="text/javascript">            
-    SetupProcuderes();
-    PrepWork();
+
+    <script type="text/javascript">
+        function PrepWork() {
+            setTimeout(startPage, 2000);
+        }
     </script>
-    
-    
-    <!--******-->
+
+    <script type="text/javascript">
+        document.addEventListener('contextmenu', function (e) { alert("This Weather Site Is Encrypted and Copy Protected"); });
+        document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        document.getElementById('MainTable').style.display = 'none';
+
+        On = true;
+        Off = false;
+
+        GlobalFlagObservationsRainEstimated = Off;
+        GlobalFlagSmallMap1 = Off;
+        GlobalFlagLargeMap1 = Off;
+        GlobalFlagPhrasesHours = Off;
+        GlobalFlagGetThreats = Off;
+        GlobalFlagWeather48Hours = Off;
+        GlobalFlagAdvisoriesDisplay = Off;
+        GlobalFlagAirQualityDisplay = Off;
+        GlobalFlagSunMoonDisplay = Off;
+        GlobalFlagGetLightningStrikes = Off;
+        GlobalFlagGet14DayNightForecast = Off;
+        GlobalFlagWeather_Closest = Off;
+        GlobalFlagWeatherAlmanac = Off;
+        GlobalFlagGetForecastsHours = Off;
+        GlobalFlagNormals = Off;
+        GlobaldebugMain = Off;
+
+        SetupProcuderes();
+        PrepWork();
+    </script>
+
+    <!-- Default Statcounter code for A5-sMobil.html
+    http://www.PlanoBestWeather.com/sMobil.html -->
+    <script type="text/javascript">
+        var sc_project = 11305214;
+        var sc_invisible = 1;
+        var sc_security = "38352ce5";
+        var sc_https = 1;
+    </script>
+    <script type="text/javascript"
+            src="https://www.statcounter.com/counter/counter.js"
+            async></script>
+    <noscript>
+        <div class="statcounter">
+            <a title="Web Analytics
+Made Easy - StatCounter" href="http://statcounter.com/"
+               target="_blank">
+                <img class="statcounter"
+                     src="//c.statcounter.com/11305214/0/38352ce5/1/" alt="Web
+Analytics Made Easy - StatCounter">
+            </a>
+        </div>
+    </noscript>
+    <!-- End of Statcounter Code -->
+
 </body>
+
 </html>
